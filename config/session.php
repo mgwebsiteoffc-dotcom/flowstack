@@ -31,7 +31,9 @@ return [
 
     'domain' => env('SESSION_DOMAIN'),
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    // Default false: a Secure cookie silently breaks logins over plain
+    // http://127.0.0.1. Set SESSION_SECURE_COOKIE=true for HTTPS prod.
+    'secure' => env('SESSION_SECURE_COOKIE', false),
 
     'http_only' => env('SESSION_HTTP_ONLY', true),
 
