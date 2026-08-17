@@ -1,3 +1,4 @@
+@auth
 @php
     $user = auth()->user();
     $unread = $user->unreadNotifications()->count();
@@ -81,6 +82,7 @@
 
     <x-user-avatar :user="$user" size="sm" />
 </header>
+@endauth
 
 @push('scripts')
 <script>

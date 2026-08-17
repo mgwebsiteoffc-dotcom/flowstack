@@ -14,7 +14,11 @@ class DashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $tenant = app('currentTenant');
+        $tenant = app('currentTenant') ?: $user?->tenant;
+
+        if (! $tenant) {
+            return redirect()->route('register')->with('error', 'No workspace found for your account. Please register a new workspace.');
+        }
 
         if ($user->isSpecialist()) {
             return $this->specialistDashboard($user);
@@ -42,6 +46,7 @@ class DashboardController extends Controller
                 'revenue_by_month' => Invoice::where('status', 'paid')
                     ->where('payment_date', '>=', $sixMonthsAgo)
                     ->get()
+                    ->filter(fn ($i) => $i->payment_date !== null)
                     ->groupBy(fn ($i) => $i->payment_date->format('M Y'))
                     ->map(fn ($group) => (float) $group->sum('paid_amount')),
             ];

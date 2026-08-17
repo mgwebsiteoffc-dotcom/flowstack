@@ -66,8 +66,10 @@ class TenantMiddleware
 
     /**
      * Local-development convenience: when the request arrives without a
-     * subdomain (artisan serve / preview host) and exactly one active tenant
-     * exists, use it. Disabled in production via config.
+     * subdomain (artisan serve / preview host) use the authenticated user's
+     * tenant first (fixes multi-tenant local DBs where the wrong fallback
+     * tenant would make auth()->user() resolve to null -> 500 on every page),
+     * then fall back to the first active tenant. Disabled in production.
      */
     protected function fallbackTenant(): ?Tenant
     {
@@ -75,12 +77,19 @@ class TenantMiddleware
             return null;
         }
 
-        $tenant = Tenant::query()
+        // Prefer the logged-in user's own tenant.
+        if (auth()->check()) {
+            $userTenant = auth()->user()->tenant;
+
+            if ($userTenant && $userTenant->is_active) {
+                return $userTenant;
+            }
+        }
+
+        return Tenant::query()
             ->where('is_active', true)
             ->orderBy('id')
             ->first();
-
-        return $tenant;
     }
 
     protected function abortOrRedirect(Request $request, string $message): Response

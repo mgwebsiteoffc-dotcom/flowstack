@@ -1,3 +1,4 @@
+@auth
 @php
     $user = auth()->user();
     $nav = [
@@ -49,3 +50,4 @@
         </form>
     </div>
 </aside>
+@endauth
