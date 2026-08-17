@@ -50,7 +50,7 @@ class KbArticle extends Model
 
  public function comments()
  {
- return $this->hasMany(KbArticleComment::class)->latest();
+ return $this->hasMany(KbArticleComment::class, 'article_id')->latest();
  }
 
  public function scopePublished($query)

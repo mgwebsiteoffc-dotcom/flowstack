@@ -35,7 +35,7 @@ class FileFolder extends Model
 
  public function files()
  {
- return $this->hasMany(File::class);
+ return $this->hasMany(File::class, 'folder_id');
  }
 
  public function creator()

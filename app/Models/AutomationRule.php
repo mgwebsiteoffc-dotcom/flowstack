@@ -48,7 +48,7 @@ class AutomationRule extends Model
 
  public function logs()
  {
- return $this->hasMany(AutomationLog::class);
+ return $this->hasMany(AutomationLog::class, 'rule_id');
  }
 
  public function creator()

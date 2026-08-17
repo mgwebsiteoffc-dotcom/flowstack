@@ -20,11 +20,11 @@ class KbCategory extends Model
 
  public function articles()
  {
- return $this->hasMany(KbArticle::class);
+ return $this->hasMany(KbArticle::class, 'category_id');
  }
 
  public function publishedArticles()
  {
- return $this->hasMany(KbArticle::class)->where('status', 'published');
+ return $this->hasMany(KbArticle::class, 'category_id')->where('status', 'published');
  }
 }

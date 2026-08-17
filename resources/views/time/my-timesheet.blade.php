@@ -52,7 +52,7 @@
             <tr>
                 <td class="px-4 py-3">Totals</td>
                 @foreach ($days as $day)
-                    <td class="px-2 py-3 text-center">{{ round($grid[$day->toDateString()]?->sum('duration_minutes') / 60 ?? 0, 1) }}h</td>
+                    <td class="px-2 py-3 text-center">{{ round(($grid[$day->toDateString()] ?? collect())->sum('duration_minutes') / 60, 1) }}h</td>
                 @endforeach
                 <td class="px-4 py-3 text-right">{{ round($totals['minutes'] / 60, 1) }}h</td>
             </tr>

@@ -13,7 +13,7 @@ class KbArticleComment extends Model
 
  public function article()
  {
- return $this->belongsTo(KbArticle::class);
+ return $this->belongsTo(KbArticle::class, 'article_id');
  }
 
  public function user()

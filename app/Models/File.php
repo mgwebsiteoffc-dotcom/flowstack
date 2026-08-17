@@ -34,7 +34,7 @@ class File extends Model
 
  public function folder()
  {
- return $this->belongsTo(FileFolder::class);
+ return $this->belongsTo(FileFolder::class, 'folder_id');
  }
 
  public function client()

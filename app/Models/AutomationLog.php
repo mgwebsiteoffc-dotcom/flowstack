@@ -24,6 +24,6 @@ class AutomationLog extends Model
 
  public function rule()
  {
- return $this->belongsTo(AutomationRule::class);
+ return $this->belongsTo(AutomationRule::class, 'rule_id');
  }
 }
