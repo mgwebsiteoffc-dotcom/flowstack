@@ -39,12 +39,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'portal.auth' => PortalAuthMiddleware::class,
             'super.admin' => SuperAdminMiddleware::class,
         ]);
-
-        $middleware->appendToGroup('web', [
-            // TrustProxies is enabled via config/trustedproxy.php (single tenant deployments
-            // behind a reverse proxy). Tenant resolution happens in TenantMiddleware,
-            // which is attached explicitly to the internal route group in routes/web.php.
-        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (TenantNotFoundException $e, Request $request) {

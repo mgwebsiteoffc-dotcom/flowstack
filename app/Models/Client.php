@@ -104,6 +104,11 @@ class Client extends Model
         return $this->hasMany(Expense::class);
     }
 
+    public function timeEntries()
+    {
+        return $this->hasMany(TimeEntry::class);
+    }
+
     public function folders()
     {
         return $this->hasMany(FileFolder::class);

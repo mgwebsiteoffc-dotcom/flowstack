@@ -51,6 +51,26 @@ class Tenant extends Model
         return $this->hasMany(Client::class);
     }
 
+    public function leads()
+    {
+        return $this->hasMany(Lead::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function timeEntries()
+    {
+        return $this->hasMany(TimeEntry::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
     /**
      * BikriBook API key helpers - always encrypted at rest, decrypted only
      * in BikriBookService. Never log the decrypted value.
