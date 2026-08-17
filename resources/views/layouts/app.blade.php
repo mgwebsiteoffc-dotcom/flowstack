@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <style>[x-cloak] { display: none !important; }</style>
     @stack('styles')
 </head>
 <body x-data="{ sidebarOpen: true }" class="bg-gray-100 min-h-screen">

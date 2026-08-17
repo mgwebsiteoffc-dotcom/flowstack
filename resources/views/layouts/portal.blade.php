@@ -6,6 +6,7 @@
     <title>@yield('title', 'Client Portal') · {{ auth('portal')->user()?->client?->company_name ?? 'Client Portal' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>[x-cloak] { display: none !important; }</style>
     @stack('styles')
 </head>
 <body class="bg-gray-50 min-h-screen" x-data="{ mobileOpen: false }">
