@@ -50,6 +50,33 @@ use Illuminate\Support\Facades\Route;
 | Public routes (no tenant, no auth)
 |--------------------------------------------------------------------------
 */
+// --- DEVELOPMENT DIAGNOSTIC (remove in production) ---------------------
+if (app()->environment('local')) {
+    Route::get('/dev/error', function () {
+        $log = storage_path('logs/laravel.log');
+        $out = 'No log file.';
+        if (is_file($log)) {
+            $content = file_get_contents($log);
+            // Last 10 exception blocks
+            $blocks = preg_split('/\[20\d{2}-/', $content);
+            $last = array_slice($blocks, -10);
+            $out = '';
+            foreach (array_reverse($last) as $b) {
+                $out .= '[20' . substr($b, 0, 80) . "
+" . substr($b, 80, 1800) . "
+
+========
+
+";
+            }
+        }
+        return response('<pre style="font-size:12px;white-space:pre-wrap;word-break:break-word;padding:20px">'
+            . htmlspecialchars($out) . '</pre>')
+            ->header('Content-Type', 'text/html');
+    })->name('dev.error');
+}
+// -----------------------------------------------------------------------
+
 Route::get('/', [LandingController::class, 'index'])->name('home');
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 
