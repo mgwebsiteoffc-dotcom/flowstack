@@ -86,6 +86,10 @@ class ClientController extends Controller
         $data = $request->validated();
         $tenant = app('currentTenant');
 
+        if ($tenant->max_clients && Client::count() >= $tenant->max_clients) {
+            return back()->with('error', 'You have reached your plan limit of '.$tenant->max_clients.' clients. Upgrade to add more.');
+        }
+
         $data['tenant_id'] = $tenant->id;
         $data['status'] = $data['status'] ?? 'active';
 

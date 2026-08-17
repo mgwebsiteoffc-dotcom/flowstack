@@ -22,3 +22,4 @@ yarn-error.log
 /.phpunit.cache
 storage/logs/*.log
 !storage/logs/.gitignore
+/.github/workflows/
