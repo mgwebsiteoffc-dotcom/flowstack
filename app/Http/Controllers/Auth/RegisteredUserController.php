@@ -72,15 +72,23 @@ class RegisteredUserController extends Controller
         // Default per-tenant data (pipeline, categories, templates, automation rules).
         (new DefaultDataSeeder)->run($tenant->id, $user->id);
 
-        // Queued welcome email (never blocks the request).
-        app(\App\Services\NotificationService::class)->sendEmail(
-            $user,
-            'Welcome to Agency OS! 🎉',
-            'Your workspace '.$tenant->name.' ('.$tenant->slug.'.'.config('tenancy.tenant_domain').') is ready.\n\nComplete the onboarding wizard to set up your agency in minutes.',
-            'welcome'
-        );
+        // Queued welcome email (never blocks the request; must never fail the
+        // signup itself - e.g. when the database queue jobs table is missing).
+        try {
+            app(\App\Services\NotificationService::class)->sendEmail(
+                $user,
+                'Welcome to Agency OS! 🎉',
+                'Your workspace '.$tenant->name.' ('.$tenant->slug.'.'.config('tenancy.tenant_domain').') is ready.\n\nComplete the onboarding wizard to set up your agency in minutes.',
+                'welcome'
+            );
 
-        event(new Registered($user));
+            event(new Registered($user));
+        } catch (\Throwable $e) {
+            logger()->warning('Welcome email could not be queued (signup continues)', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         TenantScope::setCurrentTenant($tenant);
 

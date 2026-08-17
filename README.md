@@ -166,6 +166,21 @@ finance; AMs only see own clients). A GitHub Actions workflow
 own GitHub account (the bot token used during development lacks the
 `workflows` permission, so the file is in the working tree but was not pushed).
 
+## Super Admin panel
+
+- **URL:** `/super-admin/login` (route `super-admin.login`) - linked from the landing page footer.
+- **Seed once:** `php artisan db:seed --class=SuperAdminSeeder` (also included in `php artisan db:seed`).
+- **Credentials:** `SUPER_ADMIN_EMAIL` / `SUPER_ADMIN_PASSWORD` from `.env`
+  (defaults: `superadmin@agencyos.test` / `ChangeMe123!` - change immediately after first login).
+  Note: with `php artisan config:cache`, `env()` is unavailable at runtime, so the
+  seeders fall back to those defaults - set the env vars before seeding.
+- **Capabilities:** platform dashboard (tenants, MRR, signups, churn), tenant list/detail
+  (usage, subscription history, extend trial, change plan, deactivate), plan CRUD,
+  payments list, and **impersonation** of any tenant admin (exited via the purple
+  "Exit impersonation" banner).
+- **Auth:** fully separate - uses the `super_admins` table + `SuperAdminMiddleware`
+  (session key `super_admin`), independent of team users and client portal accounts.
+
 ## Production notes
 
 - Run the queue worker 24/7 via Supervisor: `php artisan queue:work database --tries=3`

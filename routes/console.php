@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
 /*
@@ -10,12 +8,12 @@ use Illuminate\Support\Facades\Schedule;
 |--------------------------------------------------------------------------
 |
 | Scheduled jobs are registered in bootstrap/app.php -> withSchedule()
-| (Laravel 11+) and mirrored in app/Console/Kernel.php for Laravel 10
-| compatibility. This file intentionally does NOT re-register them to avoid
-| double execution.
+| (the Laravel 11+ way). This file intentionally does NOT re-register them
+| to avoid double execution.
+|
+| NOTE: no custom artisan commands are defined here - the old
+| Illuminate\Foundation\Inspiring-based "inspire" command was removed
+| because that class no longer exists in newer framework versions and would
+| fatal every artisan invocation.
 |
 */
-
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');

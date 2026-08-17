@@ -23,7 +23,23 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required'],
         ]);
 
-        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+        try {
+            $authenticated = Auth::attempt($credentials, $request->boolean('remember'));
+        } catch (\Throwable $e) {
+            // e.g. users table missing -> let the real error surface for diagnosis.
+            logger()->error('Login attempt failed with exception', [
+                'email' => $credentials['email'],
+                'error' => $e->getMessage(),
+            ]);
+
+            throw ValidationException::withMessages([
+                'email' => config('app.debug')
+                    ? 'Login error: '.$e->getMessage()
+                    : __('auth.failed'),
+            ]);
+        }
+
+        if (! $authenticated) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);

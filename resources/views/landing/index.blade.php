@@ -70,7 +70,7 @@
     </section>
 
     <footer class="max-w-7xl mx-auto px-6 py-10 text-center text-sm text-gray-400">
-        © {{ date('Y') }} Agency OS · <a href="{{ route('pricing') }}" class="hover:text-gray-600">Pricing</a> · <a href="{{ route('login') }}" class="hover:text-gray-600">Sign in</a>
+        © {{ date('Y') }} Agency OS · <a href="{{ route('pricing') }}" class="hover:text-gray-600">Pricing</a> · <a href="{{ route('login') }}" class="hover:text-gray-600">Sign in</a> · <a href="{{ route('super-admin.login') }}" class="hover:text-gray-600">Super Admin</a>
     </footer>
 </body>
 </html>
