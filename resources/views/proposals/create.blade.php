@@ -11,12 +11,15 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Client *</label>
-                <select name="client_id" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+                <div class="flex gap-2 items-start">
+                            <select name="client_id" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
                     <option value="">Select client…</option>
                     @foreach ($clients as $client)
                         <option value="{{ $client->id }}" {{ old('client_id', $lead?->converted_to_client_id) == $client->id ? 'selected' : '' }}>{{ $client->company_name }}</option>
                     @endforeach
                 </select>
+<x-quick-client-add target="client_id" /></div>
+
             </div>
             @if ($lead)
                 <div>

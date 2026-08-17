@@ -26,12 +26,15 @@
                     @endforeach
                 </select></div>
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Client</label>
+                <div class="flex gap-2 items-start">
                 <select name="client_id" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
                     <option value="">—</option>
                     @foreach ($clients as $client)
                         <option value="{{ $client->id }}" {{ old('client_id') == $client->id ? 'selected' : '' }}>{{ $client->company_name }}</option>
                     @endforeach
-                </select></div>
+                </select>
+<x-quick-client-add target="client_id" /></div>
+</div>
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Project</label>
                 <select name="project_id" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
                     <option value="">—</option>

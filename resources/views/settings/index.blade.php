@@ -12,13 +12,13 @@
             <x-card title="Agency settings" icon="building-office">
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div class="sm:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Agency name</label>
-                        <input type="text" name="name" value="{{ old('name', $tenant->name) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
+                        <input type="text" name="name" value="{{ old('name', $tenant?->name) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <input type="email" name="email" value="{{ old('email', $tenant->email) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
+                        <input type="email" name="email" value="{{ old('email', $tenant?->email) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                        <input type="text" name="phone" value="{{ old('phone', $tenant->phone) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
+                        <input type="text" name="phone" value="{{ old('phone', $tenant?->phone) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
                     <div class="sm:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                        <textarea name="address" rows="2" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">{{ old('address', $tenant->address) }}</textarea></div>
+                        <textarea name="address" rows="2" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">{{ old('address', $tenant?->address) }}</textarea></div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Logo</label>
                         <input type="file" name="logo" accept="image/*" class="text-sm"></div>
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Timezone</label>

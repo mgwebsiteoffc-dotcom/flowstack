@@ -43,13 +43,13 @@
 </div>
 
 @if ($client->status === 'onboarding' || $client->onboardingItems()->where('is_completed', false)->exists())
-    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5">
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5" x-data="{ progress: {{ $client->onboardingProgress() }}, remaining: {{ $client->onboardingItems()->where('is_completed', false)->count() }}, init() { window.addEventListener('onboarding-updated', e => { this.progress = e.detail.progress; this.remaining = e.detail.remaining; }); } }">
         <div class="flex items-center justify-between text-sm">
-            <span class="font-medium text-amber-800">Onboarding progress: {{ $client->onboardingProgress() }}%</span>
-            <span class="text-xs text-amber-600">{{ $client->onboardingItems()->where('is_completed', false)->count() }} items remaining</span>
+            <span class="font-medium text-amber-800">Onboarding progress: <span x-text="progress + '%'"></span></span>
+            <span class="text-xs text-amber-600"><span x-text="remaining"></span> items remaining</span>
         </div>
         <div class="h-2 bg-amber-100 rounded-full mt-2">
-            <div class="h-2 bg-amber-500 rounded-full transition-all" style="width: {{ $client->onboardingProgress() }}%"></div>
+            <div class="h-2 bg-amber-500 rounded-full transition-all" :style="'width: ' + progress + '%'"></div>
         </div>
     </div>
 @endif
@@ -92,17 +92,18 @@
                 </div>
             </x-card>
 
-            <x-card title="Onboarding checklist" icon="clipboard">
+            <x-card title="Onboarding checklist" icon="clipboard" x-data="onboardingChecklist({{ $client->onboardingProgress() }}, {{ $client->onboardingItems()->count() }}, {{ $client->onboardingItems()->where('is_completed', true)->count() }})">
                 @foreach ($client->onboardingItems as $item)
                     <div x-data="{ editing: false }" class="py-2 border-b border-gray-50 last:border-0">
                         <div class="flex items-center gap-3">
-                            <form method="POST" action="{{ route('clients.onboarding.toggle', [$client, $item->id]) }}">
-                                @csrf
-                                <button type="submit" class="w-5 h-5 rounded border-2 {{ $item->is_completed ? 'bg-green-500 border-green-500' : 'border-gray-300' }} flex items-center justify-center text-white text-xs">
-                                    {{ $item->is_completed ? '' : '' }}
-                                </button>
-                            </form>
-                            <span class="text-sm {{ $item->is_completed ? 'text-gray-400 line-through' : 'text-gray-700' }} flex-1">{{ $item->title }}</span>
+                            <button type="button" @click="toggle({{ $item->id }}, $event.currentTarget)"
+                                    class="w-5 h-5 rounded border-2 flex items-center justify-center text-white text-xs shrink-0 transition
+                                    {{ $item->is_completed ? 'bg-green-500 border-green-500' : 'border-gray-300 hover:border-green-500' }}"
+                                    :class="{ 'bg-green-500 border-green-500': isDone({{ $item->id }}), 'border-gray-300': !isDone({{ $item->id }}) }"
+                                    :disabled="busy">
+                                <x-icon name="check" class="w-3 h-3" x-show="isDone({{ $item->id }})" />
+                            </button>
+                            <span class="text-sm flex-1 transition" :class="isDone({{ $item->id }}) ? 'text-gray-400 line-through' : 'text-gray-700'">{{ $item->title }}</span>
                             <span class="text-xs text-gray-400">{{ $item->assignee?->name }}</span>
                             @if ($item->due_date)<span class="text-xs text-gray-400">{{ $item->due_date->format('d M') }}</span>@endif
                             <button @click="editing = !editing" class="text-xs text-gray-400 hover:text-gray-600"><x-icon name="pencil" class="w-4 h-4 inline-block" /></button>
@@ -121,6 +122,12 @@
                         </form>
                     </div>
                 @endforeach
+                <div class="mt-3 flex items-center gap-2 text-xs text-gray-500">
+                    <div class="h-1.5 bg-gray-100 rounded-full flex-1">
+                        <div class="h-1.5 bg-green-500 rounded-full transition-all duration-300" :style="'width: ' + progress + '%'"></div>
+                    </div>
+                    <span x-text="done + '/' + total + ' done (' + progress + '%)'"></span>
+                </div>
             </x-card>
         </div>
 
@@ -336,7 +343,7 @@
 @else
     <div class="grid lg:grid-cols-2 gap-6">
         <x-card title="Notes" icon="pencil-square">
-            @forelse ($client->notes->sortByDesc('created_at')->sortByDesc(fn ($n) => (int) $n->is_pinned) as $note)
+            @forelse ($notes as $note)
                 <div class="py-3 border-b border-gray-50 last:border-0 {{ $note->is_pinned ? 'bg-amber-50 rounded-lg px-2' : '' }}">
                     <div class="flex items-center gap-2 mb-1">
                         <span class="text-[10px] uppercase font-bold {{ $note->note_type === 'warning' ? 'text-amber-600' : ($note->note_type === 'important' ? 'text-red-600' : 'text-gray-400') }}">{{ $note->note_type }}</span>
@@ -364,4 +371,44 @@
         </x-card>
     </div>
 @endif
+@push('scripts')
+<script>
+function onboardingChecklist(initialProgress, total, initialDone) {
+    return {
+        progress: initialProgress,
+        total: total,
+        done: initialDone,
+        busy: false,
+        doneIds: @json($client->onboardingItems->where('is_completed', true)->pluck('id')->map(fn ($i) => (int) $i)),
+        isDone(id) { return this.doneIds.includes(id); },
+        async toggle(id, btn) {
+            if (this.busy) return;
+            this.busy = true;
+            try {
+                const res = await fetch(@json(route('clients.onboarding.toggle', [$client, 0])).replace('/0', '/' + id), {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    if (data.is_completed && !this.doneIds.includes(data.item_id)) this.doneIds.push(data.item_id);
+                    else if (!data.is_completed) this.doneIds = this.doneIds.filter(i => i !== data.item_id);
+                    this.done = this.doneIds.length;
+                    this.progress = data.progress;
+                    window.dispatchEvent(new CustomEvent('onboarding-updated', { detail: { progress: this.progress, remaining: this.total - this.done } }));
+                }
+            } catch (e) {
+                window.location.reload();
+            } finally {
+                this.busy = false;
+            }
+        }
+    }
+}
+</script>
+@endpush
 @endsection

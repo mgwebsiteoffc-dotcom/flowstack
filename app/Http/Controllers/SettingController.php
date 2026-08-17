@@ -23,7 +23,12 @@ class SettingController extends Controller
  */
  public function index()
  {
- $tenant = app('currentTenant');
+ $tenant = app('currentTenant') ?: auth()->user()?->tenant;
+
+ if (! $tenant) {
+ return redirect()->route('dashboard')->with('error', 'Workspace context not found.');
+ }
+
  $settings = $tenant->settings ?? [];
 
  return view('settings.index', compact('tenant', 'settings'));

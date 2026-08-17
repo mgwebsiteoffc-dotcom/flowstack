@@ -1,21 +1,33 @@
 @auth
 @php
     $user = auth()->user();
-    $nav = [
-        ['route' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'chart-bar', 'key' => 'dashboard'],
-        ['route' => 'clients.index', 'label' => 'Clients', 'icon' => 'users', 'active' => request()->routeIs('clients*'), 'key' => 'clients'],
-        ['route' => 'projects.index', 'label' => 'Projects', 'icon' => 'folder', 'active' => request()->routeIs('projects*'), 'key' => 'projects'],
-        ['route' => 'tasks.index', 'label' => 'Tasks', 'icon' => 'check-circle', 'active' => request()->routeIs('tasks*'), 'key' => 'tasks'],
-        ['route' => 'leads.index', 'label' => 'Leads', 'icon' => 'target', 'active' => request()->routeIs('leads*'), 'key' => 'leads'],
-        ['route' => 'finance.index', 'label' => 'Finance', 'icon' => 'banknotes', 'active' => request()->routeIs('finance*'), 'key' => 'finance'],
-        ['route' => 'proposals.index', 'label' => 'Proposals', 'icon' => 'document-text', 'active' => request()->routeIs('proposals*'), 'key' => 'proposals'],
-        ['route' => 'reports.index', 'label' => 'Reports', 'icon' => 'chart-bar', 'active' => request()->routeIs('reports*'), 'key' => 'reports'],
-        ['route' => 'kb.index', 'label' => 'Knowledge Base', 'icon' => 'book-open', 'active' => request()->routeIs('kb*'), 'key' => 'kb'],
-        ['route' => 'files.index', 'label' => 'Files', 'icon' => 'paper-clip', 'active' => request()->routeIs('files*'), 'key' => 'files'],
-        ['route' => 'time.index', 'label' => 'Time', 'icon' => 'clock', 'active' => request()->routeIs('time*'), 'key' => 'time'],
-        ['route' => 'automation.index', 'label' => 'Automation', 'icon' => 'bolt', 'active' => request()->routeIs('automation*'), 'key' => 'automation'],
-        ['route' => 'team.index', 'label' => 'Team', 'icon' => 'users', 'active' => request()->routeIs('team*'), 'key' => 'team'],
-        ['route' => 'settings.index', 'label' => 'Settings', 'icon' => 'cog-6-tooth', 'active' => request()->routeIs('settings*'), 'key' => 'settings'],
+    $navGroups = [
+        'Workspace' => [
+            ['route' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'chart-bar', 'key' => 'dashboard'],
+        ],
+        'Clients' => [
+            ['route' => 'clients.index', 'label' => 'Clients', 'icon' => 'users', 'key' => 'clients', 'active' => request()->routeIs('clients*')],
+            ['route' => 'projects.index', 'label' => 'Projects', 'icon' => 'folder', 'key' => 'projects', 'active' => request()->routeIs('projects*')],
+            ['route' => 'tasks.index', 'label' => 'Tasks', 'icon' => 'check-circle', 'key' => 'tasks', 'active' => request()->routeIs('tasks*')],
+        ],
+        'Sales' => [
+            ['route' => 'leads.index', 'label' => 'Leads', 'icon' => 'target', 'key' => 'leads', 'active' => request()->routeIs('leads*')],
+            ['route' => 'proposals.index', 'label' => 'Proposals', 'icon' => 'document-text', 'key' => 'proposals', 'active' => request()->routeIs('proposals*')],
+            ['route' => 'reports.index', 'label' => 'Reports', 'icon' => 'chart-bar', 'key' => 'reports', 'active' => request()->routeIs('reports*')],
+        ],
+        'Finance' => [
+            ['route' => 'finance.index', 'label' => 'Finance', 'icon' => 'banknotes', 'key' => 'finance', 'active' => request()->routeIs('finance*')],
+        ],
+        'Resources' => [
+            ['route' => 'kb.index', 'label' => 'Knowledge Base', 'icon' => 'book-open', 'key' => 'kb', 'active' => request()->routeIs('kb*')],
+            ['route' => 'files.index', 'label' => 'Files', 'icon' => 'paper-clip', 'key' => 'files', 'active' => request()->routeIs('files*')],
+            ['route' => 'time.index', 'label' => 'Time', 'icon' => 'clock', 'key' => 'time', 'active' => request()->routeIs('time*')],
+        ],
+        'Administration' => [
+            ['route' => 'automation.index', 'label' => 'Automation', 'icon' => 'bolt', 'key' => 'automation', 'active' => request()->routeIs('automation*')],
+            ['route' => 'team.index', 'label' => 'Team', 'icon' => 'users', 'key' => 'team', 'active' => request()->routeIs('team*')],
+            ['route' => 'settings.index', 'label' => 'Settings', 'icon' => 'cog-6-tooth', 'key' => 'settings', 'active' => request()->routeIs('settings*')],
+        ],
     ];
 @endphp
 <aside x-show="sidebarOpen" x-transition
@@ -29,15 +41,17 @@
     </div>
 
     <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-0.5 text-sm">
-        @foreach ($nav as $item)
-            @if (isset($item['key']) && ! \App\Support\MenuPermissions::can($user->role, $item['key'])) @continue @endif
-            @if ($item['route'] === 'finance.index' && ! $user->canAccessFinance()) @continue @endif
-            @if (in_array($item['route'], ['reports.index', 'team.index', 'clients.index', 'leads.index', 'automation.index']) && $user->isSpecialist()) @continue @endif
-            <a href="{{ route($item['route']) }}"
-               class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ (isset($item['active']) && $item['active']) || request()->routeIs($item['route'].'*') ? 'bg-gray-800 text-white' : 'hover:bg-gray-800 hover:text-white' }}">
-                <x-icon :name="$item['icon']" class="w-5 h-5 shrink-0" />
-                <span>{{ $item['label'] }}</span>
-            </a>
+        @foreach ($navGroups as $groupName => $items)
+            @php $visible = collect($items)->filter(fn ($i) => ! isset($i['key']) || \App\Support\MenuPermissions::can($user->role, $i['key']))->filter(fn ($i) => ! ($i['route'] === 'finance.index' && ! $user->canAccessFinance())); @endphp
+            @if ($visible->isEmpty()) @continue @endif
+            <div class="px-3 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">{{ $groupName }}</div>
+            @foreach ($visible as $item)
+                <a href="{{ route($item['route']) }}"
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ (isset($item['active']) && $item['active']) || request()->routeIs($item['route'].'*') ? 'bg-gray-800 text-white' : 'hover:bg-gray-800 hover:text-white' }}">
+                    <x-icon :name="$item['icon']" class="w-5 h-5 shrink-0" />
+                    <span>{{ $item['label'] }}</span>
+                </a>
+            @endforeach
         @endforeach
     </nav>
 

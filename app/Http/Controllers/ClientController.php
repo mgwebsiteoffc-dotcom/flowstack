@@ -311,7 +311,7 @@ class ClientController extends Controller
  return back()->with('success', 'Onboarding item updated.');
  }
 
- public function toggleOnboarding(Client $client, ClientOnboardingItem $item)
+ public function toggleOnboarding(Request $request, Client $client, ClientOnboardingItem $item)
  {
  $item->update([
  'is_completed' => ! $item->is_completed,

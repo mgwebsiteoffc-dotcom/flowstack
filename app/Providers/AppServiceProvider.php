@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Models\Task;
 use App\Models\User;
 use App\Policies\ClientPolicy;
+use App\Policies\ProjectPolicy;
 use App\Policies\InvoicePolicy;
 use App\Policies\LeadPolicy;
 use App\Policies\ReportPolicy;
@@ -62,6 +63,7 @@ class AppServiceProvider extends ServiceProvider
  // Policies
  Gate::policy(User::class, UserPolicy::class);
  Gate::policy(Client::class, ClientPolicy::class);
+        Gate::policy(Project::class, ProjectPolicy::class);
  Gate::policy(Task::class, TaskPolicy::class);
  Gate::policy(Lead::class, LeadPolicy::class);
  Gate::policy(Invoice::class, InvoicePolicy::class);
