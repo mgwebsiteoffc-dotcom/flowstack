@@ -45,7 +45,7 @@ class KbArticle extends Model
 
  public function tags()
  {
- return $this->belongsToMany(KbArticleTag::class, 'kb_article_tag_pivot');
+ return $this->belongsToMany(KbArticleTag::class, 'kb_article_tag_pivot', 'article_id', 'tag_id');
  }
 
  public function comments()

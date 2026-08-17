@@ -13,6 +13,6 @@ class KbArticleTag extends Model
 
  public function articles()
  {
- return $this->belongsToMany(KbArticle::class, 'kb_article_tag_pivot');
+ return $this->belongsToMany(KbArticle::class, 'kb_article_tag_pivot', 'tag_id', 'article_id');
  }
 }

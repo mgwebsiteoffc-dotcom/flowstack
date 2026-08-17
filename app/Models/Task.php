@@ -103,7 +103,7 @@ class Task extends Model
 
  public function tags()
  {
- return $this->belongsToMany(TaskTag::class, 'task_tag_pivot');
+ return $this->belongsToMany(TaskTag::class, 'task_tag_pivot', 'task_id', 'tag_id');
  }
 
  public function timeEntries()

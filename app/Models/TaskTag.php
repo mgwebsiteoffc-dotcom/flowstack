@@ -13,6 +13,6 @@ class TaskTag extends Model
 
  public function tasks()
  {
- return $this->belongsToMany(Task::class, 'task_tag_pivot');
+ return $this->belongsToMany(Task::class, 'task_tag_pivot', 'tag_id', 'task_id');
  }
 }

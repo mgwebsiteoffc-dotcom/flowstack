@@ -18,6 +18,6 @@ class TaskChecklist extends Model
 
  public function items()
  {
- return $this->hasMany(TaskChecklistItem::class)->orderBy('order_index');
+ return $this->hasMany(TaskChecklistItem::class, 'checklist_id')->orderBy('order_index');
  }
 }
