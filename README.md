@@ -74,6 +74,9 @@ Policies: `ClientPolicy`, `TaskPolicy`, `LeadPolicy`, `InvoicePolicy`,
 
 ## Modules
 
+Proposals (create from leads/clients, PDF, email to client, accept/reject) ·
+Super-admin role-menu mapping (/super-admin/roles) · Master data (expense
+categories, task tags, custom service types in Settings) ·
 Dashboard (role-specific) · Clients (+ 9 tabs, 20-item onboarding checklist,
 system folders, health scores) · Projects (+ 5 system templates) · Tasks
 (list/kanban via SortableJS/my-tasks/calendar, checklists, subtasks, attachments,

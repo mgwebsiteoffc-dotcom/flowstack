@@ -13,10 +13,12 @@ use App\Http\Controllers\KbArticleController;
 use App\Http\Controllers\KbCategoryController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\ProfitabilityController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
@@ -42,6 +44,7 @@ use App\Http\Controllers\Portal\PortalRequestController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
 use App\Http\Controllers\SuperAdmin\SuperAdminPlanController;
+use App\Http\Controllers\SuperAdmin\SuperAdminRoleController;
 use App\Http\Controllers\SuperAdmin\SuperAdminTenantController;
 use Illuminate\Support\Facades\Route;
 
@@ -187,6 +190,8 @@ Route::prefix('super-admin')->name('super-admin.')->group(function () {
  Route::put('/plans/{plan}', [SuperAdminPlanController::class, 'update'])->name('plans.update');
  Route::delete('/plans/{plan}', [SuperAdminPlanController::class, 'destroy'])->name('plans.destroy');
  Route::get('/payments', [SuperAdminDashboardController::class, 'payments'])->name('payments');
+ Route::get('/roles', [SuperAdminRoleController::class, 'index'])->name('roles.index');
+ Route::post('/roles', [SuperAdminRoleController::class, 'save'])->name('roles.save');
  });
 });
 
@@ -294,6 +299,16 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
  Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('finance.expenses.destroy');
  Route::get('/profitability', [ProfitabilityController::class, 'index'])->name('finance.profitability');
 
+ // Proposals
+ Route::get('/proposals', [ProposalController::class, 'index'])->name('proposals.index');
+ Route::get('/proposals/create', [ProposalController::class, 'create'])->name('proposals.create');
+ Route::post('/proposals', [ProposalController::class, 'store'])->name('proposals.store');
+ Route::get('/proposals/{proposal}', [ProposalController::class, 'show'])->name('proposals.show');
+ Route::get('/proposals/{proposal}/pdf', [ProposalController::class, 'pdf'])->name('proposals.pdf');
+ Route::post('/proposals/{proposal}/send', [ProposalController::class, 'send'])->name('proposals.send');
+ Route::post('/proposals/{proposal}/status', [ProposalController::class, 'updateStatus'])->name('proposals.status');
+ Route::delete('/proposals/{proposal}', [ProposalController::class, 'destroy'])->name('proposals.destroy');
+
  // Reports
  Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
  Route::get('/reports/__services', [ReportController::class, 'clientServices'])->name('reports.client-services');
@@ -358,6 +373,13 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
 
  // Settings
  Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+ Route::get('/settings/master', [MasterDataController::class, 'index'])->name('settings.master.index');
+ Route::post('/settings/master/categories', [MasterDataController::class, 'storeCategory'])->name('settings.master.category.store');
+ Route::delete('/settings/master/categories/{category}', [MasterDataController::class, 'destroyCategory'])->name('settings.master.category.destroy');
+ Route::post('/settings/master/tags', [MasterDataController::class, 'storeTag'])->name('settings.master.tag.store');
+ Route::delete('/settings/master/tags/{tag}', [MasterDataController::class, 'destroyTag'])->name('settings.master.tag.destroy');
+ Route::post('/settings/master/services', [MasterDataController::class, 'storeService'])->name('settings.master.service.store');
+ Route::delete('/settings/master/services/{item}', [MasterDataController::class, 'destroyService'])->name('settings.master.service.destroy');
  Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
  Route::get('/settings/users', [SettingController::class, 'users'])->name('settings.users');
  Route::get('/settings/integrations/lead365', [SettingController::class, 'lead365'])->name('settings.integrations.lead365');

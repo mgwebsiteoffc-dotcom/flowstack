@@ -51,7 +51,7 @@
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Service type</label>
                 <select name="service_type" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
                     <option value="">—</option>
-                    @foreach (\App\Models\ClientService::TYPES as $key => $label)
+                    @foreach (\App\Support\ServiceCatalog::all() as $key => $label)
                         <option value="{{ $key }}" {{ old('service_type') === $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                     <option value="internal" {{ old('service_type') === 'internal' ? 'selected' : '' }}>Internal</option>

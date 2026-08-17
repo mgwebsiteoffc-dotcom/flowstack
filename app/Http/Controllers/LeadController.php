@@ -254,7 +254,7 @@ class LeadController extends Controller
  'company_name' => ['required', 'string', 'max:255'],
  'monthly_retainer' => ['nullable', 'numeric', 'min:0'],
  'account_manager_id' => ['nullable', 'exists:users,id'],
- 'service_type' => ['nullable', 'in:'.implode(',', array_keys(\App\Models\ClientService::TYPES))],
+ 'service_type' => ['nullable', 'in:'.implode(',', \App\Support\ServiceCatalog::slugs())],
  ]);
 
  if ($lead->status !== 'won') {

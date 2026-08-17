@@ -22,7 +22,7 @@ class TaskRequest extends FormRequest
  'description' => ['nullable', 'string'],
  'status' => ['nullable', Rule::in(['backlog', 'todo', 'in_progress', 'in_review', 'waiting_approval', 'done', 'blocked'])],
  'priority' => ['nullable', Rule::in(['urgent', 'high', 'medium', 'low'])],
- 'service_type' => ['nullable', Rule::in(['digital_marketing', 'shopify_operations', 'social_media', 'website_management', 'ai_automation', 'internal'])],
+ 'service_type' => ['nullable', Rule::in(array_merge(\App\Support\ServiceCatalog::slugs(), ['internal']))],
  'task_type' => ['nullable', Rule::in(['recurring', 'one_time', 'client_request', 'internal'])],
  'assigned_to' => ['nullable', 'exists:users,id'],
  'due_date' => ['nullable', 'date'],

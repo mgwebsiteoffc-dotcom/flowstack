@@ -19,7 +19,7 @@ class ProjectRequest extends FormRequest
  'name' => ['required', 'string', 'max:255'],
  'description' => ['nullable', 'string'],
  'status' => ['required', Rule::in(['active', 'on_hold', 'completed', 'cancelled'])],
- 'service_type' => ['nullable', Rule::in(['digital_marketing', 'shopify_operations', 'social_media', 'website_management', 'ai_automation'])],
+ 'service_type' => ['nullable', Rule::in(\App\Support\ServiceCatalog::slugs())],
  'start_date' => ['nullable', 'date'],
  'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
  'template_id' => ['nullable', 'exists:project_templates,id'],

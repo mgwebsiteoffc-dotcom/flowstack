@@ -62,7 +62,7 @@
 
     <x-card title="Services" icon="wrench">
         <div class="grid sm:grid-cols-2 gap-3">
-            @foreach (\App\Models\ClientService::TYPES as $key => $label)
+            @foreach (\App\Support\ServiceCatalog::all() as $key => $label)
                 <label class="flex items-center gap-3 border rounded-lg px-3 py-2.5 cursor-pointer hover:border-indigo-400">
                     <input type="checkbox" name="services[]" value="{{ $key }}" class="rounded">
                     <span class="text-sm text-gray-700 flex-1">{{ $label }}</span>

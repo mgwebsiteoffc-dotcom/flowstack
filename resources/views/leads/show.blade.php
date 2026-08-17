@@ -37,6 +37,7 @@
         @if ($lead->status === 'won' && ! $lead->converted_to_client_id)
             <button x-data @click="$refs.convertModal.showModal()" class="px-3 py-1.5 text-sm rounded-lg bg-indigo-600 text-white">Convert to Client</button>
         @endif
+        <a href="{{ route('proposals.create', ['lead_id' => $lead->id]) }}" class="px-3 py-1.5 text-sm rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100">Create Proposal</a>
         <a href="{{ route('leads.edit', $lead) }}" class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 text-gray-700">Edit</a>
     </div>
 </div>
@@ -73,7 +74,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Service type</label>
             <select name="service_type" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
                 <option value="">—</option>
-                @foreach (\App\Models\ClientService::TYPES as $key => $label)
+                @foreach (\App\Support\ServiceCatalog::all() as $key => $label)
                     <option value="{{ $key }}">{{ $label }}</option>
                 @endforeach
             </select>
