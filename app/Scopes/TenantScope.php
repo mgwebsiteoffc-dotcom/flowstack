@@ -55,8 +55,10 @@ class TenantScope implements Scope
      */
     public static function forget(): void
     {
-        app()->forgetInstance('currentTenant');
-        app()->forgetInstance('currentTenantId');
+        // Reset to the null defaults rather than removing the keys entirely,
+        // so app('currentTenant') never throws on unbound access afterwards.
+        app()->instance('currentTenant', null);
+        app()->instance('currentTenantId', null);
     }
 
     public function apply(Builder $builder, Model $model): void

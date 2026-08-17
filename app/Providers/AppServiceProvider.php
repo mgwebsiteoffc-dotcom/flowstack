@@ -36,6 +36,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // ALWAYS bind the tenant context keys (default null) so that
+        // app('currentTenant') never throws "Target class [currentTenant] does
+        // not exist" on routes that do NOT run TenantMiddleware (login,
+        // register, portal, super-admin, webhooks, /dev/* diagnostics).
+        // TenantMiddleware overrides them with the real tenant.
+        app()->instance('currentTenant', null);
+        app()->instance('currentTenantId', null);
+
         // NOTE: strict mode (Model::shouldBeStrict) is intentionally NOT enabled.
         // In local it throws LazyLoadingViolationException on any lazy-loaded
         // relationship (e.g. $user->tenant right after login) and
