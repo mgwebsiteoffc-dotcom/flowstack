@@ -13,7 +13,9 @@ class AuthenticatedSessionController extends Controller
 {
     public function create()
     {
-        return view('auth.login');
+        return view('auth.login', [
+            'hasUsers' => User::withoutGlobalScopes()->exists(),
+        ]);
     }
 
     public function store(Request $request)
@@ -40,6 +42,12 @@ class AuthenticatedSessionController extends Controller
         }
 
         if (! $authenticated) {
+            logger()->warning('Login failed (bad credentials)', [
+                'email' => $credentials['email'],
+                'ip' => $request->ip(),
+                'users_total' => User::withoutGlobalScopes()->count(),
+            ]);
+
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
@@ -77,7 +85,17 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        return redirect()->intended(route('dashboard'));
+        $target = route('dashboard');
+
+        logger()->info('Login success', [
+            'email' => $user->email,
+            'user_id' => $user->id,
+            'tenant_id' => $user->tenant_id,
+            'session_id' => $request->session()->getId(),
+            'redirect' => $target,
+        ]);
+
+        return redirect()->intended($target);
     }
 
     public function destroy(Request $request)

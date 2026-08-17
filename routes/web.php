@@ -52,6 +52,25 @@ use Illuminate\Support\Facades\Route;
 */
 // --- DEVELOPMENT DIAGNOSTIC (remove in production) ---------------------
 if (app()->environment('local')) {
+    Route::get('/dev/session', function () {
+        $probe = (int) session('_probe', 0);
+        session(['_probe' => $probe + 1]);
+
+        return response()->json([
+            'session_driver' => config('session.driver'),
+            'session_id' => session()->getId(),
+            'cookie_name' => config('session.cookie'),
+            'cookie_sent_by_browser' => request()->cookies->has(config('session.cookie')),
+            'probe_visits' => $probe + 1,
+            'auth_check' => auth()->check(),
+            'auth_email' => auth()->user()?->email,
+            'current_tenant' => app('currentTenant')?->slug,
+            'users_total' => \App\Models\User::withoutGlobalScopes()->count(),
+            'super_admins_total' => \App\Models\SuperAdmin::count(),
+            'sessions_table_exists' => \Illuminate\Support\Facades\Schema::hasTable('sessions'),
+        ]);
+    })->name('dev.session');
+
     Route::get('/dev/error', function () {
         $log = storage_path('logs/laravel.log');
         $out = 'No log file.';

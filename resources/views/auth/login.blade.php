@@ -4,6 +4,14 @@
     <h1 class="text-xl font-bold text-gray-900 mb-1">Welcome back</h1>
     <p class="text-sm text-gray-500 mb-6">Sign in to your agency workspace.</p>
 
+    @if (empty($hasUsers))
+        <div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-4 py-3 mb-4 text-xs">
+            <strong>No team users exist yet.</strong> Either <a href="{{ route('register') }}" class="underline">register a workspace</a> or seed the demo:
+            <code class="block mt-1 bg-amber-100 rounded px-1.5 py-0.5">php artisan db:seed --class=DemoTenantSeeder</code>
+            (then log in with <code>admin@demo.com / password123</code>)
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('login.store') }}" class="space-y-4">
         @csrf
         <div>
