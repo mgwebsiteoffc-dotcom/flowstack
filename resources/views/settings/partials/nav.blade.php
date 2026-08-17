@@ -5,6 +5,7 @@
         ['route' => 'settings.integrations.lead365', 'label' => 'Lead365', 'icon' => '🔗', 'key' => 'lead365'],
         ['route' => 'settings.integrations.bikribook', 'label' => 'BikriBook', 'icon' => '🧾', 'key' => 'bikribook'],
         ['route' => 'settings.notifications', 'label' => 'Notifications', 'icon' => '🔔', 'key' => 'notifications'],
+        ['route' => 'announcements.index', 'label' => 'Announcements', 'icon' => '📣', 'key' => 'announcements'],
         ['route' => 'settings.audit', 'label' => 'Audit log', 'icon' => '📜', 'key' => 'audit'],
         ['route' => 'settings.subscription', 'label' => 'Subscription', 'icon' => '💳', 'key' => 'subscription'],
         ['route' => 'profile.edit', 'label' => 'My profile', 'icon' => '👤', 'key' => 'profile'],

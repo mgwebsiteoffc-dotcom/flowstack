@@ -231,6 +231,7 @@ class Lead365WebhookService
         $this->automation->processEvent('lead.won', $lead, $tenant);
 
         $this->notifications->notifyRole($tenant, ['admin', 'ops_manager'], '🎉 Lead Won', $lead->contact_name.' — '.$lead->won_value, 'leads.show', ['lead' => $lead->id], 'high');
+        $this->notifications->emailRole($tenant, ['admin', 'ops_manager'], '🎉 Lead won: '.$lead->contact_name, $lead->contact_name.' ('.$lead->company_name.') closed for '.$lead->won_value.'.', 'lead_won');
 
         return ['status' => 'processed', 'lead' => $lead];
     }
@@ -332,6 +333,7 @@ class Lead365WebhookService
 
         // HIGH PRIORITY notification to admin + assignee.
         $this->notifications->notifyRole($tenant, ['admin', 'ops_manager'], '🔴 New Meta Lead', $lead->contact_name.' ('.$lead->company_name.')', 'leads.show', ['lead' => $lead->id], 'high');
+        $this->notifications->emailRole($tenant, ['admin', 'ops_manager'], '🔴 New Meta Ads lead: '.$lead->contact_name, 'Campaign: '.($lead->campaign_name ?? 'n/a').' — call them today.', 'meta_lead');
 
         $assignee = $assigneeId ? User::withoutGlobalScopes()->find($assigneeId) : null;
         if ($assignee) {

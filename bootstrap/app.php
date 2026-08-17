@@ -16,7 +16,9 @@ use App\Http\Middleware\PortalAuthMiddleware;
 use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Middleware\TenantMiddleware;
 use App\Jobs\BikriBook\SyncAllTenantsInvoices;
+use App\Jobs\Finance\CheckAutomationDelays;
 use App\Jobs\Finance\CheckContractRenewals;
+use App\Jobs\Finance\CheckInvoiceReminders;
 use App\Jobs\Finance\CheckOverdueInvoices;
 use App\Jobs\Finance\CleanExpiredTrials;
 use App\Jobs\Finance\CleanOldWebhookLogs;
@@ -76,8 +78,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function (Schedule $schedule) {
         // Laravel 11+ defines scheduled jobs here (see app/Console/Kernel.php for
         // the Laravel 10 equivalent kept for reference).
+        $schedule->job(new CheckAutomationDelays)->hourly();
         $schedule->job(new CheckOverdueTasks)->dailyAt('07:00');
         $schedule->job(new CheckOverdueInvoices)->dailyAt('07:00');
+        $schedule->job(new CheckInvoiceReminders)->dailyAt('08:30');
         $schedule->job(new CreateRecurringTaskInstances)->dailyAt('06:00');
         $schedule->job(new SendDailyDigestToAllUsers)->dailyAt('08:00');
         $schedule->job(new SyncAllTenantsInvoices)->everySixHours();

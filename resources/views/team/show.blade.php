@@ -25,6 +25,9 @@
                     <input type="text" name="name" value="{{ $user->name }}" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm">
                     <input type="text" name="phone" value="{{ $user->phone }}" placeholder="Phone" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm">
                     <input type="text" name="designation" value="{{ $user->designation }}" placeholder="Designation" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm">
+                    @if (auth()->user()->isAdmin())
+                        <input type="number" step="0.01" min="0" name="hourly_cost" value="{{ $user->hourly_cost }}" placeholder="Hourly cost (₹) — used in profitability" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm">
+                    @endif
                     @can('setRole', App\Models\User::class)
                         <select name="role" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm" onchange="this.form.submit()">
                             @foreach (\App\Models\User::ROLES as $role)

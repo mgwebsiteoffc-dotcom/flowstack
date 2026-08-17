@@ -33,8 +33,9 @@
                 <input type="url" name="video_url" value="{{ old('video_url') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
             <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Content *</label>
-                <div class="text-xs text-gray-400 mb-2">Write with HTML headings (h2/h3) — a table of contents is generated automatically. For AI prompts, include [variables] in [brackets].</div>
-                <textarea name="content" rows="14" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono">{{ old('content') }}</textarea>
+                <div class="text-xs text-gray-400 mb-2">Write with headings (h2/h3) — a table of contents is generated automatically. For AI prompts, include [variables] in [brackets].</div>
+                <div id="kb-editor" class="border border-gray-300 rounded-lg bg-white" style="height: 320px;"></div>
+                <textarea name="content" id="kb-content" required class="hidden">{{ old('content') }}</textarea>
             </div>
             <label class="flex items-center gap-2 text-sm text-gray-600"><input type="checkbox" name="is_featured" value="1" class="rounded"> Feature this article</label>
         </div>
@@ -45,3 +46,28 @@
     </div>
 </form>
 @endsection
+
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script>
+    const quill = new Quill('#kb-editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ header: [2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['blockquote', 'code-block', 'link'],
+                ['clean']
+            ]
+        }
+    });
+    document.querySelector('form').addEventListener('submit', function () {
+        document.getElementById('kb-content').value = quill.root.innerHTML;
+    });
+</script>
+@endpush

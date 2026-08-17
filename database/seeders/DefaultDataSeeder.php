@@ -30,6 +30,27 @@ class DefaultDataSeeder extends Seeder
         $this->kbCategories($tenantId);
         $this->projectTemplates($tenantId, $createdBy);
         $this->automationRules($tenantId, $createdBy);
+        $this->internalFolders($tenantId, $createdBy);
+    }
+
+    /**
+     * Internal (non-client) folders: /Internal/SOPs, Templates, Finance, Hiring.
+     */
+    protected function internalFolders(int $tenantId, ?int $createdBy): void
+    {
+        foreach (['SOPs', 'Templates', 'Finance', 'Hiring'] as $folder) {
+            \App\Models\FileFolder::withoutGlobalScopes()->firstOrCreate(
+                ['tenant_id' => $tenantId, 'client_id' => null, 'name' => $folder],
+                [
+                    'tenant_id' => $tenantId,
+                    'client_id' => null,
+                    'name' => $folder,
+                    'path' => 'internal/'.$folder,
+                    'is_system_folder' => true,
+                    'created_by' => $createdBy,
+                ]
+            );
+        }
     }
 
     protected function pipelineStages(int $tenantId): void

@@ -45,7 +45,16 @@
                             <td class="px-4 py-3">
                                 <span class="text-xs {{ $user->is_active ? 'text-green-600' : 'text-red-500' }}">{{ $user->is_active ? 'Active' : 'Inactive' }}</span>
                             </td>
-                            <td class="px-4 py-3 text-xs text-gray-400">{{ $user->last_login_at?->diffForHumans() ?? 'Never' }}</td>
+                            <td class="px-4 py-3 text-xs text-gray-400">
+                                {{ $user->last_login_at?->diffForHumans() ?? 'Never' }}
+                                @can('create', App\Models\User::class)
+                                    @if (! $user->email_verified_at)
+                                        <form method="POST" action="{{ route('team.resend-invite', $user) }}" class="inline">@csrf
+                                            <button class="text-indigo-600 hover:underline block mt-0.5" title="Resend invitation">↻ Resend invite</button>
+                                        </form>
+                                    @endif
+                                @endcan
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

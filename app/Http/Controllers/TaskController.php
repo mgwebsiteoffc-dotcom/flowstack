@@ -211,13 +211,9 @@ class TaskController extends Controller
 
             $assignee = User::find($task->assigned_to);
             if ($assignee) {
-                app(\App\Services\NotificationService::class)->notifyUser(
-                    $assignee,
-                    'Task assigned to you',
-                    $task->title,
-                    'tasks.show',
-                    ['task' => $task->id]
-                );
+                $notifications = app(\App\Services\NotificationService::class);
+                $notifications->notifyUser($assignee, 'Task assigned to you', $task->title, 'tasks.show', ['task' => $task->id]);
+                $notifications->sendEmail($assignee, 'Task assigned to you: '.$task->title, 'You have been assigned: '.$task->title.'\n\n'.route('tasks.show', $task->id), 'task_assigned');
             }
         }
 
@@ -296,13 +292,9 @@ class TaskController extends Controller
         // Notify watchers (except the commenter).
         $watchers = $task->watchers()->where('users.id', '!=', auth()->id())->get();
         foreach ($watchers as $watcher) {
-            app(\App\Services\NotificationService::class)->notifyUser(
-                $watcher,
-                'New comment on '.$task->title,
-                Str::limit($validated['comment'], 120),
-                'tasks.show',
-                ['task' => $task->id]
-            );
+            $notifications = app(\App\Services\NotificationService::class);
+            $notifications->notifyUser($watcher, 'New comment on '.$task->title, Str::limit($validated['comment'], 120), 'tasks.show', ['task' => $task->id]);
+            $notifications->sendEmail($watcher, 'New comment on '.$task->title, $task->title."\n\n".Str::limit($validated['comment'], 500)."\n\n".route('tasks.show', $task->id), 'task_comment');
         }
 
         return back()->with('success', 'Comment added.');

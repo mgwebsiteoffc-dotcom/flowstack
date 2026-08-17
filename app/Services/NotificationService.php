@@ -64,6 +64,24 @@ class NotificationService
     }
 
     /**
+     * Queue an email to every active user with one of the given roles.
+     *
+     * @param  array<int, string>  $roles
+     */
+    public function emailRole(Tenant $tenant, array $roles, string $subject, string $message, string $type = 'general'): void
+    {
+        $users = User::withoutGlobalScopes()
+            ->where('tenant_id', $tenant->id)
+            ->whereIn('role', $roles)
+            ->where('is_active', true)
+            ->get();
+
+        foreach ($users as $user) {
+            $this->sendEmail($user, $subject, $message, $type);
+        }
+    }
+
+    /**
      * Email a client portal user (client contacts do not have per-user prefs).
      *
      * @param  array<string, mixed>  $data

@@ -39,6 +39,28 @@
                 {!! $article->safeContent() !!}
             </div>
 
+            <div class="border-t mt-8 pt-6">
+                <h3 class="font-semibold text-gray-900 text-sm mb-3">💬 Team comments ({{ $article->comments->count() }})</h3>
+                <div class="space-y-3 mb-4 max-h-72 overflow-y-auto">
+                    @forelse ($article->comments as $comment)
+                        <div class="flex gap-2.5">
+                            <x-user-avatar :user="$comment->user" size="sm" />
+                            <div class="bg-gray-50 rounded-xl rounded-tl-none px-3 py-2 flex-1">
+                                <div class="text-xs text-gray-500"><span class="font-medium text-gray-800">{{ $comment->user?->name }}</span> · {{ $comment->created_at->diffForHumans() }}</div>
+                                <div class="text-sm text-gray-700 mt-0.5 whitespace-pre-line">{{ $comment->comment }}</div>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-sm text-gray-400">No comments yet.</p>
+                    @endforelse
+                </div>
+                <form method="POST" action="{{ route('kb.articles.comments.store', $article) }}" class="flex gap-2">
+                    @csrf
+                    <input type="text" name="comment" placeholder="Add a team comment…" required class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm">
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm">Comment</button>
+                </form>
+            </div>
+
             <div class="border-t mt-8 pt-6 flex items-center justify-between flex-wrap gap-3">
                 <div class="text-sm text-gray-500">
                     Was this helpful?
@@ -81,6 +103,26 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Add copy buttons to every code block (AI Prompts Library).
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.kb-content pre').forEach(function (pre) {
+            const btn = document.createElement('button');
+            btn.textContent = '📋 Copy';
+            btn.className = 'text-[10px] bg-gray-700 text-gray-200 hover:bg-gray-600 rounded px-2 py-1 float-right -mt-2 -mr-2 mb-1';
+            btn.onclick = function () {
+                navigator.clipboard.writeText(pre.textContent.trim());
+                btn.textContent = 'Copied ✅';
+                setTimeout(() => btn.textContent = '📋 Copy', 2000);
+            };
+            pre.style.position = 'relative';
+            pre.prepend(btn);
+        });
+    });
+</script>
+@endpush
 
 @push('styles')
 <style>

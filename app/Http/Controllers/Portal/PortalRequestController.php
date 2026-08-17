@@ -86,16 +86,24 @@ class PortalRequestController extends Controller
 
         $clientRequest->update(['task_id' => $task->id]);
 
-        // Notify the team.
+        // Notify the team (in-app + email).
         $tenant = \App\Models\Tenant::find($client->tenant_id);
         if ($tenant) {
-            app(NotificationService::class)->notifyRole(
+            $notifications = app(NotificationService::class);
+            $notifications->notifyRole(
                 $tenant,
                 ['admin', 'ops_manager'],
                 '📥 New client request',
                 $client->company_name.' - '.$validated['title'],
                 'tasks.show',
                 ['task' => $task->id]
+            );
+            $notifications->emailRole(
+                $tenant,
+                ['admin', 'ops_manager'],
+                '📥 New client portal request: '.$validated['title'],
+                $client->company_name.' submitted a '.$validated['priority'].' '.$validated['request_type'].' request: '.$validated['title'],
+                'portal_request'
             );
         }
 

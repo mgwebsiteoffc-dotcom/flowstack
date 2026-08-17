@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\AutomationDelay;
 use App\Models\AutomationLog;
+use App\Scopes\TenantScope;
 use App\Models\AutomationRule;
 use App\Models\Client;
 use App\Models\Lead;
@@ -45,18 +47,25 @@ class AutomationService
                 }
 
                 if ($rule->trigger_delay_hours > 0) {
-                    // Delayed rules are executed by the scheduler (CheckAutomationDelays);
-                    // here we simply record the pending state by logging a skipped run.
-                    $this->logRule($rule, $context, 'skipped', null, 'Delayed '.$rule->trigger_delay_hours.'h - queued for later');
+                    // Schedule the execution for later (run by CheckAutomationDelays).
+                    $delayContext = $context;
+                    unset($delayContext['model']); // models are not JSON-serialisable
+
+                    AutomationDelay::withoutGlobalScopes()->create([
+                        'tenant_id' => $tenant->id,
+                        'rule_id' => $rule->id,
+                        'event' => $event,
+                        'model_class' => get_class($model),
+                        'model_id' => $model->getKey(),
+                        'context' => $delayContext,
+                        'run_at' => now()->addHours((int) $rule->trigger_delay_hours),
+                    ]);
+
+                    $this->logRule($rule, $context, 'skipped', null, 'Delayed '.$rule->trigger_delay_hours.'h - scheduled for '.now()->addHours((int) $rule->trigger_delay_hours)->toDateTimeString());
                     continue;
                 }
 
-                $actionsTaken = $this->executeActions($rule, $context, $tenant);
-                $this->logRule($rule, $context, 'success', $actionsTaken);
-
-                $rule->last_run_at = now();
-                $rule->run_count++;
-                $rule->save();
+                $this->runRule($rule, $model, $tenant, $context);
             } catch (\Throwable $e) {
                 logger()->error('Automation rule failed', [
                     'rule_id' => $rule->id,
@@ -66,6 +75,81 @@ class AutomationService
                 $this->logRule($rule, $context ?? [], 'failed', null, substr($e->getMessage(), 0, 2000));
             }
         }
+    }
+
+    /**
+     * Execute a rule whose delay has elapsed (called by CheckAutomationDelays).
+     * The subject model is re-fetched and conditions re-evaluated so stale
+     * subjects never trigger actions.
+     */
+    public function runDelayed(AutomationDelay $delay): void
+    {
+        $rule = $delay->rule;
+        $tenant = Tenant::find($delay->tenant_id);
+
+        if (! $rule || ! $tenant) {
+            $delay->delete();
+
+            return;
+        }
+
+        if (! $rule->is_active) {
+            $delay->delete();
+
+            return;
+        }
+
+        $class = $delay->model_class;
+        $model = is_subclass_of($class, Model::class)
+            ? $class::withoutGlobalScopes()->find($delay->model_id)
+            : null;
+
+        if (! $model) {
+            // Subject was deleted - nothing to act on.
+            $delay->delete();
+
+            return;
+        }
+
+        TenantScope::setCurrent($tenant->id);
+
+        $context = $this->buildContext($model, $tenant, (array) ($delay->context ?? []));
+
+        try {
+            if (! $this->conditionsPass($rule, $context)) {
+                $this->logRule($rule, $context, 'skipped', null, 'Condition did not match at execution time');
+
+                $delay->delete();
+
+                return;
+            }
+
+            $this->runRule($rule, $model, $tenant, $context);
+        } catch (\Throwable $e) {
+            logger()->error('Delayed automation rule failed', [
+                'delay_id' => $delay->id,
+                'rule_id' => $rule->id,
+                'error' => $e->getMessage(),
+            ]);
+            $this->logRule($rule, $context, 'failed', null, substr($e->getMessage(), 0, 2000));
+        } finally {
+            $delay->delete();
+        }
+    }
+
+    /**
+     * Execute a rule's actions, log the run and bump counters.
+     *
+     * @param  array<string, mixed>  $context
+     */
+    protected function runRule(AutomationRule $rule, Model $model, Tenant $tenant, array $context): void
+    {
+        $actionsTaken = $this->executeActions($rule, $context, $tenant);
+        $this->logRule($rule, $context, 'success', $actionsTaken);
+
+        $rule->last_run_at = now();
+        $rule->run_count++;
+        $rule->save();
     }
 
     /**

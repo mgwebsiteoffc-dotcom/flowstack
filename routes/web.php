@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AutomationController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ClientController;
@@ -162,7 +163,7 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::post('/subscription/callback', [SubscriptionController::class, 'callback'])->name('subscription.checkout.callback');
 
     // Clients
-    Route::resource('clients', ClientController::class)->except(['edit']);
+    Route::resource('clients', ClientController::class);
     Route::post('/clients/{client}/notes', [ClientController::class, 'storeNote'])->name('clients.notes.store');
     Route::patch('/clients/{client}/notes/{note}', [ClientController::class, 'updateNote'])->name('clients.notes.update');
     Route::delete('/clients/{client}/notes/{note}', [ClientController::class, 'destroyNote'])->name('clients.notes.destroy');
@@ -202,6 +203,7 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::get('/team', [TeamController::class, 'index'])->name('team.index');
     Route::get('/team/{user}', [TeamController::class, 'show'])->name('team.show');
     Route::post('/team/invite', [TeamController::class, 'invite'])->name('team.invite');
+    Route::post('/team/{user}/resend-invite', [TeamController::class, 'resendInvite'])->name('team.resend-invite');
     Route::patch('/team/{user}', [TeamController::class, 'update'])->name('team.update');
     Route::patch('/team/{user}/role', [TeamController::class, 'updateRole'])->name('team.update-role');
     Route::post('/team/{user}/toggle', [TeamController::class, 'toggleActive'])->name('team.toggle');
@@ -210,6 +212,7 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
     Route::get('/leads/pipeline', [LeadController::class, 'pipeline'])->name('leads.pipeline');
     Route::get('/leads/analytics', [LeadController::class, 'analytics'])->name('leads.analytics');
+    Route::get('/leads/export', [LeadController::class, 'export'])->name('leads.export');
     Route::get('/leads/create', [LeadController::class, 'create'])->name('leads.create');
     Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
     Route::get('/leads/{lead}', [LeadController::class, 'show'])->name('leads.show');
@@ -221,7 +224,6 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::post('/leads/{lead}/convert', [LeadController::class, 'convert'])->name('leads.convert');
     Route::post('/leads/{lead}/activities', [LeadController::class, 'storeActivity'])->name('leads.activities.store');
     Route::post('/leads/{lead}/stage', [LeadController::class, 'updateStage'])->name('leads.stage');
-    Route::get('/leads/export', [LeadController::class, 'export'])->name('leads.export');
 
     // Finance
     Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
@@ -263,12 +265,14 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::get('/knowledge-base/{article}/edit', [KbArticleController::class, 'edit'])->name('kb.articles.edit');
     Route::patch('/knowledge-base/{article}', [KbArticleController::class, 'update'])->name('kb.articles.update');
     Route::delete('/knowledge-base/{article}', [KbArticleController::class, 'destroy'])->name('kb.articles.destroy');
+    Route::post('/knowledge-base/{article}/comments', [KbArticleController::class, 'storeComment'])->name('kb.articles.comments.store');
     Route::post('/knowledge-base/{article}/feedback', [KbArticleController::class, 'feedback'])->name('kb.articles.feedback');
 
     // Files
     Route::get('/files', [FileController::class, 'index'])->name('files.index');
     Route::post('/files/upload', [FileController::class, 'upload'])->name('files.upload');
     Route::get('/files/{file}/download', [FileController::class, 'download'])->name('files.download');
+    Route::get('/files/{file}/preview', [FileController::class, 'preview'])->name('files.preview');
     Route::patch('/files/{file}', [FileController::class, 'update'])->name('files.update');
     Route::post('/files/{file}/share', [FileController::class, 'share'])->name('files.share');
     Route::post('/files/{file}/unshare', [FileController::class, 'unshare'])->name('files.unshare');
@@ -294,7 +298,10 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::delete('/automation/{rule}', [AutomationController::class, 'destroy'])->name('automation.destroy');
     Route::post('/automation/{rule}/test', [AutomationController::class, 'test'])->name('automation.test');
 
-    // Notifications
+    // Notifications & announcements
+    Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');
+    Route::post('/announcements', [AnnouncementController::class, 'store'])->name('announcements.store');
+    Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');

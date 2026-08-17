@@ -54,7 +54,7 @@ class KbArticleController extends Controller
             $article->increment('view_count');
         }
 
-        $article->load('category', 'tags', 'creator');
+        $article->load('category', 'tags', 'creator', 'comments.user');
 
         $related = KbArticle::published()
             ->where('category_id', $article->category_id)
@@ -94,6 +94,20 @@ class KbArticleController extends Controller
         $article->delete();
 
         return redirect()->route('kb.index')->with('success', 'Article deleted.');
+    }
+
+    public function storeComment(Request $request, KbArticle $article)
+    {
+        $validated = $request->validate(['comment' => ['required', 'string', 'max:2000']]);
+
+        \App\Models\KbArticleComment::create([
+            'tenant_id' => $article->tenant_id,
+            'article_id' => $article->id,
+            'user_id' => auth()->id(),
+            'comment' => $validated['comment'],
+        ]);
+
+        return back()->with('success', 'Comment added.');
     }
 
     public function feedback(Request $request, KbArticle $article)

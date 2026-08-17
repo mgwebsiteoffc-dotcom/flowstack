@@ -115,7 +115,10 @@
                             </div>
                             <div class="relative">
                                 <button @click="menu = !menu" class="text-gray-400 text-lg">⋯</button>
-                                <div x-show="menu" x-cloak @click.outside="menu = false" class="absolute right-0 mt-1 w-40 bg-white rounded-xl shadow-xl border text-sm z-20">
+                                <div x-show="menu" x-cloak @click.outside="menu = false" class="absolute right-0 mt-1 w-44 bg-white rounded-xl shadow-xl border text-sm z-20">
+                                    @if ($file->isImage() || $file->isPdf())
+                                        <button @click="menu = false; $refs.preview{{ $file->id }}.showModal()" class="block w-full text-left px-3 py-2 hover:bg-gray-50">👁 Preview</button>
+                                    @endif
                                     <a href="{{ route('files.download', $file) }}" class="block px-3 py-2 hover:bg-gray-50">⬇ Download</a>
                                     <button @click="menu = false; $refs.rename{{ $file->id }}.showModal()" class="block w-full text-left px-3 py-2 hover:bg-gray-50">✏️ Rename</button>
                                     @if ($file->share_token)
@@ -148,14 +151,34 @@
                         <dialog :id="'rename-{{ $file->id }}'" x-ref="rename{{ $file->id }}" class="rounded-2xl shadow-2xl p-0 w-full max-w-sm">
                             <form method="POST" action="{{ route('files.update', $file) }}" class="p-5 space-y-3">
                                 @csrf @method('PATCH')
-                                <h3 class="font-semibold text-sm">Rename file</h3>
+                                <h3 class="font-semibold text-sm">Rename / move file</h3>
                                 <input type="text" name="original_name" value="{{ $file->original_name }}" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+                                <select name="folder_id" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+                                    <option value="">Root (no folder)</option>
+                                    @foreach ($folders as $folderOption)
+                                        <option value="{{ $folderOption->id }}" {{ $file->folder_id === $folderOption->id ? 'selected' : '' }}>{{ $folderOption->name }}</option>
+                                    @endforeach
+                                </select>
                                 <div class="flex gap-2 justify-end">
                                     <button type="button" @click="$refs['rename{{ $file->id }}'].close()" class="px-3 py-1.5 text-sm text-gray-500">Cancel</button>
                                     <button class="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg">Save</button>
                                 </div>
                             </form>
                         </dialog>
+
+                        @if ($file->isImage() || $file->isPdf())
+                            <dialog :id="'preview-{{ $file->id }}'" x-ref="preview{{ $file->id }}" class="rounded-2xl shadow-2xl p-4 w-full max-w-3xl">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h3 class="font-semibold text-sm text-gray-900 truncate">{{ $file->original_name }}</h3>
+                                    <button type="button" @click="$refs['preview{{ $file->id }}'].close()" class="text-gray-400 hover:text-gray-600 text-xl">×</button>
+                                </div>
+                                @if ($file->isImage())
+                                    <img src="{{ route('files.preview', $file) }}" alt="{{ $file->original_name }}" class="w-full rounded-lg max-h-[70vh] object-contain">
+                                @else
+                                    <iframe src="{{ route('files.preview', $file) }}" class="w-full h-[70vh] rounded-lg border border-gray-200"></iframe>
+                                @endif
+                            </dialog>
+                        @endif
 
                         <dialog :id="'share-{{ $file->id }}'" x-ref="share{{ $file->id }}" class="rounded-2xl shadow-2xl p-0 w-full max-w-sm">
                             <form method="POST" action="{{ route('files.share', $file) }}" class="p-5 space-y-3">

@@ -196,15 +196,31 @@
     </x-card>
 
 @else
-    <x-card title="Files" icon="📎">
-        @forelse ($lead->files as $file)
-            <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
-                <span class="text-sm text-gray-800 flex-1">{{ $file->original_name }}</span>
-                <a href="{{ route('files.download', $file) }}" class="text-xs text-indigo-600">Download</a>
-            </div>
-        @empty
-            <p class="text-sm text-gray-400 text-center py-4">No files attached to this lead.</p>
-        @endforelse
-    </x-card>
+    <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2">
+            <x-card title="Files" icon="📎">
+                @forelse ($lead->files as $file)
+                    <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                        <span class="text-sm text-gray-800 flex-1 truncate">{{ $file->original_name }}</span>
+                        <span class="text-xs text-gray-400">{{ $file->sizeHuman() }}</span>
+                        @if ($file->isImage() || $file->isPdf())
+                            <a href="{{ route('files.preview', $file) }}" target="_blank" class="text-xs text-gray-500">Preview</a>
+                        @endif
+                        <a href="{{ route('files.download', $file) }}" class="text-xs text-indigo-600">Download</a>
+                    </div>
+                @empty
+                    <p class="text-sm text-gray-400 text-center py-4">No files attached to this lead yet.</p>
+                @endforelse
+            </x-card>
+        </div>
+        <x-card title="Upload file" icon="⬆">
+            <form method="POST" action="{{ route('files.upload') }}" enctype="multipart/form-data" class="space-y-3">
+                @csrf
+                <input type="hidden" name="lead_id" value="{{ $lead->id }}">
+                <input type="file" name="files[]" required class="text-sm">
+                <button class="w-full bg-indigo-600 text-white rounded-lg py-2 text-sm">Upload</button>
+            </form>
+        </x-card>
+    </div>
 @endif
 @endsection

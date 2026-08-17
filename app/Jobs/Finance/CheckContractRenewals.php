@@ -47,6 +47,14 @@ class CheckContractRenewals implements ShouldQueue
                     'clients.show',
                     ['client' => $client->id]
                 );
+
+                $notifications->emailRole(
+                    $tenant,
+                    ['admin', 'ops_manager'],
+                    '⚠️ Contract expiring: '.$client->company_name,
+                    'The contract for '.$client->company_name.' ends on '.$client->contract_end_date->toFormattedDateString().'. Start the renewal conversation.',
+                    'contract_expiring'
+                );
             }
         }
 

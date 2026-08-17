@@ -25,6 +25,7 @@
         <input type="date" name="to" value="{{ request('to') }}" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm">
         <button class="bg-gray-800 text-white px-4 py-1.5 rounded-lg">Filter</button>
     </form>
+    <a href="{{ route('time.all', array_merge(request()->query(), ['export' => 1])) }}" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm">⬇ Export</a>
 </div>
 
 <div class="grid lg:grid-cols-4 gap-6">

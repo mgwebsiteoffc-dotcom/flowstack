@@ -92,6 +92,22 @@ class TimeEntryController extends Controller
             $query->where('started_at', '<=', $to);
         }
 
+        if ($request->boolean('export')) {
+            $rows = (clone $query)->get()->map(fn ($entry) => [
+                'Member' => $entry->user?->name,
+                'Task' => $entry->task?->title ?? $entry->description,
+                'Client' => $entry->client?->company_name,
+                'Hours' => round($entry->duration_minutes / 60, 2),
+                'Billable' => $entry->is_billable ? 'Yes' : 'No',
+                'Date' => $entry->started_at?->toDateTimeString(),
+            ])->toArray();
+
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\ArrayExport($rows, ['Member', 'Task', 'Client', 'Hours', 'Billable', 'Date']),
+                'time-entries-'.now()->format('Y-m-d').'.xlsx'
+            );
+        }
+
         $entries = $query->paginate(config('tenancy.pagination_size'))->withQueryString();
         $summary = (clone $query)->get()->groupBy('user_id')->map(fn ($g) => [
             'minutes' => $g->sum('duration_minutes'),

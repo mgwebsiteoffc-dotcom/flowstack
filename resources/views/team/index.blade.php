@@ -58,4 +58,41 @@
         </a>
     @endforeach
 </div>
+
+<div class="mt-6">
+    <x-card title="Capacity planning — open tasks due per day (next 7 days)" icon="📆" :padding="false">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-xs text-gray-500 uppercase">
+                    <tr>
+                        <th class="px-4 py-2.5 text-left">Member</th>
+                        @foreach ($capacityDays as $day)
+                            <th class="px-3 py-2.5 text-center {{ $day->isToday() ? 'text-indigo-600' : '' }}">{{ $day->format('D d') }}</th>
+                        @endforeach
+                        <th class="px-4 py-2.5 text-right">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    @foreach ($users as $member)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2.5 font-medium text-gray-800">{{ $member->name }}</td>
+                            @php $memberTotal = 0; @endphp
+                            @foreach ($capacityDays as $day)
+                                @php
+                                    $count = $capacity[$member->id][$day->toDateString()] ?? 0;
+                                    $memberTotal += $count;
+                                @endphp
+                                <td class="px-3 py-2.5 text-center">
+                                    <span class="inline-block min-w-[22px] rounded-full px-1.5 py-0.5 text-xs {{ $count === 0 ? 'text-gray-300' : ($count > 4 ? 'bg-red-100 text-red-700' : ($count > 2 ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700')) }}">{{ $count }}</span>
+                                </td>
+                            @endforeach
+                            <td class="px-4 py-2.5 text-right font-medium">{{ $memberTotal }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="px-4 py-3 text-xs text-gray-400 border-t">Colours: green ≤ 2 · amber 3–4 · red 5+ tasks due that day.</div>
+    </x-card>
+</div>
 @endsection

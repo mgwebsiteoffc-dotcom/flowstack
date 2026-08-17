@@ -17,7 +17,9 @@ class Kernel extends ConsoleKernel
     {
         // Mirrored from bootstrap/app.php -> withSchedule() - see routes/console.php.
         $schedule->job(new \App\Jobs\Tasks\CheckOverdueTasks)->dailyAt('07:00');
+        $schedule->job(new \App\Jobs\Finance\CheckAutomationDelays)->hourly();
         $schedule->job(new \App\Jobs\Finance\CheckOverdueInvoices)->dailyAt('07:00');
+        $schedule->job(new \App\Jobs\Finance\CheckInvoiceReminders)->dailyAt('08:30');
         $schedule->job(new \App\Jobs\Tasks\CreateRecurringTaskInstances)->dailyAt('06:00');
         $schedule->job(new \App\Jobs\Notifications\SendDailyDigestToAllUsers)->dailyAt('08:00');
         $schedule->job(new \App\Jobs\BikriBook\SyncAllTenantsInvoices)->everySixHours();

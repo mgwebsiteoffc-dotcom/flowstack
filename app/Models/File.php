@@ -11,7 +11,7 @@ class File extends Model
     use SoftDeletes, TenantScoped;
 
     protected $fillable = [
-        'tenant_id', 'folder_id', 'client_id', 'original_name', 'stored_name',
+        'tenant_id', 'folder_id', 'client_id', 'lead_id', 'original_name', 'stored_name',
         'file_path', 'file_size', 'mime_type', 'extension', 'version',
         'parent_file_id', 'share_token', 'share_expires_at',
         'is_shared_with_client', 'uploaded_by',
@@ -40,6 +40,11 @@ class File extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function lead()
+    {
+        return $this->belongsTo(Lead::class);
     }
 
     public function parentFile()

@@ -37,7 +37,21 @@ class TeamController extends Controller
             'hours' => $hoursThisWeek->get($u->id, 0),
         ]]);
 
-        return view('team.index', compact('users', 'workloadByUser'));
+        // Capacity planning: open tasks due per day for the next 7 days, per member.
+        $capacityDays = collect(range(0, 6))->map(fn ($i) => now()->addDays($i));
+        $capacity = $users->mapWithKeys(function ($u) use ($capacityDays) {
+            $byDay = [];
+            foreach ($capacityDays as $day) {
+                $byDay[$day->toDateString()] = Task::where('assigned_to', $u->id)
+                    ->where('due_date', $day->toDateString())
+                    ->whereNotIn('status', ['done', 'cancelled'])
+                    ->count();
+            }
+
+            return [$u->id => $byDay];
+        });
+
+        return view('team.index', compact('users', 'workloadByUser', 'capacityDays', 'capacity'));
     }
 
     public function show(User $user)
@@ -101,6 +115,27 @@ class TeamController extends Controller
         ));
 
         return back()->with('success', 'Invitation sent to '.$user->email.'.');
+    }
+
+    public function resendInvite(User $user)
+    {
+        $this->authorize('create', User::class);
+
+        if ($user->email_verified_at) {
+            return back()->with('info', $user->email.' has already joined the workspace.');
+        }
+
+        $token = Str::random(64);
+        Setting::setForTenant(app('currentTenant')->id, 'invite_token_'.$user->id, $token);
+
+        Mail::to($user->email, $user->name)->queue(new TeamInviteMail(
+            app('currentTenant')->name,
+            $user->email,
+            $user->role,
+            route('onboarding.invite-accept', $token)
+        ));
+
+        return back()->with('success', 'Invitation re-sent to '.$user->email.'.');
     }
 
     public function update(Request $request, User $user)

@@ -48,6 +48,11 @@ class KbArticle extends Model
         return $this->belongsToMany(KbArticleTag::class, 'kb_article_tag_pivot');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(KbArticleComment::class)->latest();
+    }
+
     public function scopePublished($query)
     {
         return $query->where('status', 'published');

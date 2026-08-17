@@ -279,14 +279,10 @@ class BikriBookService
 
                 if (! $wasPaid) {
                     InvoicePaid::dispatch($invoice);
-                    app(NotificationService::class)->notifyRole(
-                        app('currentTenant') ?? $invoice->tenant ?? $invoice->client->tenant,
-                        ['admin', 'ops_manager'],
-                        '💵 Invoice paid',
-                        $invoice->client->company_name.' — '.$invoice->invoice_number,
-                        'finance.invoices.show',
-                        ['invoice' => $invoice->id]
-                    );
+                    $tenant = app('currentTenant') ?? $invoice->tenant ?? $invoice->client->tenant;
+                    $notifications = app(NotificationService::class);
+                    $notifications->notifyRole($tenant, ['admin', 'ops_manager'], '💵 Invoice paid', $invoice->client->company_name.' — '.$invoice->invoice_number, 'finance.invoices.show', ['invoice' => $invoice->id]);
+                    $notifications->emailRole($tenant, ['admin', 'ops_manager'], '💵 Invoice paid: '.$invoice->invoice_number, $invoice->client->company_name.' paid '.$invoice->total_amount.' '.$invoice->currency.'.', 'invoice_paid');
                 }
             }
 

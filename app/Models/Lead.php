@@ -60,6 +60,11 @@ class Lead extends Model
         return $this->belongsTo(LeadPipelineStage::class, 'stage_id');
     }
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', 'active');

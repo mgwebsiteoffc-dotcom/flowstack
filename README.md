@@ -81,12 +81,16 @@ comments, recurring instances, approvals) · Team (+ invites, workload, hourly
 costs) · Leads (pipeline, analytics, Excel export, won→client conversion) ·
 Finance (invoices with BikriBook sync, expenses, profitability with margin
 colours) · Reports (4-step builder, DomPDF, share to client) · Knowledge Base
-(search, TOC, AI Prompts Library, feedback) · File manager (hierarchical folders,
-versions, share links, drag & drop) · Time tracking (top-bar timer widget,
-timesheets, billable split) · Automation rules engine · Notifications (in-app +
-queued emails + daily digest + weekly summary) · Client portal · Settings
-(agency, users, integrations, notification prefs, audit log, subscription) ·
-SaaS registration + onboarding wizard · Super admin panel.
+(Quill editor, search, auto-TOC, AI Prompts Library with copy buttons, team
+comments, feedback) · File manager (hierarchical folders incl. /Internal,
+versions, share links, drag & drop, inline image/PDF preview, MIME validation,
+lead attachments) · Time tracking (top-bar timer widget, timesheets, billable
+split, Excel export) · Automation rules engine (incl. delayed executions) ·
+Announcements · Notifications (in-app + queued emails incl. welcome/assigned/
+comment/paid/meta-lead/won/portal-request/contract/reminder digests + daily
+digest + weekly summary) · Client portal · Settings (agency, users, resend
+invites, integrations, notification prefs, audit log, subscription) · SaaS
+registration + onboarding wizard · Super admin panel.
 
 ## Integrations
 
@@ -135,8 +139,10 @@ verified server-side → subscription + payment recorded, tenant plan activated.
 
 | Job | Schedule |
 |---|---|
+| `CheckAutomationDelays` (delayed rule executions) | hourly |
 | `CheckOverdueTasks` (overdue automation + emails) | daily 07:00 |
 | `CheckOverdueInvoices` (sent→overdue + client email) | daily 07:00 |
+| `CheckInvoiceReminders` (email 3 days before due date) | daily 08:30 |
 | `CreateRecurringTaskInstances` | daily 06:00 |
 | `SendDailyDigestToAllUsers` | daily 08:00 |
 | `SyncAllTenantsInvoices` (BikriBook payment sync) | every 6 hours |

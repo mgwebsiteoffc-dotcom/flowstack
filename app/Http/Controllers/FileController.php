@@ -76,16 +76,23 @@ class FileController extends Controller
             'files.*' => ['file', 'max:10240'],
             'folder_id' => ['nullable', 'exists:file_folders,id'],
             'client_id' => ['nullable', 'exists:clients,id'],
+            'lead_id' => ['nullable', 'exists:leads,id'],
         ]);
 
         $folder = $request->input('folder_id') ? FileFolder::find($request->input('folder_id')) : null;
         $clientId = $request->input('client_id') ?? $folder?->client_id;
+        $leadId = $request->input('lead_id');
 
         foreach ($request->file('files') as $file) {
             $extension = strtolower($file->getClientOriginalExtension());
 
             if (! in_array($extension, File::ALLOWED_EXTENSIONS, true)) {
                 return back()->with('error', 'File type .'.$extension.' is not allowed.');
+            }
+
+            // Validate the real MIME type too (extension spoofing guard).
+            if (! $this->mimeAllowed($extension, $file->getMimeType())) {
+                return back()->with('error', $file->getClientOriginalName().' content does not match its .'.$extension.' extension.');
             }
 
             $maxSize = $extension === 'mp4' ? File::MAX_VIDEO_SIZE : File::MAX_SIZE;
@@ -95,7 +102,9 @@ class FileController extends Controller
             }
 
             $storedName = Str::uuid().'.'.$extension;
-            $path = 'tenants/'.$tenant->id.'/clients/'.($clientId ?? 'general').'/'.($folder?->name ?? 'root');
+            $path = $leadId
+                ? 'tenants/'.$tenant->id.'/leads/'.$leadId
+                : 'tenants/'.$tenant->id.'/clients/'.($clientId ?? 'general').'/'.($folder?->name ?? 'root');
 
             $storedPath = $file->storeAs($path, $storedName, 'tenant');
 
@@ -103,6 +112,7 @@ class FileController extends Controller
                 'tenant_id' => $tenant->id,
                 'folder_id' => $folder?->id,
                 'client_id' => $clientId,
+                'lead_id' => $leadId,
                 'original_name' => $file->getClientOriginalName(),
                 'stored_name' => $storedName,
                 'file_path' => $storedPath,
@@ -123,6 +133,26 @@ class FileController extends Controller
         }
 
         return Storage::disk('tenant')->download($file->file_path, $file->original_name);
+    }
+
+    /**
+     * Inline preview for images and PDFs (served through the controller, never
+     * from the webroot).
+     */
+    public function preview(File $file)
+    {
+        if (! $file->isImage() && ! $file->isPdf()) {
+            abort(415, 'This file type cannot be previewed.');
+        }
+
+        if (! Storage::disk('tenant')->exists($file->file_path)) {
+            abort(404, 'File no longer exists.');
+        }
+
+        return Storage::disk('tenant')->response($file->file_path, $file->original_name, [
+            'Content-Type' => $file->mime_type ?? 'application/octet-stream',
+            'Content-Disposition' => 'inline',
+        ]);
     }
 
     public function update(Request $request, File $file)
@@ -263,6 +293,45 @@ class FileController extends Controller
         }
 
         return Storage::disk('tenant')->download($file->file_path, $file->original_name);
+    }
+
+    /**
+     * Extension -> allowed MIME prefixes. application/octet-stream is accepted
+     * because some servers/proxies normalise unknown types to it.
+     */
+    protected function mimeAllowed(string $extension, ?string $mime): bool
+    {
+        if (! $mime || $mime === 'application/octet-stream') {
+            return true;
+        }
+
+        $map = [
+            'jpg' => ['image/jpeg'], 'jpeg' => ['image/jpeg'], 'png' => ['image/png'],
+            'gif' => ['image/gif'], 'svg' => ['image/svg+xml'], 'webp' => ['image/webp'],
+            'pdf' => ['application/pdf'],
+            'doc' => ['application/msword'],
+            'docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            'xls' => ['application/vnd.ms-excel'],
+            'xlsx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+            'csv' => ['text/csv', 'text/plain'],
+            'txt' => ['text/plain'],
+            'mp4' => ['video/mp4'],
+            'zip' => ['application/zip', 'application/x-zip-compressed'],
+        ];
+
+        $allowed = $map[$extension] ?? [];
+
+        if (empty($allowed)) {
+            return true;
+        }
+
+        foreach ($allowed as $candidate) {
+            if (str_starts_with($mime, $candidate)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function breadcrumbs(?FileFolder $folder): array

@@ -29,6 +29,34 @@ class CleanExpiredTrials implements ShouldQueue
             ->where('is_active', true)
             ->update(['is_active' => false]);
 
+        // 1b. Warn once (15 days before deletion) so the owner can export/upgrade.
+        Tenant::query()
+            ->where('is_trial', true)
+            ->where('is_active', false)
+            ->where('trial_ends_at', '<', now()->subDays($graceDays + 15))
+            ->get()
+            ->each(function ($tenant) {
+                $settings = $tenant->settings ?? [];
+
+                if (! empty($settings['deletion_warned_at'])) {
+                    return;
+                }
+
+                try {
+                    \Illuminate\Support\Facades\Mail::to($tenant->email)->queue(new \App\Mail\AgencyMail(
+                        'Your Agency OS trial data will be deleted soon',
+                        'Your '.$tenant->name.' trial ended '.$tenant->trial_ends_at->toFormattedDateString().'. All workspace data will be permanently deleted in 15 days unless you upgrade.\n\nUpgrade here: '.url('/upgrade'),
+                        []
+                    ));
+
+                    $settings['deletion_warned_at'] = now()->toDateTimeString();
+                    $tenant->settings = $settings;
+                    $tenant->save();
+                } catch (\Throwable $e) {
+                    logger()->warning('Could not send trial deletion warning', ['tenant_id' => $tenant->id, 'error' => $e->getMessage()]);
+                }
+            });
+
         // 2. Delete trial tenants that stayed inactive past grace + 30 days.
         $doomed = Tenant::query()
             ->where('is_trial', true)
