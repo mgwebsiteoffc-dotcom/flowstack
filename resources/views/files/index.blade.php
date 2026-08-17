@@ -8,7 +8,7 @@
             <a href="{{ route('files.index', ['folder_id' => $crumb->id]) }}" class="text-indigo-600 hover:underline">{{ $crumb->name }}</a>
             @if (! $loop->last) <span>/</span> @endif
         @endforeach
-        @if (! $breadcrumbs->isEmpty()) <a href="{{ route('files.index') }}" class="text-gray-400 hover:underline">↩</a> @endif
+        @if (count($breadcrumbs) > 0) <a href="{{ route('files.index') }}" class="text-gray-400 hover:underline">↩</a> @endif
     </div>
     <div class="flex gap-2">
         @php $usedGb = round($storageUsed / 1024 / 1024 / 1024, 2); @endphp

@@ -36,7 +36,7 @@ class SettingController extends Controller
 
  public function update(Request $request)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  $settings = $tenant->settings ?? [];
 
  $validated = $request->validate([
@@ -111,7 +111,12 @@ class SettingController extends Controller
 
  public function lead365()
  {
- $tenant = app('currentTenant');
+ $tenant = app('currentTenant') ?: auth()->user()?->tenant;
+
+ if (! $tenant) {
+ return redirect()->route('dashboard')->with('error', 'Workspace context not found.');
+ }
+
  $stages = LeadPipelineStage::orderBy('order_index')->get();
  $users = User::where('is_active', true)->orderBy('name')->get();
  $logs = WebhookLog::where('source', 'lead365')->latest()->limit(50)->get();
@@ -140,7 +145,7 @@ class SettingController extends Controller
  */
  public function testLead365()
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $log = WebhookLog::withoutGlobalScopes()->create([
  'tenant_id' => $tenant->id,
@@ -169,7 +174,7 @@ class SettingController extends Controller
 
  public function saveLead365(Request $request)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $validated = $request->validate([
  'lead365_webhook_secret' => ['nullable', 'string', 'max:255'],
@@ -212,7 +217,12 @@ class SettingController extends Controller
 
  public function bikribook()
  {
- $tenant = app('currentTenant');
+ $tenant = app('currentTenant') ?: auth()->user()?->tenant;
+
+ if (! $tenant) {
+ return redirect()->route('dashboard')->with('error', 'Workspace context not found.');
+ }
+
  $logs = BikriBookSyncLog::latest()->limit(20)->get();
  $settings = $tenant->settings ?? [];
 
@@ -221,7 +231,7 @@ class SettingController extends Controller
 
  public function saveBikribook(Request $request)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  $settings = $tenant->settings ?? [];
 
  $validated = $request->validate([
@@ -261,7 +271,7 @@ class SettingController extends Controller
 
  public function testBikribook()
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  if (! $tenant->bikribook_api_key) {
  return back()->with('error', 'Save an API key first, then test the connection.');
@@ -354,7 +364,12 @@ class SettingController extends Controller
 
  public function subscription()
  {
- $tenant = app('currentTenant');
+ $tenant = app('currentTenant') ?: auth()->user()?->tenant;
+
+ if (! $tenant) {
+ return redirect()->route('dashboard')->with('error', 'Workspace context not found.');
+ }
+
  $subscriptions = $tenant->subscriptions()->with('plan')->latest()->get();
  $payments = $tenant->subscriptionPayments()->latest()->get();
  $plans = \App\Models\Plan::query()->where('is_active', true)->get();

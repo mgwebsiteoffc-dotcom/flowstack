@@ -39,7 +39,7 @@ class AutomationController extends Controller
  ]);
 
  AutomationRule::create([
- 'tenant_id' => app('currentTenant')->id,
+ 'tenant_id' => \App\Support\CurrentTenant::id(),
  'name' => $validated['name'],
  'trigger_event' => $validated['trigger_event'],
  'trigger_delay_hours' => $validated['trigger_delay_hours'] ?? 0,

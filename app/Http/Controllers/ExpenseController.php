@@ -72,12 +72,12 @@ class ExpenseController extends Controller
  ]);
 
  $data = $validated;
- $data['tenant_id'] = app('currentTenant')->id;
+ $data['tenant_id'] = \App\Support\CurrentTenant::id();
  $data['added_by'] = auth()->id();
  unset($data['receipt']);
 
  if ($request->hasFile('receipt')) {
- $path = $request->file('receipt')->store('tenants/'.app('currentTenant')->id.'/expenses/receipts', 'tenant');
+ $path = $request->file('receipt')->store('tenants/'.\App\Support\CurrentTenant::id().'/expenses/receipts', 'tenant');
  $data['receipt_file'] = $path;
  }
 

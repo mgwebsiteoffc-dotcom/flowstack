@@ -142,7 +142,7 @@ class TaskController extends Controller
  public function store(TaskRequest $request)
  {
  $data = $request->validated();
- $data['tenant_id'] = app('currentTenant')->id;
+ $data['tenant_id'] = \App\Support\CurrentTenant::id();
  $data['created_by'] = auth()->id();
  $data['order_index'] = Task::max('order_index') + 1;
 
@@ -154,7 +154,7 @@ class TaskController extends Controller
 
  ActivityLog::record('task.created', $task, null, ['title' => $task->title]);
 
- app(AutomationService::class)->processEvent('task.created', $task, app('currentTenant'));
+ app(AutomationService::class)->processEvent('task.created', $task, \App\Support\CurrentTenant::get());
 
  // Watchers: creator + assignee.
  $watcherIds = collect([$data['created_by'], $data['assigned_to'] ?? null])->filter()->unique();
@@ -203,11 +203,11 @@ class TaskController extends Controller
  ActivityLog::record('task.updated', $task, $old, $task->only(['title', 'status', 'priority', 'assigned_to', 'due_date']));
 
  if (($old['status'] ?? null) !== $task->status) {
- app(AutomationService::class)->processEvent('task.status_changed', $task, app('currentTenant'));
+ app(AutomationService::class)->processEvent('task.status_changed', $task, \App\Support\CurrentTenant::get());
  }
 
  if (($old['assigned_to'] ?? null) !== $task->assigned_to && $task->assigned_to) {
- app(AutomationService::class)->processEvent('task.assigned', $task, app('currentTenant'));
+ app(AutomationService::class)->processEvent('task.assigned', $task, \App\Support\CurrentTenant::get());
 
  $assignee = User::find($task->assigned_to);
  if ($assignee) {
@@ -251,7 +251,7 @@ class TaskController extends Controller
  }
 
  ActivityLog::record('task.status_changed', $task, $old, $task->only(['status', 'priority', 'assigned_to', 'due_date']));
- app(AutomationService::class)->processEvent('task.status_changed', $task, app('currentTenant'));
+ app(AutomationService::class)->processEvent('task.status_changed', $task, \App\Support\CurrentTenant::get());
 
  if ($request->expectsJson()) {
  return response()->json(['ok' => true, 'status' => $task->status]);

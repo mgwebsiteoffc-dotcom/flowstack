@@ -74,7 +74,7 @@ class InvoiceController extends Controller
  {
  $validated = $request->validated();
 
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  $invoiceNumber = $this->nextInvoiceNumber();
 
  $items = $this->processItems($request->input('items', []));
@@ -246,7 +246,7 @@ class InvoiceController extends Controller
  */
  public function send(Request $request, Invoice $invoice)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  if ($invoice->status === 'cancelled') {
  return back()->with('error', 'Cancelled invoices cannot be sent.');
@@ -287,7 +287,7 @@ class InvoiceController extends Controller
  {
  $this->authorize('syncToBikriBook', $invoice);
 
- if (! app('currentTenant')->bikribook_api_key) {
+ if (! \App\Support\CurrentTenant::get()?->bikribook_api_key) {
  return back()->with('error', 'Configure your BikriBook API key in Settings → Integrations first.');
  }
 
@@ -307,7 +307,7 @@ class InvoiceController extends Controller
  {
  $this->authorize('viewAny', Invoice::class);
 
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $invoiceIds = Invoice::where('tenant_id', $tenant->id)
  ->whereNotNull('bikribook_invoice_id')
@@ -360,7 +360,7 @@ class InvoiceController extends Controller
 
  protected function defaults(): array
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  $settings = $tenant->settings ?? [];
 
  return [
@@ -377,7 +377,7 @@ class InvoiceController extends Controller
 
  protected function nextInvoiceNumber(): string
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  $settings = $tenant->settings ?? [];
  $prefix = $settings['invoice_prefix'] ?? 'INV';
  $start = (int) ($settings['invoice_start_number'] ?? 1000);

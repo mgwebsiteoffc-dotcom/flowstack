@@ -18,7 +18,7 @@ class OnboardingController extends Controller
  */
  public function index()
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  $step = min((int) session('onboarding_step', 1), 6);
 
  return view('onboarding.index', compact('tenant', 'step'));
@@ -26,7 +26,7 @@ class OnboardingController extends Controller
 
  public function store(Request $request)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  $step = (int) $request->input('step', 1);
 
  $settings = $tenant->settings ?? [];
@@ -116,7 +116,7 @@ class OnboardingController extends Controller
 
  public function done()
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  session()->forget('onboarding_step');
 
  return view('onboarding.done', compact('tenant'));

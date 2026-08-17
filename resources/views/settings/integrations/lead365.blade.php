@@ -7,8 +7,8 @@
     <div class="lg:col-span-3 space-y-6">
         <x-card title="Webhook URL" icon="link">
             <div x-data="{ copied: false }" class="flex items-center gap-2 bg-gray-50 rounded-lg p-3 border border-gray-200">
-                <code class="text-xs text-indigo-700 break-all flex-1">{{ url('webhooks/lead365/'.$tenant->slug) }}</code>
-                <button type="button" @click="navigator.clipboard.writeText('{{ url('webhooks/lead365/'.$tenant->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                <code class="text-xs text-indigo-700 break-all flex-1">{{ url('webhooks/lead365/'.($tenant->slug ?? 'workspace')) }}</code>
+                <button type="button" @click="navigator.clipboard.writeText('{{ url('webhooks/lead365/'.($tenant->slug ?? 'workspace')) }}'); copied = true; setTimeout(() => copied = false, 2000)"
                         class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg" x-text="copied ? 'Copied check-circle' : 'Copy'"></button>
             </div>
             <p class="text-xs text-gray-400 mt-2">Paste this URL in your Lead365 account and subscribe to: lead.created, lead.updated, lead.deleted, lead.stage_changed, lead.assigned, lead.won, lead.lost, form.submitted, meta.lead.received</p>

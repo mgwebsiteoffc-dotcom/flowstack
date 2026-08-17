@@ -46,7 +46,7 @@ class AnnouncementController extends Controller
  ]);
 
  Announcement::create([
- 'tenant_id' => app('currentTenant')->id,
+ 'tenant_id' => \App\Support\CurrentTenant::id(),
  'title' => $validated['title'],
  'content' => $validated['content'],
  'is_pinned' => $request->boolean('is_pinned'),

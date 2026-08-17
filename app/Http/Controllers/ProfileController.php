@@ -26,7 +26,7 @@ class ProfileController extends Controller
  ]);
 
  if ($request->hasFile('avatar')) {
- $path = $request->file('avatar')->store('tenants/'.app('currentTenant')->id.'/avatars', 'tenant');
+ $path = $request->file('avatar')->store('tenants/'.\App\Support\CurrentTenant::id().'/avatars', 'tenant');
  $validated['avatar'] = basename($path);
  }
 

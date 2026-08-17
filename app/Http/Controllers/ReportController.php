@@ -61,7 +61,7 @@ class ReportController extends Controller
  $validated = $request->validated();
 
  $data = [
- 'tenant_id' => app('currentTenant')->id,
+ 'tenant_id' => \App\Support\CurrentTenant::id(),
  'client_id' => $validated['client_id'],
  'title' => $validated['title'],
  'report_type' => $validated['report_type'],

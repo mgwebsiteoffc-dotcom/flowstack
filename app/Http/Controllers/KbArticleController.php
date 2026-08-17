@@ -38,7 +38,7 @@ class KbArticleController extends Controller
  $validated = $request->validated();
 
  $article = KbArticle::create($validated + [
- 'tenant_id' => app('currentTenant')->id,
+ 'tenant_id' => \App\Support\CurrentTenant::id(),
  'created_by' => auth()->id(),
  'published_at' => ($validated['status'] ?? 'draft') === 'published' ? now() : null,
  ]);

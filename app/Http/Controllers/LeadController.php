@@ -112,7 +112,7 @@ class LeadController extends Controller
  public function store(LeadRequest $request)
  {
  $data = $request->validated();
- $data['tenant_id'] = app('currentTenant')->id;
+ $data['tenant_id'] = \App\Support\CurrentTenant::id();
  $data['last_activity_at'] = now();
 
  if (empty($data['status'])) {
@@ -136,7 +136,7 @@ class LeadController extends Controller
  ]);
 
  ActivityLog::record('lead.created', $lead, null, ['contact_name' => $lead->contact_name]);
- app(AutomationService::class)->processEvent('lead.created', $lead, app('currentTenant'));
+ app(AutomationService::class)->processEvent('lead.created', $lead, \App\Support\CurrentTenant::get());
 
  return redirect()->route('leads.show', $lead)->with('success', 'Lead created.');
  }
@@ -208,7 +208,7 @@ class LeadController extends Controller
  'performed_by' => auth()->id(),
  ]);
 
- app(AutomationService::class)->processEvent('lead.won', $lead, app('currentTenant'));
+ app(AutomationService::class)->processEvent('lead.won', $lead, \App\Support\CurrentTenant::get());
 
  return back()->with('success', 'Lead marked as won. You can now convert it to a client.');
  }
@@ -237,7 +237,7 @@ class LeadController extends Controller
  'performed_by' => auth()->id(),
  ]);
 
- app(AutomationService::class)->processEvent('lead.lost', $lead, app('currentTenant'));
+ app(AutomationService::class)->processEvent('lead.lost', $lead, \App\Support\CurrentTenant::get());
 
  return back()->with('success', 'Lead marked as lost.');
  }
@@ -265,7 +265,7 @@ class LeadController extends Controller
  return redirect()->route('clients.show', $lead->converted_to_client_id)->with('info', 'This lead was already converted.');
  }
 
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $client = DB::transaction(function () use ($lead, $validated, $tenant) {
  $client = Client::create([
@@ -425,7 +425,7 @@ class LeadController extends Controller
  'performed_by' => auth()->id(),
  ]);
 
- app(AutomationService::class)->processEvent('lead.stage_changed', $lead, app('currentTenant'));
+ app(AutomationService::class)->processEvent('lead.stage_changed', $lead, \App\Support\CurrentTenant::get());
 
  if ($request->expectsJson()) {
  return response()->json(['ok' => true, 'stage' => $stage->name]);

@@ -13,7 +13,7 @@ class FileController extends Controller
 {
  public function index(Request $request)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $folderId = $request->input('folder_id');
  $clientId = $request->input('client_id');
@@ -71,7 +71,7 @@ class FileController extends Controller
 
  public function upload(Request $request)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $request->validate([
  'files' => ['required', 'array', 'max:10'],
@@ -268,7 +268,7 @@ class FileController extends Controller
  $parent = $validated['parent_folder_id'] ?? null ? FileFolder::find($validated['parent_folder_id']) : null;
 
  FileFolder::create([
- 'tenant_id' => app('currentTenant')->id,
+ 'tenant_id' => \App\Support\CurrentTenant::id(),
  'client_id' => $validated['client_id'] ?? $parent?->client_id,
  'parent_folder_id' => $parent?->id,
  'name' => $validated['name'],

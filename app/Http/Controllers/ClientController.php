@@ -84,7 +84,7 @@ class ClientController extends Controller
  public function store(ClientRequest $request)
  {
  $data = $request->validated();
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  if ($tenant->max_clients && Client::count() >= $tenant->max_clients) {
  return back()->with('error', 'You have reached your plan limit of '.$tenant->max_clients.' clients. Upgrade to add more.');
@@ -222,7 +222,7 @@ class ClientController extends Controller
  public function update(ClientRequest $request, Client $client)
  {
  $data = $request->validated();
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  if ($request->hasFile('logo')) {
  $path = $request->file('logo')->store('tenants/'.$tenant->id.'/clients/logo', 'tenant');

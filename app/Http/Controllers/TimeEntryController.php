@@ -197,7 +197,7 @@ class TimeEntryController extends Controller
  $task = $validated['task_id'] ? Task::find($validated['task_id']) : null;
 
  TimeEntry::create([
- 'tenant_id' => app('currentTenant')->id,
+ 'tenant_id' => \App\Support\CurrentTenant::id(),
  'task_id' => $task?->id,
  'project_id' => $task?->project_id,
  'client_id' => $validated['client_id'] ?? $task?->client_id,

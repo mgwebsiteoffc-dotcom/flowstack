@@ -33,7 +33,7 @@ class MasterDataController extends Controller
         ]);
 
         ExpenseCategory::create([
-            'tenant_id' => app('currentTenant')->id,
+            'tenant_id' => \App\Support\CurrentTenant::id(),
             'name' => $validated['name'],
             'color' => $validated['color'] ?? '#6B7280',
         ]);
@@ -58,7 +58,7 @@ class MasterDataController extends Controller
         ]);
 
         TaskTag::create([
-            'tenant_id' => app('currentTenant')->id,
+            'tenant_id' => \App\Support\CurrentTenant::id(),
             'name' => $validated['name'],
             'color' => $validated['color'] ?? '#6B7280',
         ]);
@@ -91,7 +91,7 @@ class MasterDataController extends Controller
         }
 
         MasterItem::create([
-            'tenant_id' => app('currentTenant')->id,
+            'tenant_id' => \App\Support\CurrentTenant::id(),
             'type' => 'service_type',
             'name' => $validated['name'],
             'color' => $validated['color'] ?? '#6B7280',

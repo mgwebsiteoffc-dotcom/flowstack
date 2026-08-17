@@ -118,7 +118,7 @@
         <x-card title="Status breakdown" icon="chart-bar">
             <div class="space-y-1.5">
                 @foreach (\App\Models\Task::STATUSES as $status)
-                    @php $count = $tasksByStatus[$status]?->count() ?? 0; @endphp
+                    @php $count = ($tasksByStatus[$status] ?? collect())->count(); @endphp
                     @if ($count > 0)
                         <div class="flex items-center gap-2 text-xs">
                             <span class="w-24 text-gray-500 capitalize truncate">{{ str_replace('_', ' ', $status) }}</span>

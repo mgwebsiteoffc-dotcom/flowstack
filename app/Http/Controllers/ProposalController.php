@@ -68,7 +68,7 @@ class ProposalController extends Controller
             'items.*.unit_price' => ['required', 'numeric', 'min:0'],
         ]);
 
-        $tenant = app('currentTenant');
+        $tenant = \App\Support\CurrentTenant::get();
 
         // Proposal number: PRO-{YEAR}-{SEQ}
         $seq = (int) \App\Models\Setting::get('proposal_sequence', 1000) + 1;
@@ -173,7 +173,7 @@ class ProposalController extends Controller
 
             Mail::send([], [], function ($message) use ($content, $email, $billing, $proposal) {
                 $message->to($email, $billing?->name)
-                    ->subject('Proposal '.$proposal->proposal_number.' from '.app('currentTenant')->name)
+                    ->subject('Proposal '.$proposal->proposal_number.' from '.\App\Support\CurrentTenant::get()?->name ?? config('app.name'))
                     ->html('<p>Hi '.($billing?->name ?? 'there').',</p><p>Please find attached our proposal <strong>'.$proposal->proposal_number.'</strong> ('.$proposal->title.').</p><p>We look forward to working with you.</p>')
                     ->attachData($content, 'proposal-'.$proposal->proposal_number.'.pdf', ['mime' => 'application/pdf']);
             });

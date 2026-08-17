@@ -97,7 +97,7 @@ class TeamController extends Controller
  'name' => ['nullable', 'string', 'max:255'],
  ]);
 
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  // Enforce plan user limit.
  if ($tenant->max_users && User::count() >= $tenant->max_users) {
@@ -134,10 +134,10 @@ class TeamController extends Controller
  }
 
  $token = Str::random(64);
- Setting::setForTenant(app('currentTenant')->id, 'invite_token_'.$user->id, $token);
+ Setting::setForTenant(\App\Support\CurrentTenant::id(), 'invite_token_'.$user->id, $token);
 
  Mail::to($user->email, $user->name)->queue(new TeamInviteMail(
- app('currentTenant')->name,
+ \App\Support\CurrentTenant::get()?->name ?? config('app.name'),
  $user->email,
  $user->role,
  route('onboarding.invite-accept', $token)

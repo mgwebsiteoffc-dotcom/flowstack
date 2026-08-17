@@ -12,7 +12,7 @@ class SubscriptionController extends Controller
 {
  public function upgrade()
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
  $plans = Plan::query()->where('is_active', true)->orderBy('price_monthly')->get();
 
  return view('subscription.upgrade', compact('tenant', 'plans'));
@@ -23,7 +23,7 @@ class SubscriptionController extends Controller
  */
  public function checkout(Request $request)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $validated = $request->validate([
  'plan_id' => ['required', 'exists:plans,id'],
@@ -73,7 +73,7 @@ class SubscriptionController extends Controller
  */
  public function cancel(Request $request)
  {
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $subscription = Subscription::where('tenant_id', $tenant->id)
  ->where('status', 'active')
@@ -103,7 +103,7 @@ class SubscriptionController extends Controller
  'razorpay_signature' => ['required'],
  ]);
 
- $tenant = app('currentTenant');
+ $tenant = \App\Support\CurrentTenant::get();
 
  $subscription = Subscription::where('tenant_id', $tenant->id)
  ->where('gateway_subscription_id', $validated['razorpay_order_id'])

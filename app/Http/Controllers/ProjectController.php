@@ -63,7 +63,7 @@ class ProjectController extends Controller
  public function store(ProjectRequest $request)
  {
  $data = $request->validated();
- $data['tenant_id'] = app('currentTenant')->id;
+ $data['tenant_id'] = \App\Support\CurrentTenant::id();
  $data['created_by'] = auth()->id();
 
  $project = DB::transaction(function () use ($data, $request) {
@@ -189,7 +189,7 @@ class ProjectController extends Controller
  $template = ProjectTemplate::findOrFail($validated['template_id']);
 
  $project = Project::create([
- 'tenant_id' => app('currentTenant')->id,
+ 'tenant_id' => \App\Support\CurrentTenant::id(),
  'client_id' => $validated['client_id'],
  'name' => $validated['name'],
  'description' => $template->description,
