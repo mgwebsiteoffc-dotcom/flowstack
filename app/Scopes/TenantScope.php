@@ -25,6 +25,15 @@ use Illuminate\Database\Eloquent\Scope;
 class TenantScope implements Scope
 {
     /**
+     * Recursion guard for the auth() fallback below. When the auth guard is
+     * resolving its user through this very scope, the inner lookup must run
+     * unconstrained - otherwise auth()->check() re-enters the guard, which
+     * queries the user again through this scope, forever (stack overflow ->
+     * 500 on every authenticated page).
+     */
+    protected static bool $resolvingAuthUser = false;
+
+    /**
      * Set the tenant id used by the scope (used by queued jobs and services).
      */
     public static function setCurrent(?int $tenantId): void
@@ -69,8 +78,19 @@ class TenantScope implements Scope
             return (int) app('currentTenantId');
         }
 
-        if (auth()->check()) {
-            return (int) auth()->user()->tenant_id;
+        // Belt & braces for authenticated contexts WITHOUT TenantMiddleware.
+        // Guarded so the auth user lookup itself (which runs through this
+        // scope) is never constrained while it is still being resolved.
+        if (! self::$resolvingAuthUser) {
+            self::$resolvingAuthUser = true;
+
+            try {
+                if (auth()->check()) {
+                    return (int) auth()->user()->tenant_id;
+                }
+            } finally {
+                self::$resolvingAuthUser = false;
+            }
         }
 
         return null;
