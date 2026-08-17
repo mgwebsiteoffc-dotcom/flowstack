@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClientTeamMember extends Model
 {
-    use TenantScoped;
+ use TenantScoped;
 
-    protected $fillable = [
-        'tenant_id', 'client_id', 'user_id', 'role_in_project', 'service_type',
-    ];
+ protected $fillable = [
+ 'tenant_id', 'client_id', 'user_id', 'role_in_project', 'service_type',
+ ];
 
-    public function client()
-    {
-        return $this->belongsTo(Client::class);
-    }
+ public function client()
+ {
+ return $this->belongsTo(Client::class);
+ }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+ public function user()
+ {
+ return $this->belongsTo(User::class);
+ }
 }

@@ -14,7 +14,7 @@
 
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         @if ($step === 1)
-            <h2 class="text-lg font-semibold mb-4">🏢 Basic setup</h2>
+            <h2 class="text-lg font-semibold mb-4"><x-icon name="building-office" class="w-4 h-4 inline-block" /> Basic setup</h2>
             <form method="POST" action="{{ route('onboarding.store') }}" enctype="multipart/form-data" class="space-y-4">
                 @csrf
                 <input type="hidden" name="step" value="1">
@@ -44,7 +44,7 @@
             </form>
 
         @elseif ($step === 2)
-            <h2 class="text-lg font-semibold mb-4">👥 Invite your team</h2>
+            <h2 class="text-lg font-semibold mb-4"><x-icon name="users" class="w-4 h-4 inline-block" /> Invite your team</h2>
             <form method="POST" action="{{ route('onboarding.store') }}" class="space-y-4">
                 @csrf
                 <input type="hidden" name="step" value="2">
@@ -70,7 +70,7 @@
             </form>
 
         @elseif ($step === 3)
-            <h2 class="text-lg font-semibold mb-4">🤝 Add your first client</h2>
+            <h2 class="text-lg font-semibold mb-4"><x-icon name="users" class="w-4 h-4 inline-block" /> Add your first client</h2>
             <p class="text-sm text-gray-500 mb-4">You can add clients later from the Clients section.</p>
             <div class="flex gap-3">
                 <a href="{{ route('clients.create') }}" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium">Add client →</a>
@@ -80,18 +80,18 @@
             </div>
 
         @elseif ($step === 4)
-            <h2 class="text-lg font-semibold mb-4">🔗 Connect Lead365</h2>
+            <h2 class="text-lg font-semibold mb-4"><x-icon name="link" class="w-4 h-4 inline-block" /> Connect Lead365</h2>
             <p class="text-sm text-gray-500 mb-4">Paste this webhook URL into your Lead365 account and select the events to send:</p>
             <div x-data="{ copied: false }">
                 <div class="flex items-center gap-2 bg-gray-50 rounded-lg p-3 border border-gray-200">
                     <code class="text-xs text-indigo-700 break-all flex-1">{{ url('webhooks/lead365/'.$tenant->slug) }}</code>
                     <button type="button" @click="navigator.clipboard.writeText('{{ url('webhooks/lead365/'.$tenant->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                            class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg" x-text="copied ? 'Copied ✅' : 'Copy'"></button>
+                            class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg" x-text="copied ? 'Copied check-circle' : 'Copy'"></button>
                 </div>
             </div>
             <div class="mt-4 grid grid-cols-2 gap-2 text-xs text-gray-600">
                 @foreach (['lead.created', 'lead.updated', 'lead.deleted', 'lead.stage_changed', 'lead.assigned', 'lead.won', 'lead.lost', 'form.submitted', 'meta.lead.received'] as $event)
-                    <div class="flex items-center gap-2 bg-gray-50 rounded px-2 py-1"><span class="text-green-600">✓</span><code>{{ $event }}</code></div>
+                    <div class="flex items-center gap-2 bg-gray-50 rounded px-2 py-1"><span class="text-green-600"></span><code>{{ $event }}</code></div>
                 @endforeach
             </div>
             <form method="POST" action="{{ route('onboarding.store') }}" class="mt-6">@csrf
@@ -100,7 +100,7 @@
             </form>
 
         @elseif ($step === 5)
-            <h2 class="text-lg font-semibold mb-4">🧾 Connect BikriBook</h2>
+            <h2 class="text-lg font-semibold mb-4"><x-icon name="receipt" class="w-4 h-4 inline-block" /> Connect BikriBook</h2>
             <form method="POST" action="{{ route('onboarding.store') }}" class="space-y-4">
                 @csrf
                 <input type="hidden" name="step" value="5">
@@ -119,7 +119,7 @@
             </form>
 
         @else
-            <h2 class="text-lg font-semibold mb-4">🎉 Almost done</h2>
+            <h2 class="text-lg font-semibold mb-4"><x-icon name="sparkles" class="w-4 h-4 inline-block" /> Almost done</h2>
             <p class="text-sm text-gray-500 mb-6">You can always change these later in Settings.</p>
             <form method="POST" action="{{ route('onboarding.store') }}">@csrf<input type="hidden" name="step" value="6">
                 <button class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium">Finish setup →</button>

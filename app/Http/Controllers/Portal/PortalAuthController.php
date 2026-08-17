@@ -12,99 +12,99 @@ use Illuminate\Validation\Rules;
 
 class PortalAuthController extends Controller
 {
-    public function showLogin()
-    {
-        return view('portal.login');
-    }
+ public function showLogin()
+ {
+ return view('portal.login');
+ }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+ public function login(Request $request)
+ {
+ $credentials = $request->validate([
+ 'email' => ['required', 'email'],
+ 'password' => ['required'],
+ ]);
 
-        $user = ClientPortalUser::withoutGlobalScopes()
-            ->where('email', $credentials['email'])
-            ->first();
+ $user = ClientPortalUser::withoutGlobalScopes()
+ ->where('email', $credentials['email'])
+ ->first();
 
-        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
-            return back()->withErrors(['email' => 'Invalid credentials.'])->onlyInput('email');
-        }
+ if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+ return back()->withErrors(['email' => 'Invalid credentials.'])->onlyInput('email');
+ }
 
-        if (! $user->is_active) {
-            return back()->withErrors(['email' => 'This portal account is inactive.']);
-        }
+ if (! $user->is_active) {
+ return back()->withErrors(['email' => 'This portal account is inactive.']);
+ }
 
-        $user->update(['last_login_at' => now()]);
+ $user->update(['last_login_at' => now()]);
 
-        $intended = $request->session()->pull('portal.intended');
+ $intended = $request->session()->pull('portal.intended');
 
-        $request->session()->put('portal_user', $user->id);
-        $request->session()->regenerate();
+ $request->session()->put('portal_user', $user->id);
+ $request->session()->regenerate();
 
-        return redirect($intended ?? route('portal.dashboard'));
-    }
+ return redirect($intended ?? route('portal.dashboard'));
+ }
 
-    public function logout(Request $request)
-    {
-        $request->session()->forget('portal_user');
-        $request->session()->regenerate();
+ public function logout(Request $request)
+ {
+ $request->session()->forget('portal_user');
+ $request->session()->regenerate();
 
-        return redirect()->route('portal.login');
-    }
+ return redirect()->route('portal.login');
+ }
 
-    public function showSetPassword(string $token)
-    {
-        $record = Setting::withoutGlobalScopes()
-            ->where('key', 'like', 'portal_set_password_%')
-            ->where('value', $token)
-            ->first();
+ public function showSetPassword(string $token)
+ {
+ $record = Setting::withoutGlobalScopes()
+ ->where('key', 'like', 'portal_set_password_%')
+ ->where('value', $token)
+ ->first();
 
-        if (! $record) {
-            abort(404, 'This invitation link is invalid or has expired.');
-        }
+ if (! $record) {
+ abort(404, 'This invitation link is invalid or has expired.');
+ }
 
-        $user = ClientPortalUser::withoutGlobalScopes()->find((int) str_replace('portal_set_password_', '', $record->key));
+ $user = ClientPortalUser::withoutGlobalScopes()->find((int) str_replace('portal_set_password_', '', $record->key));
 
-        if (! $user) {
-            abort(404, 'This invitation link is invalid or has expired.');
-        }
+ if (! $user) {
+ abort(404, 'This invitation link is invalid or has expired.');
+ }
 
-        return view('portal.set-password', compact('token'));
-    }
+ return view('portal.set-password', compact('token'));
+ }
 
-    public function setPassword(Request $request)
-    {
-        $validated = $request->validate([
-            'token' => ['required', 'string'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+ public function setPassword(Request $request)
+ {
+ $validated = $request->validate([
+ 'token' => ['required', 'string'],
+ 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+ ]);
 
-        $record = Setting::withoutGlobalScopes()
-            ->where('key', 'like', 'portal_set_password_%')
-            ->where('value', $validated['token'])
-            ->first();
+ $record = Setting::withoutGlobalScopes()
+ ->where('key', 'like', 'portal_set_password_%')
+ ->where('value', $validated['token'])
+ ->first();
 
-        if (! $record) {
-            return back()->withErrors(['token' => 'This invitation link is invalid or has expired.']);
-        }
+ if (! $record) {
+ return back()->withErrors(['token' => 'This invitation link is invalid or has expired.']);
+ }
 
-        $user = ClientPortalUser::withoutGlobalScopes()->find((int) str_replace('portal_set_password_', '', $record->key));
+ $user = ClientPortalUser::withoutGlobalScopes()->find((int) str_replace('portal_set_password_', '', $record->key));
 
-        if (! $user) {
-            return back()->withErrors(['token' => 'This invitation link is invalid or has expired.']);
-        }
+ if (! $user) {
+ return back()->withErrors(['token' => 'This invitation link is invalid or has expired.']);
+ }
 
-        $user->update([
-            'password' => Hash::make($validated['password']),
-            'is_active' => true,
-        ]);
+ $user->update([
+ 'password' => Hash::make($validated['password']),
+ 'is_active' => true,
+ ]);
 
-        $record->delete();
+ $record->delete();
 
-        $request->session()->put('portal_user', $user->id);
+ $request->session()->put('portal_user', $user->id);
 
-        return redirect()->route('portal.dashboard')->with('success', 'Welcome to your client portal!');
-    }
+ return redirect()->route('portal.dashboard')->with('success', 'Welcome to your client portal!');
+ }
 }

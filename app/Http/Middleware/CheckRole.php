@@ -13,18 +13,18 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, string ...$roles): Response
-    {
-        $user = $request->user();
+ public function handle(Request $request, Closure $next, string ...$roles): Response
+ {
+ $user = $request->user();
 
-        if ($user === null) {
-            abort(403);
-        }
+ if ($user === null) {
+ abort(403);
+ }
 
-        if (! in_array($user->role, $roles, true)) {
-            abort(403);
-        }
+ if (! in_array($user->role, $roles, true)) {
+ abort(403);
+ }
 
-        return $next($request);
-    }
+ return $next($request);
+ }
 }

@@ -1,14 +1,14 @@
 @php
     $links = [
-        ['route' => 'settings.index', 'label' => 'Agency settings', 'icon' => '🏢', 'key' => 'general'],
-        ['route' => 'settings.users', 'label' => 'Users', 'icon' => '👥', 'key' => 'users'],
-        ['route' => 'settings.integrations.lead365', 'label' => 'Lead365', 'icon' => '🔗', 'key' => 'lead365'],
-        ['route' => 'settings.integrations.bikribook', 'label' => 'BikriBook', 'icon' => '🧾', 'key' => 'bikribook'],
-        ['route' => 'settings.notifications', 'label' => 'Notifications', 'icon' => '🔔', 'key' => 'notifications'],
-        ['route' => 'announcements.index', 'label' => 'Announcements', 'icon' => '📣', 'key' => 'announcements'],
-        ['route' => 'settings.audit', 'label' => 'Audit log', 'icon' => '📜', 'key' => 'audit'],
-        ['route' => 'settings.subscription', 'label' => 'Subscription', 'icon' => '💳', 'key' => 'subscription'],
-        ['route' => 'profile.edit', 'label' => 'My profile', 'icon' => '👤', 'key' => 'profile'],
+        ['route' => 'settings.index', 'label' => 'Agency settings', 'icon' => 'building-office', 'key' => 'general'],
+        ['route' => 'settings.users', 'label' => 'Users', 'icon' => 'users', 'key' => 'users'],
+        ['route' => 'settings.integrations.lead365', 'label' => 'Lead365', 'icon' => 'link', 'key' => 'lead365'],
+        ['route' => 'settings.integrations.bikribook', 'label' => 'BikriBook', 'icon' => 'receipt', 'key' => 'bikribook'],
+        ['route' => 'settings.notifications', 'label' => 'Notifications', 'icon' => 'bell', 'key' => 'notifications'],
+        ['route' => 'announcements.index', 'label' => 'Announcements', 'icon' => 'megaphone', 'key' => 'announcements'],
+        ['route' => 'settings.audit', 'label' => 'Audit log', 'icon' => 'document-text', 'key' => 'audit'],
+        ['route' => 'settings.subscription', 'label' => 'Subscription', 'icon' => 'credit-card', 'key' => 'subscription'],
+        ['route' => 'profile.edit', 'label' => 'My profile', 'icon' => 'user', 'key' => 'profile'],
     ];
 @endphp
 <div class="bg-white rounded-xl border border-gray-100 p-3 space-y-1">

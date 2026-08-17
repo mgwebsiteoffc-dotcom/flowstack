@@ -9,8 +9,8 @@
     <a href="{{ route('tasks.calendar') }}" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-600">Calendar</a>
 </div>
 
-@foreach ([['overdue', '🔴 Overdue', 'border-red-200'], ['today', '📅 Today', 'border-indigo-200'], ['thisWeek', '🗓️ This week', 'border-gray-200'], ['later', '🌤️ Later', 'border-gray-200']] as [$key, $label, $border])
-    <x-card :title="$label" :padding="false">
+@foreach ([['overdue', 'Overdue', 'border-red-200', 'circle'], ['today', 'Today', 'border-indigo-200', 'calendar'], ['thisWeek', 'This week', 'border-gray-200', 'calendar-days'], ['later', 'Later', 'border-gray-200', 'sun']] as [$key, $label, $border, $labelIcon])
+    <x-card :title="$label" :icon="$labelIcon" :padding="false">
         <div class="divide-y divide-gray-50">
             @forelse ($$key as $task)
                 <a href="{{ route('tasks.show', $task) }}" class="flex items-center gap-3 px-5 py-3 hover:bg-gray-50">
@@ -20,7 +20,7 @@
                     <span class="text-xs text-gray-400">{{ $task->due_date?->format('d M') }}</span>
                 </a>
             @empty
-                <p class="text-sm text-gray-400 text-center py-6">Nothing here 🎉</p>
+                <p class="text-sm text-gray-400 text-center py-6">Nothing here <x-icon name="sparkles" class="w-4 h-4 inline-block" /></p>
             @endforelse
         </div>
     </x-card>

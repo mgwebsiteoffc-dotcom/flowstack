@@ -3,7 +3,7 @@
 @section('content')
 <form method="POST" action="{{ route('tasks.store') }}" class="max-w-3xl space-y-6">
     @csrf
-    <x-card title="Task details" icon="✅">
+    <x-card title="Task details" icon="check-circle">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
@@ -69,7 +69,7 @@
         </div>
     </x-card>
 
-    <x-card title="Recurring" icon="↻">
+    <x-card title="Recurring" icon="arrow-path">
         <label class="flex items-center gap-2 text-sm text-gray-700 mb-3">
             <input type="checkbox" name="is_recurring" value="1" x-data x-init="$el.addEventListener('change', e => document.getElementById('recurring-box').classList.toggle('hidden', !e.target.checked))" class="rounded">
             This is a recurring task

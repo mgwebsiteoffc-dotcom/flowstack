@@ -30,7 +30,7 @@
                             <span class="text-xs font-semibold text-gray-700">₹{{ number_format($lead->estimated_value ?? 0) }}</span>
                         </div>
                         <div class="flex items-center justify-between mt-2">
-                            @if ($lead->assignee)<span class="text-[10px] text-gray-400">👤 {{ $lead->assignee->name }}</span>@endif
+                            @if ($lead->assignee)<span class="text-[10px] text-gray-400"><x-icon name="user" class="w-4 h-4 inline-block" /> {{ $lead->assignee->name }}</span>@endif
                             <span class="text-[10px] text-gray-400">{{ $lead->daysInStage() }}d in stage</span>
                         </div>
                     </a>

@@ -16,25 +16,25 @@ use Illuminate\Queue\SerializesModels;
  */
 class SyncAllTenantsInvoices implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): void
-    {
-        $tenants = Tenant::query()
-            ->whereNotNull('bikribook_api_key')
-            ->where('is_active', true)
-            ->get();
+ public function handle(): void
+ {
+ $tenants = Tenant::query()
+ ->whereNotNull('bikribook_api_key')
+ ->where('is_active', true)
+ ->get();
 
-        foreach ($tenants as $tenant) {
-            $invoices = Invoice::withoutGlobalScopes()
-                ->where('tenant_id', $tenant->id)
-                ->whereNotNull('bikribook_invoice_id')
-                ->whereIn('status', ['sent', 'overdue'])
-                ->pluck('id');
+ foreach ($tenants as $tenant) {
+ $invoices = Invoice::withoutGlobalScopes()
+ ->where('tenant_id', $tenant->id)
+ ->whereNotNull('bikribook_invoice_id')
+ ->whereIn('status', ['sent', 'overdue'])
+ ->pluck('id');
 
-            foreach ($invoices as $invoiceId) {
-                SyncInvoiceStatusFromBikriBook::dispatch($invoiceId);
-            }
-        }
-    }
+ foreach ($invoices as $invoiceId) {
+ SyncInvoiceStatusFromBikriBook::dispatch($invoiceId);
+ }
+ }
+ }
 }

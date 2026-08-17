@@ -9,7 +9,7 @@
     <div class="lg:col-span-3">
         <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
-            <x-card title="Agency settings" icon="🏢">
+            <x-card title="Agency settings" icon="building-office">
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div class="sm:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Agency name</label>
                         <input type="text" name="name" value="{{ old('name', $tenant->name) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
@@ -38,7 +38,7 @@
                 </div>
             </x-card>
 
-            <x-card title="Invoicing defaults" icon="🧾">
+            <x-card title="Invoicing defaults" icon="receipt">
                 <div class="grid sm:grid-cols-3 gap-4">
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Invoice prefix</label>
                         <input type="text" name="invoice_prefix" value="{{ old('invoice_prefix', $settings['invoice_prefix'] ?? 'INV') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
@@ -53,7 +53,7 @@
                 </div>
             </x-card>
 
-            <x-card title="Bank details (printed on invoices)" icon="🏦">
+            <x-card title="Bank details (printed on invoices)" icon="building-library">
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Bank name</label>
                         <input type="text" name="bank_name" value="{{ old('bank_name', $settings['bank_name'] ?? '') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>

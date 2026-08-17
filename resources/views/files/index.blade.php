@@ -13,7 +13,7 @@
     <div class="flex gap-2">
         @php $usedGb = round($storageUsed / 1024 / 1024 / 1024, 2); @endphp
         <span class="text-xs text-gray-400 self-center">Storage: {{ $usedGb }} / {{ $storageLimit > 0 ? $storageLimit / 1024 / 1024 / 1024 : '∞' }} GB</span>
-        <button x-data @click="$refs.uploadModal.showModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">⬆ Upload</button>
+        <button x-data @click="$refs.uploadModal.showModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium"><x-icon name="arrow-up-tray" class="w-4 h-4 inline-block" /> Upload</button>
         <button x-data @click="$refs.folderModal.showModal()" class="bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm">+ Folder</button>
     </div>
 </div>
@@ -59,13 +59,13 @@
 
 <div class="grid lg:grid-cols-4 gap-6">
     <div>
-        <x-card title="Folders" icon="📁">
+        <x-card title="Folders" icon="folder">
             @if ($folders->isNotEmpty())
                 <div class="space-y-1">
                     @foreach ($folders as $folder)
                         <a href="{{ route('files.index', ['folder_id' => $folder->id]) }}"
                            class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm {{ $currentFolder?->id === $folder->id ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-50' }}">
-                            📁 <span class="flex-1">{{ $folder->name }}</span>
+                            <x-icon name="folder" class="w-4 h-4 inline-block" /> <span class="flex-1">{{ $folder->name }}</span>
                             <span class="text-xs text-gray-400">{{ $folder->files_count }}</span>
                         </a>
                     @endforeach
@@ -78,14 +78,14 @@
                     <div class="text-[10px] uppercase text-gray-400 mb-1">Internal</div>
                     @foreach ($internalFolders as $folder)
                         <a href="{{ route('files.index', ['folder_id' => $folder->id]) }}" class="flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50">
-                            🗄️ <span class="flex-1">{{ $folder->name }}</span>
+                            <x-icon name="archive-box" class="w-4 h-4 inline-block" /> <span class="flex-1">{{ $folder->name }}</span>
                         </a>
                     @endforeach
                 </div>
             @endif
         </x-card>
 
-        <x-card title="Filter" icon="🔍">
+        <x-card title="Filter" icon="magnifying-glass">
             <form method="GET" class="space-y-2">
                 <input type="text" name="search" value="{{ $search }}" placeholder="Search files…" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm">
                 <select name="type" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm">
@@ -101,42 +101,42 @@
     </div>
 
     <div class="lg:col-span-3">
-        <x-card :title="'Files ('.$files->total().')'" icon="📎" :padding="false">
+        <x-card :title="'Files ('.$files->total().')'" icon="paper-clip" :padding="false">
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 p-5">
                 @forelse ($files as $file)
                     <div class="border border-gray-100 rounded-xl p-4 hover:border-indigo-300 transition" x-data="{ menu: false }">
                         <div class="flex items-start justify-between">
                             <div class="text-3xl">
-                                @if ($file->isImage()) 🖼️
-                                @elseif ($file->isPdf()) 📄
-                                @elseif ($file->isVideo()) 🎬
-                                @else 📎
+                                @if ($file->isImage()) <x-icon name="photo" class="w-4 h-4 inline-block" />
+                                @elseif ($file->isPdf()) <x-icon name="document" class="w-4 h-4 inline-block" />
+                                @elseif ($file->isVideo()) <x-icon name="video-camera" class="w-4 h-4 inline-block" />
+                                @else <x-icon name="paper-clip" class="w-4 h-4 inline-block" />
                                 @endif
                             </div>
                             <div class="relative">
                                 <button @click="menu = !menu" class="text-gray-400 text-lg">⋯</button>
                                 <div x-show="menu" x-cloak @click.outside="menu = false" class="absolute right-0 mt-1 w-44 bg-white rounded-xl shadow-xl border text-sm z-20">
                                     @if ($file->isImage() || $file->isPdf())
-                                        <button @click="menu = false; $refs.preview{{ $file->id }}.showModal()" class="block w-full text-left px-3 py-2 hover:bg-gray-50">👁 Preview</button>
+                                        <button @click="menu = false; $refs.preview{{ $file->id }}.showModal()" class="block w-full text-left px-3 py-2 hover:bg-gray-50"><x-icon name="eye" class="w-4 h-4 inline-block" /> Preview</button>
                                     @endif
-                                    <a href="{{ route('files.download', $file) }}" class="block px-3 py-2 hover:bg-gray-50">⬇ Download</a>
-                                    <button @click="menu = false; $refs.rename{{ $file->id }}.showModal()" class="block w-full text-left px-3 py-2 hover:bg-gray-50">✏️ Rename</button>
+                                    <a href="{{ route('files.download', $file) }}" class="block px-3 py-2 hover:bg-gray-50"><x-icon name="arrow-down-tray" class="w-4 h-4 inline-block" /> Download</a>
+                                    <button @click="menu = false; $refs.rename{{ $file->id }}.showModal()" class="block w-full text-left px-3 py-2 hover:bg-gray-50"><x-icon name="pencil" class="w-4 h-4 inline-block" /> Rename</button>
                                     @if ($file->share_token)
-                                        <a href="{{ $file->shareUrl() }}" target="_blank" class="block px-3 py-2 hover:bg-gray-50">🔗 Open share link</a>
+                                        <a href="{{ $file->shareUrl() }}" target="_blank" class="block px-3 py-2 hover:bg-gray-50"><x-icon name="link" class="w-4 h-4 inline-block" /> Open share link</a>
                                         <form method="POST" action="{{ route('files.unshare', $file) }}">@csrf
-                                            <button class="block w-full text-left px-3 py-2 hover:bg-gray-50 text-red-500">🔒 Unshare</button>
+                                            <button class="block w-full text-left px-3 py-2 hover:bg-gray-50 text-red-500"><x-icon name="lock-closed" class="w-4 h-4 inline-block" /> Unshare</button>
                                         </form>
                                     @else
-                                        <button @click="menu = false; $refs.share{{ $file->id }}.showModal()" class="block w-full text-left px-3 py-2 hover:bg-gray-50">🔗 Share…</button>
+                                        <button @click="menu = false; $refs.share{{ $file->id }}.showModal()" class="block w-full text-left px-3 py-2 hover:bg-gray-50"><x-icon name="link" class="w-4 h-4 inline-block" /> Share…</button>
                                     @endif
                                     <form method="POST" action="{{ route('files.version', $file) }}" enctype="multipart/form-data">
                                         @csrf
-                                        <label class="block px-3 py-2 hover:bg-gray-50 cursor-pointer">📤 New version
+                                        <label class="block px-3 py-2 hover:bg-gray-50 cursor-pointer"><x-icon name="arrow-up-tray" class="w-4 h-4 inline-block" /> New version
                                             <input type="file" name="file" class="hidden" onchange="this.form.submit()">
                                         </label>
                                     </form>
                                     <form method="POST" action="{{ route('files.destroy', $file) }}" onsubmit="return confirm('Delete this file?')">@csrf @method('DELETE')
-                                        <button class="block w-full text-left px-3 py-2 hover:bg-gray-50 text-red-500">🗑 Delete</button>
+                                        <button class="block w-full text-left px-3 py-2 hover:bg-gray-50 text-red-500"><x-icon name="trash" class="w-4 h-4 inline-block" /> Delete</button>
                                     </form>
                                 </div>
                             </div>
@@ -145,7 +145,7 @@
                         <div class="text-xs text-gray-400 mt-1">{{ $file->sizeHuman() }} · {{ strtoupper($file->extension ?? '') }} · v{{ $file->version }}</div>
                         <div class="text-xs text-gray-400">{{ $file->uploader?->name }} · {{ $file->created_at->diffForHumans() }}</div>
                         @if ($file->is_shared_with_client)
-                            <div class="text-[10px] text-green-600 mt-1">🔓 Shared with client</div>
+                            <div class="text-[10px] text-green-600 mt-1"><x-icon name="lock-open" class="w-4 h-4 inline-block" /> Shared with client</div>
                         @endif
 
                         <dialog :id="'rename-{{ $file->id }}'" x-ref="rename{{ $file->id }}" class="rounded-2xl shadow-2xl p-0 w-full max-w-sm">
@@ -197,7 +197,7 @@
                     </div>
                 @empty
                     <div class="sm:col-span-3">
-                        <x-empty-state icon="📎" title="No files here" message="Upload files or create a folder to get started." />
+                        <x-empty-state icon="paper-clip" title="No files here" message="Upload files or create a folder to get started." />
                     </div>
                 @endforelse
             </div>

@@ -3,7 +3,7 @@
 @section('content')
 <form method="POST" action="{{ route('leads.store') }}" class="max-w-3xl space-y-6">
     @csrf
-    <x-card title="Lead details" icon="🎯">
+    <x-card title="Lead details" icon="target">
         <div class="grid sm:grid-cols-2 gap-4">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Contact name *</label>
                 <input type="text" name="contact_name" value="{{ old('contact_name') }}" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>

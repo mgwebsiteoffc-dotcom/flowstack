@@ -43,7 +43,7 @@
 
 @if ($lead->converted_to_client_id)
     <div class="bg-green-50 border border-green-200 text-green-800 rounded-lg px-4 py-3 mb-4 text-sm">
-        ✅ Converted to client: <a href="{{ route('clients.show', $lead->convertedClient) }}" class="font-medium underline">{{ $lead->convertedClient?->company_name }}</a>
+        <x-icon name="check-circle" class="w-4 h-4 inline-block" /> Converted to client: <a href="{{ route('clients.show', $lead->convertedClient) }}" class="font-medium underline">{{ $lead->convertedClient?->company_name }}</a>
     </div>
 @endif
 
@@ -90,7 +90,7 @@
 @if (request('tab', 'overview') === 'overview')
     <div class="grid lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
-            <x-card title="Contact & company" icon="🏢">
+            <x-card title="Contact & company" icon="building-office">
                 <dl class="grid sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
                     <div><dt class="text-gray-400 text-xs">Email</dt><dd class="text-gray-800">{{ $lead->email ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Phone</dt><dd class="text-gray-800">{{ $lead->phone ?? '—' }}</dd></div>
@@ -110,7 +110,7 @@
                 </dl>
             </x-card>
 
-            <x-card title="Campaign data" icon="📣">
+            <x-card title="Campaign data" icon="megaphone">
                 <dl class="grid sm:grid-cols-2 gap-y-3 text-sm">
                     <div><dt class="text-gray-400 text-xs">Lead source</dt><dd class="text-gray-800">{{ $lead->lead_source ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Campaign</dt><dd class="text-gray-800">{{ $lead->campaign_name ?? '—' }}</dd></div>
@@ -129,7 +129,7 @@
         </div>
 
         <div class="space-y-6">
-            <x-card title="Recent activity" icon="🕓">
+            <x-card title="Recent activity" icon="clock">
                 @forelse ($lead->activities->take(6) as $activity)
                     <div class="py-2 border-b border-gray-50 last:border-0">
                         <div class="text-sm text-gray-800">{{ $activity->title }}</div>
@@ -146,11 +146,17 @@
 @elseif (request('tab') === 'activities')
     <div class="grid lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2">
-            <x-card title="Timeline" icon="🕓">
+            <x-card title="Timeline" icon="clock">
                 @forelse ($lead->activities as $activity)
                     <div class="flex gap-3 py-3 border-b border-gray-50 last:border-0">
                         <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-sm">
-                            {{ ['call' => '📞', 'email' => '✉️', 'meeting' => '🤝', 'note' => '📝', 'stage_change' => '🔄', 'assignment' => '👤', 'webhook_event' => '🔗'][$activity->activity_type] ?? '•' }}
+                            @if ($activity->activity_type === 'call')<x-icon name="phone" class="w-4 h-4" />
+@elseif ($activity->activity_type === 'email')<x-icon name="envelope" class="w-4 h-4" />
+@elseif ($activity->activity_type === 'meeting')<x-icon name="users" class="w-4 h-4" />
+@elseif ($activity->activity_type === 'note')<x-icon name="pencil-square" class="w-4 h-4" />
+@elseif ($activity->activity_type === 'stage_change')<x-icon name="arrow-path" class="w-4 h-4" />
+@elseif ($activity->activity_type === 'assignment')<x-icon name="user" class="w-4 h-4" />
+@else<x-icon name="link" class="w-4 h-4" />@endif
                         </div>
                         <div class="flex-1">
                             <div class="text-sm text-gray-800">{{ $activity->title }}</div>
@@ -166,7 +172,7 @@
                 @endforelse
             </x-card>
         </div>
-        <x-card title="Log activity" icon="➕">
+        <x-card title="Log activity" icon="plus">
             <form method="POST" action="{{ route('leads.activities.store', $lead) }}" class="space-y-3">
                 @csrf
                 <select name="activity_type" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
@@ -183,7 +189,7 @@
     </div>
 
 @elseif (request('tab') === 'tasks')
-    <x-card title="Related tasks" icon="✅">
+    <x-card title="Related tasks" icon="check-circle">
         @forelse ($lead->tasks as $task)
             <a href="{{ route('tasks.show', $task) }}" class="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0">
                 <x-status-badge :status="$task->status" />
@@ -198,7 +204,7 @@
 @else
     <div class="grid lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2">
-            <x-card title="Files" icon="📎">
+            <x-card title="Files" icon="paper-clip">
                 @forelse ($lead->files as $file)
                     <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
                         <span class="text-sm text-gray-800 flex-1 truncate">{{ $file->original_name }}</span>
@@ -213,7 +219,7 @@
                 @endforelse
             </x-card>
         </div>
-        <x-card title="Upload file" icon="⬆">
+        <x-card title="Upload file" icon="arrow-up-tray">
             <form method="POST" action="{{ route('files.upload') }}" enctype="multipart/form-data" class="space-y-3">
                 @csrf
                 <input type="hidden" name="lead_id" value="{{ $lead->id }}">

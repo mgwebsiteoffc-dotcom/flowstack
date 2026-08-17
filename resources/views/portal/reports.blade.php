@@ -9,7 +9,7 @@
                 <a href="{{ route('portal.reports.show', $report) }}" class="text-sm font-medium text-gray-900 hover:text-indigo-600">{{ $report->title }}</a>
                 <div class="text-xs text-gray-400 mt-0.5">{{ ucfirst($report->report_type) }} · {{ $report->period_start->format('d M Y') }} – {{ $report->period_end->format('d M Y') }}</div>
             </div>
-            <a href="{{ route('portal.reports.download', $report) }}" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg">⬇ PDF</a>
+            <a href="{{ route('portal.reports.download', $report) }}" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg"><x-icon name="arrow-down-tray" class="w-4 h-4 inline-block" /> PDF</a>
         </div>
     @empty
         <div class="py-12 text-center text-sm text-gray-400">No reports shared with you yet.</div>

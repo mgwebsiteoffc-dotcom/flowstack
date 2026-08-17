@@ -8,9 +8,9 @@ use Illuminate\Queue\SerializesModels;
 
 class InvoicePaid
 {
-    use Dispatchable, SerializesModels;
+ use Dispatchable, SerializesModels;
 
-    public function __construct(public Invoice $invoice)
-    {
-    }
+ public function __construct(public Invoice $invoice)
+ {
+ }
 }

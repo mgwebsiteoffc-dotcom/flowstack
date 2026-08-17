@@ -5,7 +5,7 @@
     @if ($tenant->is_trial)
         <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6 text-center">
             <div class="text-sm text-amber-800 font-medium">
-                ⏳ {{ $tenant->trialDaysRemaining() > 0 ? $tenant->trialDaysRemaining().' days remaining' : 'Your trial has ended' }} in your free trial.
+                <x-icon name="hourglass" class="w-4 h-4 inline-block" /> {{ $tenant->trialDaysRemaining() > 0 ? $tenant->trialDaysRemaining().' days remaining' : 'Your trial has ended' }} in your free trial.
                 Upgrade to keep your workspace running.
             </div>
         </div>
@@ -26,7 +26,7 @@
                 </div>
                 <ul class="mt-4 space-y-2 text-sm text-gray-600 flex-1">
                     @foreach (($plan->features ?? []) as $feature)
-                        <li class="flex gap-2"><span class="text-green-600">✓</span>{{ $feature }}</li>
+                        <li class="flex gap-2"><span class="text-green-600"></span>{{ $feature }}</li>
                     @endforeach
                 </ul>
                 <div class="mt-4 flex gap-2">

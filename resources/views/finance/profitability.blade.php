@@ -47,10 +47,10 @@
 </div>
 
 <div class="grid lg:grid-cols-2 gap-6">
-    <x-card title="Monthly trend (revenue vs cost)" icon="📈">
+    <x-card title="Monthly trend (revenue vs cost)" icon="chart-bar">
         <canvas id="trendChart" height="120"></canvas>
     </x-card>
-    <x-card title="Team cost this month" icon="👥">
+    <x-card title="Team cost this month" icon="users">
         <table class="w-full text-sm">
             <thead class="text-left text-xs text-gray-500 uppercase"><tr><th class="py-2">Member</th><th class="py-2 text-right">Hours</th><th class="py-2 text-right">Cost</th></tr></thead>
             <tbody class="divide-y divide-gray-50">

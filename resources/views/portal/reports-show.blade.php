@@ -8,11 +8,12 @@
             <h1 class="text-xl font-bold text-gray-900">{{ $report->title }}</h1>
             <p class="text-sm text-gray-400 mt-1">{{ ucfirst($report->report_type) }} · {{ $report->period_start->format('d M Y') }} – {{ $report->period_end->format('d M Y') }}</p>
         </div>
-        <a href="{{ route('portal.reports.download', $report) }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm">⬇ Download PDF</a>
+        <a href="{{ route('portal.reports.download', $report) }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm"><x-icon name="arrow-down-tray" class="w-4 h-4 inline-block" /> Download PDF</a>
     </div>
 
     @forelse (($report->data['sections'] ?? []) as $key => $section)
-        <h3 class="font-semibold text-gray-900 mt-8 mb-3">{{ ['paid_advertising' => '📈 Paid Advertising', 'shopify' => '🛍️ Shopify', 'social_media' => '📱 Social Media', 'website' => '🌐 Website'][$key] ?? $key }}</h3>
+        <h3 class="font-semibold text-gray-900 mt-8 mb-3">@php $sectionIcons = ['paid_advertising' => 'chart-bar', 'shopify' => 'shopping-bag', 'social_media' => 'device-phone-mobile', 'website' => 'globe-alt']; @endphp
+        <h3 class="font-semibold text-gray-900 mt-8 mb-3"><x-icon :name="$sectionIcons[$key] ?? 'chart-bar'" class="w-4 h-4 inline-block" /> {{ ['paid_advertising' => 'Paid Advertising', 'shopify' => 'Shopify', 'social_media' => 'Social Media', 'website' => 'Website'][$key] ?? $key }}</h3>>
         <table class="w-full text-sm border border-gray-100 rounded-lg overflow-hidden">
             <tbody class="divide-y divide-gray-50">
                 @foreach ($section as $metric => $value)

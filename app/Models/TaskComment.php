@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskComment extends Model
 {
-    use TenantScoped;
+ use TenantScoped;
 
-    protected $fillable = ['tenant_id', 'task_id', 'user_id', 'comment'];
+ protected $fillable = ['tenant_id', 'task_id', 'user_id', 'comment'];
 
-    public function task()
-    {
-        return $this->belongsTo(Task::class);
-    }
+ public function task()
+ {
+ return $this->belongsTo(Task::class);
+ }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+ public function user()
+ {
+ return $this->belongsTo(User::class);
+ }
 }

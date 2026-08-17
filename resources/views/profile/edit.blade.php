@@ -8,7 +8,7 @@
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PATCH')
-            <x-card title="Profile" icon="👤">
+            <x-card title="Profile" icon="user">
                 <div class="flex items-center gap-4 mb-5">
                     <x-user-avatar :user="auth()->user()" size="lg" />
                     <div>
@@ -38,7 +38,7 @@
 
         <form method="POST" action="{{ route('profile.password') }}">
             @csrf
-            <x-card title="Change password" icon="🔒">
+            <x-card title="Change password" icon="lock-closed">
                 <div class="grid sm:grid-cols-3 gap-4">
                     <div><label class="block text-sm font-medium text-gray-700 mb-1">Current password</label>
                         <input type="password" name="current_password" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>

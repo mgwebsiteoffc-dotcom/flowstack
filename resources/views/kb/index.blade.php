@@ -14,13 +14,13 @@
 
 @if ($featured->isNotEmpty())
     <div class="mb-8">
-        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">⭐ Featured</h3>
+        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3"><x-icon name="star" class="w-4 h-4 inline-block" /> Featured</h3>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach ($featured as $article)
                 <a href="{{ route('kb.articles.show', $article) }}" class="bg-gradient-to-br from-indigo-600 to-purple-600 text-white rounded-xl p-5 hover:opacity-95 transition">
                     <div class="text-xs opacity-80 mb-2">{{ $article->category?->name }}</div>
                     <div class="font-semibold">{{ $article->title }}</div>
-                    <div class="text-xs opacity-80 mt-2">👁 {{ $article->view_count }} views</div>
+                    <div class="text-xs opacity-80 mt-2"><x-icon name="eye" class="w-4 h-4 inline-block" /> {{ $article->view_count }} views</div>
                 </a>
             @endforeach
         </div>
@@ -31,7 +31,7 @@
 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
     @foreach ($categories as $category)
         <a href="{{ route('kb.search', ['q' => '', 'category' => $category->id]) }}" class="bg-white rounded-xl border border-gray-200 p-5 hover:border-indigo-400 transition">
-            <div class="text-2xl mb-2">{{ $category->icon ?? '📚' }}</div>
+            <div class="mb-2"><x-icon :name="$category->icon ?: 'book-open'" class="w-7 h-7 text-gray-400" /></div>
             <div class="font-semibold text-gray-900 text-sm">{{ $category->name }}</div>
             <div class="text-xs text-gray-400 mt-1">{{ $category->published_articles_count }} articles</div>
         </a>

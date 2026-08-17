@@ -9,7 +9,7 @@
         <a href="{{ route('leads.analytics') }}" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-600">Analytics</a>
     </div>
     <div class="flex gap-2">
-        <a href="{{ route('leads.export') }}" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm">⬇ Export</a>
+        <a href="{{ route('leads.export') }}" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm"><x-icon name="arrow-down-tray" class="w-4 h-4 inline-block" /> Export</a>
         <a href="{{ route('leads.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ New lead</a>
     </div>
 </div>
@@ -57,7 +57,7 @@
                     <td class="px-4 py-3 text-gray-400 text-xs">{{ $lead->created_at?->format('d M') }}</td>
                 </tr>
             @empty
-                <tr><td colspan="7"><x-empty-state icon="🎯" title="No leads found" message="Create a lead manually or connect Lead365 to receive them automatically." :action="route('leads.create')" actionLabel="New lead" /></td></tr>
+                <tr><td colspan="7"><x-empty-state icon="target" title="No leads found" message="Create a lead manually or connect Lead365 to receive them automatically." :action="route('leads.create')" actionLabel="New lead" /></td></tr>
             @endforelse
         </tbody>
     </table>

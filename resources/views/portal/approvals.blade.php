@@ -17,14 +17,14 @@
             @if ($approval->file_paths)
                 <div class="flex flex-wrap gap-2 mt-3">
                     @foreach ($approval->file_paths as $path)
-                        <span class="text-xs bg-gray-100 rounded-lg px-3 py-1.5">📎 {{ basename($path) }}</span>
+                        <span class="text-xs bg-gray-100 rounded-lg px-3 py-1.5"><x-icon name="paper-clip" class="w-4 h-4 inline-block" /> {{ basename($path) }}</span>
                     @endforeach
                 </div>
             @endif
             <div x-data="{ notes: false }" class="mt-4 flex gap-2 flex-wrap">
                 <form method="POST" action="{{ route('portal.approvals.respond', $approval) }}">@csrf
                     <input type="hidden" name="action" value="approved">
-                    <button class="bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-medium">✓ Approve</button>
+                    <button class="bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-medium"> Approve</button>
                 </form>
                 <button @click="notes = !notes" class="bg-amber-50 text-amber-700 px-5 py-2 rounded-lg text-sm">Request changes</button>
                 <form method="POST" action="{{ route('portal.approvals.respond', $approval) }}" x-show="notes" x-cloak class="w-full flex gap-2">
@@ -36,7 +36,7 @@
             </div>
         </div>
     @empty
-        <div class="bg-white rounded-xl border border-gray-100 py-10 text-center text-sm text-gray-400">Nothing waiting for your approval 🎉</div>
+        <div class="bg-white rounded-xl border border-gray-100 py-10 text-center text-sm text-gray-400">Nothing waiting for your approval <x-icon name="sparkles" class="w-4 h-4 inline-block" /></div>
     @endforelse
 </div>
 
@@ -44,7 +44,7 @@
 <div class="bg-white rounded-xl border border-gray-100 divide-y divide-gray-50">
     @forelse ($history as $approval)
         <div class="flex items-center gap-3 px-5 py-3">
-            <span class="w-6 text-center">{{ $approval->status === 'approved' ? '✅' : '🔄' }}</span>
+            <span class="w-6 text-center">@if ($approval->status === 'approved')<x-icon name="check-circle" class="w-4 h-4 text-green-600" />@else<x-icon name="arrow-path" class="w-4 h-4 text-amber-600" />@endif</span>
             <div class="flex-1 min-w-0">
                 <div class="text-sm text-gray-800">{{ $approval->title }}</div>
                 @if ($approval->review_notes)<div class="text-xs text-gray-400 mt-0.5">{{ $approval->review_notes }}</div>@endif

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
     <title>@yield('title', 'Client Portal') · {{ auth('portal')->user()?->client?->company_name ?? 'Client Portal' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -13,7 +15,7 @@
     <nav class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
             <div class="flex items-center gap-3">
-                <button @click="mobileOpen = !mobileOpen" class="lg:hidden text-gray-500">☰</button>
+                <button @click="mobileOpen = !mobileOpen" class="lg:hidden text-gray-500"><x-icon name="menu" class="w-4 h-4 inline-block" /></button>
                 <span class="font-bold text-gray-900">{{ auth('portal')->user()?->client?->company_name }}</span>
                 <span class="hidden sm:inline text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">Client Portal</span>
             </div>

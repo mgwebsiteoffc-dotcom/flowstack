@@ -20,43 +20,43 @@ use Illuminate\Queue\SerializesModels;
  */
 class AgencyMail extends Mailable
 {
-    use Queueable, SerializesModels;
+ use Queueable, SerializesModels;
 
-    private string $messageText;
+ private string $messageText;
 
-    /** @var array<string, mixed> */
-    private array $payload;
+ /** @var array<string, mixed> */
+ private array $payload;
 
-    private string $templateView;
+ private string $templateView;
 
-    /**
-     * @param  array<string, mixed>  $data
-     */
-    public function __construct(string $subject, string $message, array $data = [], string $template = 'emails.notification')
-    {
-        // Inherited (untyped) Mailable::$subject - assignment is safe here.
-        $this->subject = $subject;
-        $this->messageText = $message;
-        $this->payload = $data;
-        $this->templateView = $template;
-    }
+ /**
+ * @param array<string, mixed> $data
+ */
+ public function __construct(string $subject, string $message, array $data = [], string $template = 'emails.notification')
+ {
+ // Inherited (untyped) Mailable::$subject - assignment is safe here.
+ $this->subject = $subject;
+ $this->messageText = $message;
+ $this->payload = $data;
+ $this->templateView = $template;
+ }
 
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: $this->subject,
-        );
-    }
+ public function envelope(): Envelope
+ {
+ return new Envelope(
+ subject: $this->subject,
+ );
+ }
 
-    public function content(): Content
-    {
-        return new Content(
-            view: $this->templateView,
-            with: [
-                'subject' => $this->subject,
-                'message' => $this->messageText,
-                'data' => $this->payload,
-            ],
-        );
-    }
+ public function content(): Content
+ {
+ return new Content(
+ view: $this->templateView,
+ with: [
+ 'subject' => $this->subject,
+ 'message' => $this->messageText,
+ 'data' => $this->payload,
+ ],
+ );
+ }
 }

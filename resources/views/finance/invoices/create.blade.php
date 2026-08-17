@@ -3,7 +3,7 @@
 @section('content')
 <form method="POST" action="{{ route('finance.invoices.store') }}" class="max-w-4xl space-y-6">
     @csrf
-    <x-card title="Invoice details" icon="🧾">
+    <x-card title="Invoice details" icon="receipt">
         <div class="grid sm:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Client *</label>
@@ -33,7 +33,7 @@
         </div>
     </x-card>
 
-    <x-card title="Line items" icon="📋">
+    <x-card title="Line items" icon="clipboard">
         <div x-data="invoiceBuilder()" x-init="init()">
             <input type="hidden" name="tax_rate" :value="taxRate">
             <template x-for="(item, i) in items" :key="i">
@@ -47,7 +47,7 @@
                     <input type="number" step="0.01" :name="'items[' + i + '][tax_rate]'" x-model.number="item.tax_rate" placeholder="Tax %"
                            class="col-span-1 rounded-lg border border-gray-300 px-2 py-1.5 text-sm" min="0" max="100">
                     <div class="col-span-2 text-sm text-gray-600 text-right font-medium" x-text="lineTotal(item)"></div>
-                    <button type="button" @click="items.splice(i, 1)" class="col-span-1 text-red-400 hover:text-red-600">✕</button>
+                    <button type="button" @click="items.splice(i, 1)" class="col-span-1 text-red-400 hover:text-red-600"><x-icon name="x-mark" class="w-4 h-4" /></button>
                 </div>
             </template>
             <button type="button" @click="items.push({ description: '', quantity: 1, unit_price: 0, tax_rate: taxRate })"
@@ -72,7 +72,7 @@
         </div>
     </x-card>
 
-    <x-card title="Notes & terms" icon="📝">
+    <x-card title="Notes & terms" icon="pencil-square">
         <div class="grid sm:grid-cols-2 gap-4">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
                 <textarea name="notes" rows="3" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">{{ old('notes') }}</textarea></div>

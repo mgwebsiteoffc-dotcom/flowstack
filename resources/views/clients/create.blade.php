@@ -3,7 +3,7 @@
 @section('content')
 <form method="POST" action="{{ route('clients.store') }}" enctype="multipart/form-data" class="max-w-3xl space-y-6">
     @csrf
-    <x-card title="Company details" icon="🏢">
+    <x-card title="Company details" icon="building-office">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Company name *</label>
@@ -30,7 +30,7 @@
         </div>
     </x-card>
 
-    <x-card title="Contract & account manager" icon="📄">
+    <x-card title="Contract & account manager" icon="document">
         <div class="grid sm:grid-cols-2 gap-4">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Contract start</label>
                 <input type="date" name="contract_start_date" value="{{ old('contract_start_date') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
@@ -60,7 +60,7 @@
         </div>
     </x-card>
 
-    <x-card title="Services" icon="🛠️">
+    <x-card title="Services" icon="wrench">
         <div class="grid sm:grid-cols-2 gap-3">
             @foreach (\App\Models\ClientService::TYPES as $key => $label)
                 <label class="flex items-center gap-3 border rounded-lg px-3 py-2.5 cursor-pointer hover:border-indigo-400">
@@ -72,7 +72,7 @@
         </div>
     </x-card>
 
-    <x-card title="Primary contact" icon="📇">
+    <x-card title="Primary contact" icon="identification">
         <div class="grid sm:grid-cols-2 gap-4">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
                 <input type="text" name="contact_name" value="{{ old('contact_name') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
@@ -85,7 +85,7 @@
         </div>
     </x-card>
 
-    <x-card title="Notes" icon="📝">
+    <x-card title="Notes" icon="pencil-square">
         <textarea name="notes" rows="3" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">{{ old('notes') }}</textarea>
     </x-card>
 

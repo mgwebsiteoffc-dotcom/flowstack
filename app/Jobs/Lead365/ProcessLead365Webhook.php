@@ -17,31 +17,31 @@ use Illuminate\Queue\SerializesModels;
  */
 class ProcessLead365Webhook implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $tries = 3;
-    public array $backoff = [60, 300, 900];
+ public int $tries = 3;
+ public array $backoff = [60, 300, 900];
 
-    public function __construct(
-        public array $payload,
-        public int $tenantId,
-        public int $webhookLogId
-    ) {
-    }
+ public function __construct(
+ public array $payload,
+ public int $tenantId,
+ public int $webhookLogId
+ ) {
+ }
 
-    public function handle(Lead365WebhookService $service): void
-    {
-        TenantScope::setCurrent($this->tenantId);
+ public function handle(Lead365WebhookService $service): void
+ {
+ TenantScope::setCurrent($this->tenantId);
 
-        $service->processWebhook($this->payload, $this->tenantId, $this->webhookLogId);
-    }
+ $service->processWebhook($this->payload, $this->tenantId, $this->webhookLogId);
+ }
 
-    public function failed(\Throwable $e): void
-    {
-        WebhookLog::withoutGlobalScopes()->where('id', $this->webhookLogId)->update([
-            'status' => 'failed',
-            'error_message' => substr($e->getMessage(), 0, 2000),
-            'processed_at' => now(),
-        ]);
-    }
+ public function failed(\Throwable $e): void
+ {
+ WebhookLog::withoutGlobalScopes()->where('id', $this->webhookLogId)->update([
+ 'status' => 'failed',
+ 'error_message' => substr($e->getMessage(), 0, 2000),
+ 'processed_at' => now(),
+ ]);
+ }
 }

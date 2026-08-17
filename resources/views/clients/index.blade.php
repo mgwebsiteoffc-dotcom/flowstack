@@ -68,7 +68,7 @@
                 </tr>
             @empty
                 <tr><td colspan="6">
-                    <x-empty-state icon="🤝" title="No clients found" message="Add your first client to start managing their projects, tasks and invoices." :action="route('clients.create')" actionLabel="Add client" />
+                    <x-empty-state icon="users" title="No clients found" message="Add your first client to start managing their projects, tasks and invoices." :action="route('clients.create')" actionLabel="Add client" />
                 </td></tr>
             @endforelse
         </tbody>

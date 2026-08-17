@@ -46,7 +46,7 @@
     @endforeach
 </div>
 
-<div class="text-xs text-gray-400 mt-3">💡 Drag cards between columns to update status. <a href="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js" class="underline">SortableJS</a> powers drag & drop.</div>
+<div class="text-xs text-gray-400 mt-3"><x-icon name="light-bulb" class="w-4 h-4 inline-block" /> Drag cards between columns to update status. <a href="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js" class="underline">SortableJS</a> powers drag & drop.</div>
 @endsection
 
 @push('scripts')

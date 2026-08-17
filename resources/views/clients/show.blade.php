@@ -59,7 +59,7 @@
 @if ($tab === 'overview')
     <div class="grid lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
-            <x-card title="Company info" icon="🏢">
+            <x-card title="Company info" icon="building-office">
                 <dl class="grid sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
                     <div><dt class="text-gray-400 text-xs">Website</dt><dd class="text-gray-800">{{ $client->website ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">GSTIN</dt><dd class="text-gray-800">{{ $client->gstin ?? '—' }}</dd></div>
@@ -71,7 +71,7 @@
                 @if ($client->notes)<div class="mt-4 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">{{ $client->notes }}</div>@endif
             </x-card>
 
-            <x-card title="Services" icon="🛠️">
+            <x-card title="Services" icon="wrench">
                 <div class="flex flex-wrap gap-2">
                     @forelse ($client->services as $service)
                         <span class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 rounded-full px-3 py-1 text-sm">
@@ -84,7 +84,7 @@
                 </div>
             </x-card>
 
-            <x-card title="Quick stats" icon="📊">
+            <x-card title="Quick stats" icon="chart-bar">
                 <div class="grid grid-cols-3 gap-4 text-center">
                     <div><div class="text-xl font-bold text-gray-900">{{ $client->projects()->count() }}</div><div class="text-xs text-gray-400">Projects</div></div>
                     <div><div class="text-xl font-bold text-gray-900">{{ $client->tasks()->whereNotIn('status', ['done', 'cancelled'])->count() }}</div><div class="text-xs text-gray-400">Open tasks</div></div>
@@ -92,20 +92,20 @@
                 </div>
             </x-card>
 
-            <x-card title="Onboarding checklist" icon="📋">
+            <x-card title="Onboarding checklist" icon="clipboard">
                 @foreach ($client->onboardingItems as $item)
                     <div x-data="{ editing: false }" class="py-2 border-b border-gray-50 last:border-0">
                         <div class="flex items-center gap-3">
                             <form method="POST" action="{{ route('clients.onboarding.toggle', [$client, $item->id]) }}">
                                 @csrf
                                 <button type="submit" class="w-5 h-5 rounded border-2 {{ $item->is_completed ? 'bg-green-500 border-green-500' : 'border-gray-300' }} flex items-center justify-center text-white text-xs">
-                                    {{ $item->is_completed ? '✓' : '' }}
+                                    {{ $item->is_completed ? '' : '' }}
                                 </button>
                             </form>
                             <span class="text-sm {{ $item->is_completed ? 'text-gray-400 line-through' : 'text-gray-700' }} flex-1">{{ $item->title }}</span>
                             <span class="text-xs text-gray-400">{{ $item->assignee?->name }}</span>
                             @if ($item->due_date)<span class="text-xs text-gray-400">{{ $item->due_date->format('d M') }}</span>@endif
-                            <button @click="editing = !editing" class="text-xs text-gray-400 hover:text-gray-600">✏️</button>
+                            <button @click="editing = !editing" class="text-xs text-gray-400 hover:text-gray-600"><x-icon name="pencil" class="w-4 h-4 inline-block" /></button>
                         </div>
                         <form method="POST" action="{{ route('clients.onboarding.update', [$client, $item->id]) }}" x-show="editing" x-cloak class="flex gap-2 mt-2 pl-8">
                             @csrf
@@ -125,7 +125,7 @@
         </div>
 
         <div class="space-y-6">
-            <x-card title="Contacts" icon="📇">
+            <x-card title="Contacts" icon="identification">
                 @forelse ($client->contacts as $contact)
                     <div class="py-2 border-b border-gray-50 last:border-0">
                         <div class="text-sm font-medium text-gray-800">{{ $contact->name }} @if ($contact->is_primary)<span class="text-[10px] bg-indigo-100 text-indigo-700 rounded px-1.5 py-0.5">Primary</span>@endif</div>
@@ -137,7 +137,7 @@
                 <a href="?tab=contacts" class="text-xs text-indigo-600 mt-2 inline-block">Manage contacts →</a>
             </x-card>
 
-            <x-card title="Team members" icon="👥">
+            <x-card title="Team members" icon="users">
                 @forelse ($client->teamMembers as $member)
                     <div class="flex items-center gap-2 py-1.5">
                         <x-user-avatar :user="$member->user" size="sm" />
@@ -149,7 +149,7 @@
                 @endforelse
             </x-card>
 
-            <x-card title="Client portal" icon="🔐">
+            <x-card title="Client portal" icon="lock-closed">
                 <div class="text-sm text-gray-600 mb-3">
                     {{ $client->portal_access_enabled ? 'Portal is enabled' : 'Portal is disabled' }}
                 </div>
@@ -191,7 +191,7 @@
                 </div>
             </a>
         @empty
-            <div class="sm:col-span-3"><x-empty-state icon="📁" title="No projects" message="Create a project to organize work for this client." :action="route('projects.create')" actionLabel="New project" /></div>
+            <div class="sm:col-span-3"><x-empty-state icon="folder" title="No projects" message="Create a project to organize work for this client." :action="route('projects.create')" actionLabel="New project" /></div>
         @endforelse
     </div>
 
@@ -211,7 +211,7 @@
                         <td class="px-4 py-3 text-gray-500">{{ $task->due_date?->format('d M') ?? '—' }}</td>
                     </tr>
                 @empty
-                    <tr><td colspan="5"><x-empty-state icon="✅" title="No tasks" message="No tasks for this client yet." :action="route('tasks.create')" actionLabel="New task" /></td></tr>
+                    <tr><td colspan="5"><x-empty-state icon="check-circle" title="No tasks" message="No tasks for this client yet." :action="route('tasks.create')" actionLabel="New task" /></td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -230,7 +230,7 @@
                 <div class="mt-2"><x-status-badge :status="$report->status" type="invoice" /></div>
             </a>
         @empty
-            <div class="sm:col-span-3"><x-empty-state icon="📈" title="No reports" message="Create performance reports for this client." :action="route('reports.create')" actionLabel="New report" /></div>
+            <div class="sm:col-span-3"><x-empty-state icon="chart-bar" title="No reports" message="Create performance reports for this client." :action="route('reports.create')" actionLabel="New report" /></div>
         @endforelse
     </div>
 
@@ -253,7 +253,7 @@
                         <td class="px-4 py-3 text-right text-gray-500">{{ $invoice->due_date->format('d M Y') }}</td>
                     </tr>
                 @empty
-                    <tr><td colspan="5"><x-empty-state icon="🧾" title="No invoices" message="Create an invoice for this client." :action="route('finance.invoices.create')" actionLabel="New invoice" /></td></tr>
+                    <tr><td colspan="5"><x-empty-state icon="receipt" title="No invoices" message="Create an invoice for this client." :action="route('finance.invoices.create')" actionLabel="New invoice" /></td></tr>
                 @endforelse
             </tbody>
         </table>
@@ -267,20 +267,24 @@
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse ($files as $file)
             <div class="bg-white rounded-xl border border-gray-200 p-4">
-                <div class="text-2xl mb-2">{{ $file->isImage() ? '🖼️' : ($file->isPdf() ? '📄' : '📎') }}</div>
+                <div class="text-2xl mb-2">
+                    @if ($file->isImage())<x-icon name="photo" class="w-6 h-6" />
+                    @elseif ($file->isPdf())<x-icon name="document" class="w-6 h-6" />
+                    @else<x-icon name="paper-clip" class="w-6 h-6" />@endif
+                </div>
                 <div class="text-sm font-medium text-gray-800 truncate">{{ $file->original_name }}</div>
                 <div class="text-xs text-gray-400">{{ $file->sizeHuman() }} · v{{ $file->version }}</div>
                 <a href="{{ route('files.download', $file) }}" class="text-xs text-indigo-600 mt-2 inline-block">Download</a>
             </div>
         @empty
-            <div class="sm:col-span-3"><x-empty-state icon="📎" title="No files" message="Upload files for this client from the file manager." /></div>
+            <div class="sm:col-span-3"><x-empty-state icon="paper-clip" title="No files" message="Upload files for this client from the file manager." /></div>
         @endforelse
     </div>
     <x-pagination :paginator="$files" />
 
 @elseif ($tab === 'contacts')
     <div class="grid lg:grid-cols-2 gap-6">
-        <x-card title="Contacts" icon="📇">
+        <x-card title="Contacts" icon="identification">
             @forelse ($client->contacts as $contact)
                 <div class="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
                     <div>
@@ -293,14 +297,14 @@
                     </div>
                     <form method="POST" action="{{ route('clients.contacts.destroy', [$client, $contact]) }}" onsubmit="return confirm('Remove this contact?')">
                         @csrf @method('DELETE')
-                        <button class="text-red-400 hover:text-red-600 text-sm">✕</button>
+                        <button class="text-red-400 hover:text-red-600 text-sm"><x-icon name="x-mark" class="w-4 h-4" /></button>
                     </form>
                 </div>
             @empty
                 <p class="text-sm text-gray-400 text-center py-3">No contacts yet</p>
             @endforelse
         </x-card>
-        <x-card title="Add contact" icon="➕">
+        <x-card title="Add contact" icon="plus">
             <form method="POST" action="{{ route('clients.contacts.store', $client) }}" class="space-y-3">
                 @csrf
                 <input type="text" name="name" placeholder="Full name *" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
@@ -315,7 +319,7 @@
     </div>
 
 @elseif ($tab === 'activity')
-    <x-card title="Activity" icon="🕓">
+    <x-card title="Activity" icon="clock">
         @forelse ($activity as $log)
             <div class="flex items-start gap-3 py-2.5 border-b border-gray-50 last:border-0">
                 <x-user-avatar :user="$log->user" size="sm" />
@@ -331,12 +335,12 @@
 
 @else
     <div class="grid lg:grid-cols-2 gap-6">
-        <x-card title="Notes" icon="📝">
+        <x-card title="Notes" icon="pencil-square">
             @forelse ($client->notes->sortByDesc('created_at')->sortByDesc(fn ($n) => (int) $n->is_pinned) as $note)
                 <div class="py-3 border-b border-gray-50 last:border-0 {{ $note->is_pinned ? 'bg-amber-50 rounded-lg px-2' : '' }}">
                     <div class="flex items-center gap-2 mb-1">
                         <span class="text-[10px] uppercase font-bold {{ $note->note_type === 'warning' ? 'text-amber-600' : ($note->note_type === 'important' ? 'text-red-600' : 'text-gray-400') }}">{{ $note->note_type }}</span>
-                        @if ($note->is_pinned)<span class="text-[10px] bg-amber-100 text-amber-700 rounded px-1.5 py-0.5">📌 Pinned</span>@endif
+                        @if ($note->is_pinned)<span class="text-[10px] bg-amber-100 text-amber-700 rounded px-1.5 py-0.5"><x-icon name="map-pin" class="w-4 h-4 inline-block" /> Pinned</span>@endif
                         <span class="text-xs text-gray-400 ml-auto">{{ $note->creator?->name }} · {{ $note->created_at->diffForHumans() }}</span>
                     </div>
                     <p class="text-sm text-gray-700 whitespace-pre-line">{{ $note->note }}</p>
@@ -345,7 +349,7 @@
                 <p class="text-sm text-gray-400 text-center py-3">No notes yet</p>
             @endforelse
         </x-card>
-        <x-card title="Add note" icon="➕">
+        <x-card title="Add note" icon="plus">
             <form method="POST" action="{{ route('clients.notes.store', $client) }}" class="space-y-3">
                 @csrf
                 <textarea name="note" rows="4" placeholder="Write a note…" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></textarea>

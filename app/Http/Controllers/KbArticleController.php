@@ -10,117 +10,117 @@ use Illuminate\Http\Request;
 
 class KbArticleController extends Controller
 {
-    public function search(Request $request)
-    {
-        $term = $request->input('q');
+ public function search(Request $request)
+ {
+ $term = $request->input('q');
 
-        $query = KbArticle::published()->with('category');
+ $query = KbArticle::published()->with('category');
 
-        if ($categoryId = $request->integer('category')) {
-            $query->where('category_id', $categoryId);
-        }
+ if ($categoryId = $request->integer('category')) {
+ $query->where('category_id', $categoryId);
+ }
 
-        $articles = $query->search($term)->latest()->paginate(15)->withQueryString();
+ $articles = $query->search($term)->latest()->paginate(15)->withQueryString();
 
-        return view('kb.search', compact('articles', 'term'));
-    }
+ return view('kb.search', compact('articles', 'term'));
+ }
 
-    public function create()
-    {
-        $categories = KbCategory::orderBy('order_index')->get();
-        $tags = KbArticleTag::orderBy('name')->get();
+ public function create()
+ {
+ $categories = KbCategory::orderBy('order_index')->get();
+ $tags = KbArticleTag::orderBy('name')->get();
 
-        return view('kb.articles.create', compact('categories', 'tags'));
-    }
+ return view('kb.articles.create', compact('categories', 'tags'));
+ }
 
-    public function store(KbArticleRequest $request)
-    {
-        $validated = $request->validated();
+ public function store(KbArticleRequest $request)
+ {
+ $validated = $request->validated();
 
-        $article = KbArticle::create($validated + [
-            'tenant_id' => app('currentTenant')->id,
-            'created_by' => auth()->id(),
-            'published_at' => ($validated['status'] ?? 'draft') === 'published' ? now() : null,
-        ]);
+ $article = KbArticle::create($validated + [
+ 'tenant_id' => app('currentTenant')->id,
+ 'created_by' => auth()->id(),
+ 'published_at' => ($validated['status'] ?? 'draft') === 'published' ? now() : null,
+ ]);
 
-        $article->tags()->sync($request->input('tag_ids', []));
+ $article->tags()->sync($request->input('tag_ids', []));
 
-        return redirect()->route('kb.articles.show', $article)->with('success', 'Article saved.');
-    }
+ return redirect()->route('kb.articles.show', $article)->with('success', 'Article saved.');
+ }
 
-    public function show(KbArticle $article)
-    {
-        if ($article->status === 'published') {
-            $article->increment('view_count');
-        }
+ public function show(KbArticle $article)
+ {
+ if ($article->status === 'published') {
+ $article->increment('view_count');
+ }
 
-        $article->load('category', 'tags', 'creator', 'comments.user');
+ $article->load('category', 'tags', 'creator', 'comments.user');
 
-        $related = KbArticle::published()
-            ->where('category_id', $article->category_id)
-            ->where('id', '!=', $article->id)
-            ->latest()
-            ->take(5)
-            ->get();
+ $related = KbArticle::published()
+ ->where('category_id', $article->category_id)
+ ->where('id', '!=', $article->id)
+ ->latest()
+ ->take(5)
+ ->get();
 
-        return view('kb.articles.show', compact('article', 'related'));
-    }
+ return view('kb.articles.show', compact('article', 'related'));
+ }
 
-    public function edit(KbArticle $article)
-    {
-        $categories = KbCategory::orderBy('order_index')->get();
-        $tags = KbArticleTag::orderBy('name')->get();
+ public function edit(KbArticle $article)
+ {
+ $categories = KbCategory::orderBy('order_index')->get();
+ $tags = KbArticleTag::orderBy('name')->get();
 
-        return view('kb.articles.edit', compact('article', 'categories', 'tags'));
-    }
+ return view('kb.articles.edit', compact('article', 'categories', 'tags'));
+ }
 
-    public function update(KbArticleRequest $request, KbArticle $article)
-    {
-        $validated = $request->validated();
+ public function update(KbArticleRequest $request, KbArticle $article)
+ {
+ $validated = $request->validated();
 
-        $article->update($validated + [
-            'published_at' => ($validated['status'] ?? 'draft') === 'published'
-                ? ($article->published_at ?? now())
-                : null,
-        ]);
+ $article->update($validated + [
+ 'published_at' => ($validated['status'] ?? 'draft') === 'published'
+ ? ($article->published_at ?? now())
+ : null,
+ ]);
 
-        $article->tags()->sync($request->input('tag_ids', []));
+ $article->tags()->sync($request->input('tag_ids', []));
 
-        return redirect()->route('kb.articles.show', $article)->with('success', 'Article updated.');
-    }
+ return redirect()->route('kb.articles.show', $article)->with('success', 'Article updated.');
+ }
 
-    public function destroy(KbArticle $article)
-    {
-        $article->delete();
+ public function destroy(KbArticle $article)
+ {
+ $article->delete();
 
-        return redirect()->route('kb.index')->with('success', 'Article deleted.');
-    }
+ return redirect()->route('kb.index')->with('success', 'Article deleted.');
+ }
 
-    public function storeComment(Request $request, KbArticle $article)
-    {
-        $validated = $request->validate(['comment' => ['required', 'string', 'max:2000']]);
+ public function storeComment(Request $request, KbArticle $article)
+ {
+ $validated = $request->validate(['comment' => ['required', 'string', 'max:2000']]);
 
-        \App\Models\KbArticleComment::create([
-            'tenant_id' => $article->tenant_id,
-            'article_id' => $article->id,
-            'user_id' => auth()->id(),
-            'comment' => $validated['comment'],
-        ]);
+ \App\Models\KbArticleComment::create([
+ 'tenant_id' => $article->tenant_id,
+ 'article_id' => $article->id,
+ 'user_id' => auth()->id(),
+ 'comment' => $validated['comment'],
+ ]);
 
-        return back()->with('success', 'Comment added.');
-    }
+ return back()->with('success', 'Comment added.');
+ }
 
-    public function feedback(Request $request, KbArticle $article)
-    {
-        $request->validate(['helpful' => ['required', 'boolean']]);
+ public function feedback(Request $request, KbArticle $article)
+ {
+ $request->validate(['helpful' => ['required', 'boolean']]);
 
-        // Persist per-article feedback counts in the settings table.
-        $flag = $request->boolean('helpful') ? 'yes' : 'no';
-        $key = 'kb_feedback_'.$article->id.'_'.$flag;
-        $count = (int) \App\Models\Setting::get($key, 0);
+ // Persist per-article feedback counts in the settings table.
+ $flag = $request->boolean('helpful') ? 'yes' : 'no';
+ $key = 'kb_feedback_'.$article->id.'_'.$flag;
+ $count = (int) \App\Models\Setting::get($key, 0);
 
-        \App\Models\Setting::set($key, $count + 1);
+ \App\Models\Setting::set($key, $count + 1);
 
-        return back()->with('success', 'Thanks for your feedback!');
-    }
+ return back()->with('success', 'Thanks for your feedback!');
+ }
 }

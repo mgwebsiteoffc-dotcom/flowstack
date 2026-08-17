@@ -50,7 +50,7 @@
                                 @can('create', App\Models\User::class)
                                     @if (! $user->email_verified_at)
                                         <form method="POST" action="{{ route('team.resend-invite', $user) }}" class="inline">@csrf
-                                            <button class="text-indigo-600 hover:underline block mt-0.5" title="Resend invitation">↻ Resend invite</button>
+                                            <button class="text-indigo-600 hover:underline block mt-0.5" title="Resend invitation"><x-icon name="arrow-path" class="w-4 h-4 inline-block" /> Resend invite</button>
                                         </form>
                                     @endif
                                 @endcan

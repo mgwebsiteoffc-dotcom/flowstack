@@ -19,11 +19,11 @@
                 </h1>
                 <div class="flex items-center gap-2">
                     @if ($runningEntry)
-                        <span class="text-xs bg-red-50 text-red-700 rounded-full px-3 py-1.5">⏱️ Timer running on {{ $runningEntry->task_id === $task->id ? 'this task' : '#'.$runningEntry->task_id }}</span>
+                        <span class="text-xs bg-red-50 text-red-700 rounded-full px-3 py-1.5"><x-icon name="clock" class="w-3 h-3 inline-block" /> Timer running on {{ $runningEntry->task_id === $task->id ? 'this task' : '#'.$runningEntry->task_id }}</span>
                     @else
                         <form method="POST" action="{{ route('time.start') }}">@csrf
                             <input type="hidden" name="task_id" value="{{ $task->id }}">
-                            <button class="text-xs bg-indigo-50 text-indigo-700 rounded-full px-3 py-1.5 hover:bg-indigo-100">▶ Start timer</button>
+                            <button class="text-xs bg-indigo-50 text-indigo-700 rounded-full px-3 py-1.5 hover:bg-indigo-100"><x-icon name="play" class="w-4 h-4 inline-block" /> Start timer</button>
                         </form>
                     @endif
                     <x-confirm-delete :action="route('tasks.destroy', $task)" message="Delete this task? Subtasks and comments will also be removed.">
@@ -65,7 +65,7 @@
                 @endif
                 <form method="POST" action="{{ route('tasks.watchers.toggle', $task) }}">@csrf
                     <button class="rounded-full px-2.5 py-1 {{ $task->watchers->contains('id', auth()->id()) ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 hover:bg-gray-200' }}">
-                        👁 {{ $task->watchers->contains('id', auth()->id()) ? 'Watching' : 'Watch' }} ({{ $task->watchers->count() }})
+                        <x-icon name="eye" class="w-4 h-4 inline-block" /> {{ $task->watchers->contains('id', auth()->id()) ? 'Watching' : 'Watch' }} ({{ $task->watchers->count() }})
                     </button>
                 </form>
             </div>
@@ -76,7 +76,7 @@
         </div>
 
         <!-- Subtasks -->
-        <x-card title="Subtasks" icon="🧩">
+        <x-card title="Subtasks" icon="puzzle-piece">
             @forelse ($task->subtasks as $sub)
                 <div class="flex items-center gap-2 py-2 border-b border-gray-50 last:border-0">
                     <x-status-badge :status="$sub->status" />
@@ -98,14 +98,14 @@
         </x-card>
 
         <!-- Checklists -->
-        <x-card title="Checklists" icon="📋">
+        <x-card title="Checklists" icon="clipboard">
             @foreach ($task->checklists as $checklist)
                 <div class="mb-4">
                     <div class="font-medium text-sm text-gray-800 mb-1.5">{{ $checklist->title }}</div>
                     @foreach ($checklist->items as $item)
                         <form method="POST" action="{{ route('tasks.checklist-items.toggle', $item) }}" class="flex items-center gap-2 py-1">
                             @csrf
-                            <button class="w-4 h-4 rounded border-2 {{ $item->is_completed ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300' }} text-[10px] flex items-center justify-center">{{ $item->is_completed ? '✓' : '' }}</button>
+                            <button class="w-4 h-4 rounded border-2 {{ $item->is_completed ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300' }} text-[10px] flex items-center justify-center">{{ $item->is_completed ? '' : '' }}</button>
                             <span class="text-sm {{ $item->is_completed ? 'text-gray-400 line-through' : 'text-gray-700' }}">{{ $item->title }}</span>
                         </form>
                     @endforeach
@@ -119,17 +119,17 @@
         </x-card>
 
         <!-- Attachments -->
-        <x-card title="Attachments" icon="📎">
+        <x-card title="Attachments" icon="paper-clip">
             @forelse ($task->attachments as $attachment)
                 <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
-                    <span class="text-xl">📄</span>
+                    <span class="text-xl"><x-icon name="document" class="w-4 h-4 inline-block" /></span>
                     <div class="flex-1 min-w-0">
                         <div class="text-sm text-gray-800 truncate">{{ $attachment->file_name }}</div>
                         <div class="text-xs text-gray-400">{{ round($attachment->file_size / 1024, 1) }} KB · {{ $attachment->uploader?->name }}</div>
                     </div>
                     <a href="{{ route('tasks.attachments.download', [$task, $attachment]) }}" class="text-xs text-indigo-600">Download</a>
                     <form method="POST" action="{{ route('tasks.attachments.destroy', [$task, $attachment]) }}">@csrf @method('DELETE')
-                        <button class="text-xs text-red-400">✕</button>
+                        <button class="text-xs text-red-400"><x-icon name="x-mark" class="w-3 h-3" /></button>
                     </form>
                 </div>
             @empty
@@ -143,7 +143,7 @@
         </x-card>
 
         <!-- Time log -->
-        <x-card title="Time log" icon="⏱️">
+        <x-card title="Time log" icon="clock">
             @forelse ($task->timeEntries as $entry)
                 <div class="flex items-center justify-between py-2 border-b border-gray-50 last:border-0 text-sm">
                     <div>
@@ -161,7 +161,7 @@
 
     <div class="space-y-6">
         <!-- Comments -->
-        <x-card title="Comments ({{ $task->comments->count() }})" icon="💬">
+        <x-card title="Comments ({{ $task->comments->count() }})" icon="chat-bubble-left-right">
             <div class="space-y-3 mb-4 max-h-96 overflow-y-auto">
                 @forelse ($task->comments as $comment)
                     <div class="flex gap-2.5">
@@ -183,7 +183,7 @@
         </x-card>
 
         <!-- Meta -->
-        <x-card title="Details" icon="ℹ️">
+        <x-card title="Details" icon="ℹ">
             <dl class="space-y-2 text-sm">
                 <div class="flex justify-between"><dt class="text-gray-400">Status</dt><dd><x-status-badge :status="$task->status" /></dd></div>
                 <div class="flex justify-between"><dt class="text-gray-400">Priority</dt><dd><x-priority-badge :priority="$task->priority" /></dd></div>

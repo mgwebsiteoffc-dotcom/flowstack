@@ -4,7 +4,7 @@
 <form method="POST" action="{{ route('clients.update', $client) }}" enctype="multipart/form-data" class="max-w-3xl space-y-6">
     @csrf
     @method('PATCH')
-    <x-card title="Company details" icon="🏢">
+    <x-card title="Company details" icon="building-office">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Company name *</label>
@@ -56,7 +56,7 @@
         </div>
     </x-card>
 
-    <x-card title="Services" icon="🛠️">
+    <x-card title="Services" icon="wrench">
         <div class="grid sm:grid-cols-2 gap-3">
             @foreach (\App\Models\ClientService::TYPES as $key => $label)
                 @php $svc = $client->services->firstWhere('service_type', $key); @endphp
@@ -69,7 +69,7 @@
         </div>
     </x-card>
 
-    <x-card title="Notes" icon="📝">
+    <x-card title="Notes" icon="pencil-square">
         <textarea name="notes" rows="3" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">{{ old('notes', $client->notes) }}</textarea>
     </x-card>
 

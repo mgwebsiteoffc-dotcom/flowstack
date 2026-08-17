@@ -5,23 +5,23 @@
 <div class="grid lg:grid-cols-4 gap-6">
     <div>@include('settings.partials.nav', ['active' => 'lead365'])</div>
     <div class="lg:col-span-3 space-y-6">
-        <x-card title="Webhook URL" icon="🔗">
+        <x-card title="Webhook URL" icon="link">
             <div x-data="{ copied: false }" class="flex items-center gap-2 bg-gray-50 rounded-lg p-3 border border-gray-200">
                 <code class="text-xs text-indigo-700 break-all flex-1">{{ url('webhooks/lead365/'.$tenant->slug) }}</code>
                 <button type="button" @click="navigator.clipboard.writeText('{{ url('webhooks/lead365/'.$tenant->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                        class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg" x-text="copied ? 'Copied ✅' : 'Copy'"></button>
+                        class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg" x-text="copied ? 'Copied check-circle' : 'Copy'"></button>
             </div>
             <p class="text-xs text-gray-400 mt-2">Paste this URL in your Lead365 account and subscribe to: lead.created, lead.updated, lead.deleted, lead.stage_changed, lead.assigned, lead.won, lead.lost, form.submitted, meta.lead.received</p>
             <div class="mt-3">
                 <form method="POST" action="{{ route('settings.integrations.lead365.test') }}">@csrf
-                    <button class="text-xs bg-gray-800 text-white px-4 py-1.5 rounded-lg">▶ Test Connection (send test event)</button>
+                    <button class="text-xs bg-gray-800 text-white px-4 py-1.5 rounded-lg"><x-icon name="play" class="w-4 h-4 inline-block" /> Test Connection (send test event)</button>
                 </form>
             </div>
         </x-card>
 
         <form method="POST" action="{{ route('settings.integrations.lead365.save') }}" class="space-y-6">
             @csrf
-            <x-card title="Settings" icon="⚙️">
+            <x-card title="Settings" icon="cog-6-tooth">
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Webhook secret <span class="text-gray-400">(optional, for request verification)</span></label>
@@ -73,7 +73,7 @@
                 </div>
             </x-card>
 
-            <x-card title="Stage mapping (Lead365 stage → local stage)" icon="🪜">
+            <x-card title="Stage mapping (Lead365 stage → local stage)" icon="view-columns">
                 <p class="text-xs text-gray-400 mb-3">When Lead365 sends a stage id, it is mapped to your local pipeline stage. The mapping keys come from Lead365's stage ids.</p>
                 <div class="space-y-2">
                     @foreach ($stages as $stage)
@@ -92,7 +92,7 @@
             </div>
         </form>
 
-        <x-card title="Webhook event log (last 50)" icon="🕓" :padding="false">
+        <x-card title="Webhook event log (last 50)" icon="clock" :padding="false">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-left text-xs text-gray-500 uppercase">
                     <tr><th class="px-4 py-2.5">Time</th><th class="px-4 py-2.5">Event</th><th class="px-4 py-2.5">Status</th><th class="px-4 py-2.5">Lead</th></tr>

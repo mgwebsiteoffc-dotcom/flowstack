@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class ExpenseCategory extends Model
 {
-    use TenantScoped;
+ use TenantScoped;
 
-    protected $fillable = ['tenant_id', 'name', 'color'];
+ protected $fillable = ['tenant_id', 'name', 'color'];
 
-    public function expenses()
-    {
-        return $this->hasMany(Expense::class);
-    }
+ public function expenses()
+ {
+ return $this->hasMany(Expense::class);
+ }
 }

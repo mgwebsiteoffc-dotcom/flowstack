@@ -4,15 +4,15 @@
 <h1 class="text-xl font-bold text-white mb-6">Platform overview</h1>
 <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
     @foreach ([
-        ['Total tenants', $stats['total_tenants'], '🏢'],
-        ['Active', $stats['active_tenants'], '✅'],
-        ['Trials', $stats['trials'], '⏳'],
-        ['MRR', '₹'.number_format($stats['mrr']), '💰'],
-        ['New signups (month)', $stats['new_signups_month'], '🚀'],
-        ['Churn (month)', $stats['churn_month'], '📉'],
+        ['Total tenants', $stats['total_tenants'], 'building-office'],
+        ['Active', $stats['active_tenants'], 'check-circle'],
+        ['Trials', $stats['trials'], 'hourglass'],
+        ['MRR', '₹'.number_format($stats['mrr']), 'banknotes'],
+        ['New signups (month)', $stats['new_signups_month'], 'rocket-launch'],
+        ['Churn (month)', $stats['churn_month'], 'arrow-trending-down'],
     ] as [$label, $value, $icon])
         <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
-            <div class="text-2xl mb-2">{{ $icon }}</div>
+            <div class="mb-2"><x-icon :name="$icon" class="w-7 h-7 text-gray-400" /></div>
             <div class="text-xl font-bold text-white">{{ $value }}</div>
             <div class="text-xs text-gray-500 mt-1">{{ $label }}</div>
         </div>

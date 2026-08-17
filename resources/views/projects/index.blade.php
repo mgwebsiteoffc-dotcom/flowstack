@@ -36,7 +36,7 @@
         </a>
     @empty
         <div class="sm:col-span-3">
-            <x-empty-state icon="📁" title="No projects" message="Create your first project to organize client work." :action="route('projects.create')" actionLabel="New project" />
+            <x-empty-state icon="folder" title="No projects" message="Create your first project to organize client work." :action="route('projects.create')" actionLabel="New project" />
         </div>
     @endforelse
 </div>

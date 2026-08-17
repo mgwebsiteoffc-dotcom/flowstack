@@ -2,7 +2,7 @@
 @section('title', 'Checkout')
 @section('content')
 <div class="max-w-md mx-auto">
-    <x-card title="Complete payment" icon="💳">
+    <x-card title="Complete payment" icon="credit-card">
         <div class="text-sm text-gray-600 mb-4">
             <div class="flex justify-between py-1"><span>Plan</span><span class="font-medium">{{ $plan->name }}</span></div>
             <div class="flex justify-between py-1"><span>Billing</span><span class="font-medium">{{ $subscription->billing_cycle === 'yearly' ? 'Yearly' : 'Monthly' }}</span></div>

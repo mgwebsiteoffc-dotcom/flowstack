@@ -17,43 +17,43 @@ use Illuminate\Support\Facades\Mail;
  */
 class SendWeeklyManagerSummary implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): void
-    {
-        $admins = User::withoutGlobalScopes()
-            ->with('tenant')
-            ->where('role', 'admin')
-            ->where('is_active', true)
-            ->get();
+ public function handle(): void
+ {
+ $admins = User::withoutGlobalScopes()
+ ->with('tenant')
+ ->where('role', 'admin')
+ ->where('is_active', true)
+ ->get();
 
-        foreach ($admins as $admin) {
-            $weekStart = now()->startOfWeek();
-            $weekEnd = now()->endOfWeek();
+ foreach ($admins as $admin) {
+ $weekStart = now()->startOfWeek();
+ $weekEnd = now()->endOfWeek();
 
-            $stats = [
-                'tasks_completed' => \App\Models\Task::withoutGlobalScopes()
-                    ->where('tenant_id', $admin->tenant_id)
-                    ->where('status', 'done')
-                    ->where('updated_at', '>=', $weekStart)
-                    ->count(),
-                'hours_logged' => round(\App\Models\TimeEntry::withoutGlobalScopes()
-                    ->where('tenant_id', $admin->tenant_id)
-                    ->where('started_at', '>=', $weekStart)
-                    ->where('started_at', '<=', $weekEnd)
-                    ->sum('duration_minutes') / 60, 1),
-                'new_leads' => \App\Models\Lead::withoutGlobalScopes()
-                    ->where('tenant_id', $admin->tenant_id)
-                    ->where('created_at', '>=', $weekStart)
-                    ->count(),
-                'revenue' => \App\Models\Invoice::withoutGlobalScopes()
-                    ->where('tenant_id', $admin->tenant_id)
-                    ->where('status', 'paid')
-                    ->where('payment_date', '>=', $weekStart)
-                    ->sum('paid_amount'),
-            ];
+ $stats = [
+ 'tasks_completed' => \App\Models\Task::withoutGlobalScopes()
+ ->where('tenant_id', $admin->tenant_id)
+ ->where('status', 'done')
+ ->where('updated_at', '>=', $weekStart)
+ ->count(),
+ 'hours_logged' => round(\App\Models\TimeEntry::withoutGlobalScopes()
+ ->where('tenant_id', $admin->tenant_id)
+ ->where('started_at', '>=', $weekStart)
+ ->where('started_at', '<=', $weekEnd)
+ ->sum('duration_minutes') / 60, 1),
+ 'new_leads' => \App\Models\Lead::withoutGlobalScopes()
+ ->where('tenant_id', $admin->tenant_id)
+ ->where('created_at', '>=', $weekStart)
+ ->count(),
+ 'revenue' => \App\Models\Invoice::withoutGlobalScopes()
+ ->where('tenant_id', $admin->tenant_id)
+ ->where('status', 'paid')
+ ->where('payment_date', '>=', $weekStart)
+ ->sum('paid_amount'),
+ ];
 
-            Mail::to($admin->email, $admin->name)->queue(new WeeklySummaryMail($admin, $stats));
-        }
-    }
+ Mail::to($admin->email, $admin->name)->queue(new WeeklySummaryMail($admin, $stats));
+ }
+ }
 }

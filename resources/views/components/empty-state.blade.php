@@ -1,6 +1,6 @@
-@props(['icon' => '📭', 'title' => 'Nothing here yet', 'message' => '', 'action' => null, 'actionLabel' => ''])
+@props(['icon' => 'inbox', 'title' => 'Nothing here yet', 'message' => '', 'action' => null, 'actionLabel' => ''])
 <div class="text-center py-14">
-    <div class="text-5xl mb-3">{{ $icon }}</div>
+    @if ($icon)<x-icon :name="$icon" class="w-12 h-12 mx-auto mb-3 text-gray-300" />@endif
     <h3 class="font-semibold text-gray-900">{{ $title }}</h3>
     @if ($message)<p class="text-sm text-gray-500 mt-1 max-w-md mx-auto">{{ $message }}</p>@endif
     @if ($action)

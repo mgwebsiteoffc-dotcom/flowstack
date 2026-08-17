@@ -12,16 +12,16 @@
     </div>
     @if ($running)
         <div class="flex items-center gap-2 bg-red-50 text-red-700 rounded-full px-4 py-2 text-sm">
-            <span class="animate-pulse">●</span> Running: {{ $running->task?->title ?? 'Task #'.$running->task_id }} · started {{ $running->started_at->diffForHumans() }}
+            <span class="animate-pulse"><x-icon name="circle" class="w-4 h-4 inline-block" /></span> Running: {{ $running->task?->title ?? 'Task #'.$running->task_id }} · started {{ $running->started_at->diffForHumans() }}
             <form method="POST" action="{{ route('time.stop') }}">@csrf
-                <button class="font-bold">■ Stop</button>
+                <button class="font-bold"><x-icon name="stop" class="w-4 h-4 inline-block" /> Stop</button>
             </form>
         </div>
     @endif
 </div>
 
 <div class="grid lg:grid-cols-2 gap-6">
-    <x-card title="Manual time log" icon="✍️">
+    <x-card title="Manual time log" icon="pencil">
         <form method="POST" action="{{ route('time.store') }}" class="space-y-3">
             @csrf
             <div class="grid grid-cols-3 gap-3">
@@ -47,7 +47,7 @@
         </form>
     </x-card>
 
-    <x-card title="Recent entries" icon="🕓">
+    <x-card title="Recent entries" icon="clock">
         <div class="divide-y divide-gray-50">
             @forelse ($entries as $entry)
                 <div class="flex items-center gap-3 py-2.5">
@@ -58,7 +58,7 @@
                     </div>
                     <span class="text-xs {{ $entry->is_billable ? 'text-green-600' : 'text-gray-400' }}">{{ $entry->is_billable ? 'Billable' : 'Non-bill' }}</span>
                     <form method="POST" action="{{ route('time.destroy', $entry) }}" onsubmit="return confirm('Delete this entry?')">@csrf @method('DELETE')
-                        <button class="text-red-400 text-xs">✕</button>
+                        <button class="text-red-400 text-xs"><x-icon name="x-mark" class="w-3 h-3" /></button>
                     </form>
                 </div>
             @empty

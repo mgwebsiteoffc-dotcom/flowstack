@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskTag extends Model
 {
-    use TenantScoped;
+ use TenantScoped;
 
-    protected $fillable = ['tenant_id', 'name', 'color'];
+ protected $fillable = ['tenant_id', 'name', 'color'];
 
-    public function tasks()
-    {
-        return $this->belongsToMany(Task::class, 'task_tag_pivot');
-    }
+ public function tasks()
+ {
+ return $this->belongsToMany(Task::class, 'task_tag_pivot');
+ }
 }

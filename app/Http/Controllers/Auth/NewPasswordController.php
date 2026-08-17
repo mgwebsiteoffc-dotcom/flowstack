@@ -12,33 +12,33 @@ use Illuminate\Validation\Rules;
 
 class NewPasswordController extends Controller
 {
-    public function create(Request $request)
-    {
-        return view('auth.reset-password', ['request' => $request]);
-    }
+ public function create(Request $request)
+ {
+ return view('auth.reset-password', ['request' => $request]);
+ }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'token' => ['required'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+ public function store(Request $request)
+ {
+ $request->validate([
+ 'token' => ['required'],
+ 'email' => ['required', 'email'],
+ 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+ ]);
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+ $status = Password::reset(
+ $request->only('email', 'password', 'password_confirmation', 'token'),
+ function ($user) use ($request) {
+ $user->forceFill([
+ 'password' => Hash::make($request->password),
+ 'remember_token' => Str::random(60),
+ ])->save();
 
-                event(new PasswordReset($user));
-            }
-        );
+ event(new PasswordReset($user));
+ }
+ );
 
-        return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
-    }
+ return $status === Password::PASSWORD_RESET
+ ? redirect()->route('login')->with('status', __($status))
+ : back()->withErrors(['email' => [__($status)]]);
+ }
 }

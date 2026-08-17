@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 @section('title', 'Accept invitation')
 @section('content')
-    <h1 class="text-xl font-bold text-gray-900 mb-1">You're invited 🎉</h1>
+    <h1 class="text-xl font-bold text-gray-900 mb-1">You're invited <x-icon name="sparkles" class="w-4 h-4 inline-block" /></h1>
     <p class="text-sm text-gray-500 mb-6">Set your password to join <strong>{{ $user->tenant?->name ?? 'the team' }}</strong>.</p>
     <form method="POST" action="{{ route('onboarding.invite-accept.store', $token) }}" class="space-y-4">
         @csrf

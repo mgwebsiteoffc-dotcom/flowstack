@@ -2,7 +2,7 @@
 @section('title', 'Dashboard')
 @section('content')
 <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white mb-6">
-    <h1 class="text-2xl font-bold">Hello, {{ auth('portal')->user()->name }} 👋</h1>
+    <h1 class="text-2xl font-bold">Hello, {{ auth('portal')->user()->name }} <x-icon name="hand-raised" class="w-4 h-4 inline-block" /></h1>
     <p class="text-indigo-100 mt-1 text-sm">Welcome to the {{ $client->company_name }} portal. Here's what's happening with your account.</p>
 </div>
 

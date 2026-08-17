@@ -46,7 +46,7 @@
                         <option value="not_null">not null</option>
                     </select>
                     <input type="text" :name="'conditions[' + i + '][value]'" x-model="c.value" placeholder="Value" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm">
-                    <button type="button" @click="conditions.splice(i, 1)" class="text-red-400">✕</button>
+                    <button type="button" @click="conditions.splice(i, 1)" class="text-red-400"><x-icon name="x-mark" class="w-4 h-4" /></button>
                 </div>
             </template>
             <button type="button" @click="conditions.push({ field: 'client_id', operator: 'equals', value: '' })" class="text-sm text-indigo-600">+ Add condition</button>
@@ -63,7 +63,7 @@
                             @endforeach
                         </select>
                         <input type="hidden" :name="'actions[' + i + '][type]'" :value="a.type">
-                        <button type="button" @click="actions.splice(i, 1)" class="text-red-400">✕</button>
+                        <button type="button" @click="actions.splice(i, 1)" class="text-red-400"><x-icon name="x-mark" class="w-4 h-4" /></button>
                     </div>
                     <template x-if="a.type === 'send_notification'">
                         <div class="grid grid-cols-2 gap-2">
@@ -153,7 +153,7 @@
                         </form>
                         <form method="POST" action="{{ route('automation.toggle', $rule) }}">@csrf
                             <button class="text-xs px-2 py-1 rounded-full {{ $rule->is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500' }}">
-                                {{ $rule->is_active ? '● Enabled' : '○ Disabled' }}
+                                <x-icon name="circle" class="w-3 h-3 inline-block" /> {{ $rule->is_active ? 'Enabled' : 'Disabled' }}
                             </button>
                         </form>
                         <form method="POST" action="{{ route('automation.destroy', $rule) }}" onsubmit="return confirm('Delete this rule?')">@csrf @method('DELETE')
@@ -163,16 +163,16 @@
                 </div>
             </div>
         @empty
-            <x-empty-state icon="⚡" title="No automation rules" message="Create rules to automate notifications, task creation and more." />
+            <x-empty-state icon="bolt" title="No automation rules" message="Create rules to automate notifications, task creation and more." />
         @endforelse
     </div>
 
-    <x-card title="Recent executions" icon="🕓">
+    <x-card title="Recent executions" icon="clock">
         <div class="divide-y divide-gray-50">
             @forelse ($recentLogs as $log)
                 <div class="py-2">
                     <div class="flex items-center gap-2 text-sm">
-                        <span class="w-5 text-center">{{ $log->status === 'success' ? '✅' : ($log->status === 'failed' ? '❌' : '⏭️') }}</span>
+                        <span class="w-5 text-center">@if ($log->status === 'success')<x-icon name="check-circle" class="w-4 h-4 text-green-600" />@elseif ($log->status === 'failed')<x-icon name="x-circle" class="w-4 h-4 text-red-600" />@else<x-icon name="clock" class="w-4 h-4 text-gray-400" />@endif</span>
                         <span class="text-gray-800 truncate flex-1">{{ $log->rule?->name }}</span>
                     </div>
                     @if ($log->error_message)

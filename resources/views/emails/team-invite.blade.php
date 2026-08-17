@@ -7,7 +7,7 @@
             <span style="color: #ffffff; font-size: 20px; font-weight: 800;">Agency<span style="opacity: 0.8;">OS</span></span>
         </div>
         <div style="padding: 28px;">
-            <h1 style="font-size: 18px; color: #111827; margin: 0 0 12px;">You've been invited to {{ $agencyName }} 🎉</h1>
+            <h1 style="font-size: 18px; color: #111827; margin: 0 0 12px;">You've been invited to {{ $agencyName }} sparkles</h1>
             <p style="font-size: 14px; color: #4b5563; line-height: 1.6;">
                 Your role will be <strong>{{ str_replace('_', ' ', $role) }}</strong>. Set your password to join the workspace.
             </p>

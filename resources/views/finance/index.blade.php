@@ -3,19 +3,19 @@
 @section('breadcrumb', 'Finance')
 @section('content')
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <x-stat-card title="Revenue" value="₹{{ number_format($stats['revenue']) }}" icon="💰" color="green" />
-    <x-stat-card title="Outstanding" value="₹{{ number_format($stats['outstanding']) }}" icon="⏳" color="amber" />
-    <x-stat-card title="Paid This Month" value="₹{{ number_format($stats['paid_this_month']) }}" icon="💵" color="indigo" />
-    <x-stat-card title="Overdue Invoices" value="{{ $stats['overdue_count'] }}" icon="⚠️" color="{{ $stats['overdue_count'] > 0 ? 'red' : 'green' }}" />
+    <x-stat-card title="Revenue" value="₹{{ number_format($stats['revenue']) }}" icon="banknotes" color="green" />
+    <x-stat-card title="Outstanding" value="₹{{ number_format($stats['outstanding']) }}" icon="hourglass" color="amber" />
+    <x-stat-card title="Paid This Month" value="₹{{ number_format($stats['paid_this_month']) }}" icon="banknotes" color="indigo" />
+    <x-stat-card title="Overdue Invoices" value="{{ $stats['overdue_count'] }}" icon="exclamation-triangle" color="{{ $stats['overdue_count'] > 0 ? 'red' : 'green' }}" />
 </div>
 
 <div class="grid lg:grid-cols-3 gap-6 mt-6">
     <div class="lg:col-span-2 space-y-6">
-        <x-card title="Revenue (6 months)" icon="📈">
+        <x-card title="Revenue (6 months)" icon="chart-bar">
             <canvas id="revChart" height="90"></canvas>
         </x-card>
 
-        <x-card title="Recent invoices" icon="🧾">
+        <x-card title="Recent invoices" icon="receipt">
             <div class="divide-y divide-gray-50">
                 @forelse ($invoices as $invoice)
                     <a href="{{ route('finance.invoices.show', $invoice) }}" class="flex items-center gap-3 py-2.5 hover:bg-gray-50 px-2 rounded-lg">
@@ -37,7 +37,7 @@
     </div>
 
     <div class="space-y-6">
-        <x-card title="Quick actions" icon="⚡">
+        <x-card title="Quick actions" icon="bolt">
             <div class="space-y-2 text-sm">
                 <a href="{{ route('finance.invoices.create') }}" class="block px-3 py-2 bg-indigo-50 text-indigo-700 rounded-lg">+ Create invoice</a>
                 <a href="{{ route('finance.expenses.index') }}" class="block px-3 py-2 bg-gray-50 text-gray-700 rounded-lg">Record expense</a>
@@ -46,7 +46,7 @@
                 <form id="sync-all-form" method="POST" action="{{ route('finance.invoices.sync-all') }}" class="hidden">@csrf</form>
             </div>
         </x-card>
-        <x-card title="Expenses this month" icon="💸">
+        <x-card title="Expenses this month" icon="banknotes">
             <div class="text-2xl font-bold text-gray-900">₹{{ number_format($stats['expenses_this_month']) }}</div>
             <a href="{{ route('finance.expenses.index') }}" class="text-xs text-indigo-600 mt-2 inline-block">View expenses →</a>
         </x-card>

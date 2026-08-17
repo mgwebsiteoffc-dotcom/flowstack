@@ -20,7 +20,7 @@
 
 <div class="grid lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2 space-y-6">
-        <x-card title="Tasks by status" icon="✅">
+        <x-card title="Tasks by status" icon="check-circle">
             <div class="grid grid-cols-3 sm:grid-cols-7 gap-2">
                 @foreach (\App\Models\Task::STATUSES as $status)
                     <div class="bg-gray-50 rounded-lg p-2 text-center">
@@ -46,7 +46,7 @@
     </div>
 
     <div class="space-y-6">
-        <x-card title="Details" icon="ℹ️">
+        <x-card title="Details" icon="ℹ">
             <dl class="space-y-2 text-sm">
                 <div class="flex justify-between"><dt class="text-gray-400">Progress</dt><dd class="font-medium">{{ $project->progress() }}%</dd></div>
                 <div class="flex justify-between"><dt class="text-gray-400">Dates</dt><dd>{{ $project->start_date?->format('d M') }} – {{ $project->end_date?->format('d M') ?? 'open' }}</dd></div>
@@ -55,7 +55,7 @@
             @if ($project->description)<p class="text-xs text-gray-500 mt-3">{{ $project->description }}</p>@endif
         </x-card>
 
-        <x-card title="Team" icon="👥">
+        <x-card title="Team" icon="users">
             @forelse ($project->members as $member)
                 <div class="flex items-center gap-2 py-1.5">
                     <x-user-avatar :user="$member->user" size="sm" />

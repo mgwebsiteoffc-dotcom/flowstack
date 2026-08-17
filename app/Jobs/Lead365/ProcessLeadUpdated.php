@@ -12,22 +12,22 @@ use Illuminate\Queue\SerializesModels;
 
 class ProcessLeadUpdated implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $tries = 3;
+ public int $tries = 3;
 
-    public function __construct(
-        public array $payload,
-        public int $tenantId,
-        public int $webhookLogId
-    ) {
-    }
+ public function __construct(
+ public array $payload,
+ public int $tenantId,
+ public int $webhookLogId
+ ) {
+ }
 
-    public function handle(Lead365WebhookService $service): void
-    {
-        TenantScope::setCurrent($this->tenantId);
+ public function handle(Lead365WebhookService $service): void
+ {
+ TenantScope::setCurrent($this->tenantId);
 
-        $service->handleLeadUpdated($this->payload, \App\Models\Tenant::find($this->tenantId));
-        $service->markWebhookProcessed($this->webhookLogId);
-    }
+ $service->handleLeadUpdated($this->payload, \App\Models\Tenant::find($this->tenantId));
+ $service->markWebhookProcessed($this->webhookLogId);
+ }
 }

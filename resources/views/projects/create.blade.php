@@ -3,7 +3,7 @@
 @section('content')
 <form method="POST" action="{{ route('projects.store') }}" class="max-w-3xl space-y-6">
     @csrf
-    <x-card title="Project details" icon="📁">
+    <x-card title="Project details" icon="folder">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Project name *</label>
@@ -42,7 +42,7 @@
         </div>
     </x-card>
 
-    <x-card title="Template (optional)" icon="📋">
+    <x-card title="Template (optional)" icon="clipboard">
         <select name="template_id" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
             <option value="">No template</option>
             @foreach ($templates as $template)
@@ -52,7 +52,7 @@
         <p class="text-xs text-gray-400 mt-2">Selecting a template seeds the project with its standard tasks.</p>
     </x-card>
 
-    <x-card title="Team members" icon="👥">
+    <x-card title="Team members" icon="users">
         <div x-data="{ members: [] }">
             <template x-for="(m, i) in members" :key="i">
                 <div class="flex gap-2 mb-2">

@@ -14,30 +14,30 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PortalAuthMiddleware
 {
-    public function handle(Request $request, Closure $next): Response
-    {
-        $portalUserId = $request->session()->get('portal_user');
+ public function handle(Request $request, Closure $next): Response
+ {
+ $portalUserId = $request->session()->get('portal_user');
 
-        if ($portalUserId === null) {
-            // Custom intended key - redirect()->guest() would pollute the
-            // shared 'url.intended' used by the team login.
-            $request->session()->put('portal.intended', $request->fullUrl());
+ if ($portalUserId === null) {
+ // Custom intended key - redirect()->guest() would pollute the
+ // shared 'url.intended' used by the team login.
+ $request->session()->put('portal.intended', $request->fullUrl());
 
-            return redirect()->route('portal.login');
-        }
+ return redirect()->route('portal.login');
+ }
 
-        $user = \App\Models\ClientPortalUser::withoutGlobalScopes()
-            ->find($portalUserId);
+ $user = \App\Models\ClientPortalUser::withoutGlobalScopes()
+ ->find($portalUserId);
 
-        if ($user === null || ! $user->is_active) {
-            $request->session()->forget('portal_user');
+ if ($user === null || ! $user->is_active) {
+ $request->session()->forget('portal_user');
 
-            return redirect()->route('portal.login')->with('error', 'Your portal account is no longer active.');
-        }
+ return redirect()->route('portal.login')->with('error', 'Your portal account is no longer active.');
+ }
 
-        // Register the guard instance so Auth::guard('portal')->user() works.
-        Auth::guard('portal')->setUser($user);
+ // Register the guard instance so Auth::guard('portal')->user() works.
+ Auth::guard('portal')->setUser($user);
 
-        return $next($request);
-    }
+ return $next($request);
+ }
 }

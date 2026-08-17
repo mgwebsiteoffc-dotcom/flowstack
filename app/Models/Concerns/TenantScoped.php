@@ -9,8 +9,8 @@ use App\Scopes\TenantScope;
  */
 trait TenantScoped
 {
-    public static function bootTenantScoped(): void
-    {
-        static::addGlobalScope(new TenantScope);
-    }
+ public static function bootTenantScoped(): void
+ {
+ static::addGlobalScope(new TenantScope);
+ }
 }

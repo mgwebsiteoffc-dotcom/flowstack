@@ -15,7 +15,7 @@
                     <p class="text-xs text-gray-400 mt-1">or ₹{{ number_format($plan->price_yearly) }}/year</p>
                     <ul class="mt-4 space-y-2 text-sm text-gray-600">
                         @foreach (($plan->features ?? []) as $feature)
-                            <li class="flex gap-2"><span class="text-green-600">✓</span>{{ $feature }}</li>
+                            <li class="flex gap-2"><span class="text-green-600"></span>{{ $feature }}</li>
                         @endforeach
                     </ul>
                     <a href="{{ route('register') }}" class="mt-6 block text-center rounded-lg py-2 text-sm font-medium {{ $plan->slug === 'professional' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' }}">

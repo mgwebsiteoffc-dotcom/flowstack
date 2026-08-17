@@ -11,24 +11,24 @@ use Illuminate\Queue\SerializesModels;
 
 class WeeklySummaryMail extends Mailable
 {
-    use Queueable, SerializesModels;
+ use Queueable, SerializesModels;
 
-    /**
-     * @param  array<string, mixed>  $stats
-     */
-    public function __construct(
-        public User $user,
-        public array $stats
-    ) {
-    }
+ /**
+ * @param array<string, mixed> $stats
+ */
+ public function __construct(
+ public User $user,
+ public array $stats
+ ) {
+ }
 
-    public function envelope(): Envelope
-    {
-        return new Envelope(subject: 'Weekly summary - '.now()->startOfWeek()->format('d M').' to '.now()->endOfWeek()->format('d M'));
-    }
+ public function envelope(): Envelope
+ {
+ return new Envelope(subject: 'Weekly summary - '.now()->startOfWeek()->format('d M').' to '.now()->endOfWeek()->format('d M'));
+ }
 
-    public function content(): Content
-    {
-        return new Content(view: 'emails.weekly-summary');
-    }
+ public function content(): Content
+ {
+ return new Content(view: 'emails.weekly-summary');
+ }
 }

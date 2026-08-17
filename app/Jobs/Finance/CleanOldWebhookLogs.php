@@ -14,14 +14,14 @@ use Illuminate\Queue\SerializesModels;
  */
 class CleanOldWebhookLogs implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): void
-    {
-        $days = (int) config('tenancy.webhook_log_retention_days', 90);
+ public function handle(): void
+ {
+ $days = (int) config('tenancy.webhook_log_retention_days', 90);
 
-        WebhookLog::withoutGlobalScopes()
-            ->where('created_at', '<', now()->subDays($days))
-            ->delete();
-    }
+ WebhookLog::withoutGlobalScopes()
+ ->where('created_at', '<', now()->subDays($days))
+ ->delete();
+ }
 }

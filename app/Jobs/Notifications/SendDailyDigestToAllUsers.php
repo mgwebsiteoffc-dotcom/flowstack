@@ -22,48 +22,48 @@ use Illuminate\Support\Facades\Mail;
  */
 class SendDailyDigestToAllUsers implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(NotificationService $notifications): void
-    {
-        $users = User::withoutGlobalScopes()
-            ->with('tenant')
-            ->where('is_active', true)
-            ->get();
+ public function handle(NotificationService $notifications): void
+ {
+ $users = User::withoutGlobalScopes()
+ ->with('tenant')
+ ->where('is_active', true)
+ ->get();
 
-        foreach ($users as $user) {
-            if (! $notifications->userWantsEmail($user, 'daily_digest')) {
-                continue;
-            }
+ foreach ($users as $user) {
+ if (! $notifications->userWantsEmail($user, 'daily_digest')) {
+ continue;
+ }
 
-            $dueToday = Task::withoutGlobalScopes()
-                ->where('tenant_id', $user->tenant_id)
-                ->where('assigned_to', $user->id)
-                ->where('due_date', now()->toDateString())
-                ->whereNotIn('status', ['done', 'cancelled'])
-                ->pluck('title');
+ $dueToday = Task::withoutGlobalScopes()
+ ->where('tenant_id', $user->tenant_id)
+ ->where('assigned_to', $user->id)
+ ->where('due_date', now()->toDateString())
+ ->whereNotIn('status', ['done', 'cancelled'])
+ ->pluck('title');
 
-            $overdue = Task::withoutGlobalScopes()
-                ->where('tenant_id', $user->tenant_id)
-                ->where('assigned_to', $user->id)
-                ->where('due_date', '<', now()->toDateString())
-                ->whereNotIn('status', ['done', 'cancelled'])
-                ->pluck('title');
+ $overdue = Task::withoutGlobalScopes()
+ ->where('tenant_id', $user->tenant_id)
+ ->where('assigned_to', $user->id)
+ ->where('due_date', '<', now()->toDateString())
+ ->whereNotIn('status', ['done', 'cancelled'])
+ ->pluck('title');
 
-            $pendingApprovals = \App\Models\ClientApproval::withoutGlobalScopes()
-                ->where('tenant_id', $user->tenant_id)
-                ->where('status', 'pending')
-                ->count();
+ $pendingApprovals = \App\Models\ClientApproval::withoutGlobalScopes()
+ ->where('tenant_id', $user->tenant_id)
+ ->where('status', 'pending')
+ ->count();
 
-            $unreadAnnouncements = Announcement::withoutGlobalScopes()
-                ->where('tenant_id', $user->tenant_id)
-                ->where(function ($q) {
-                    $q->whereNull('expires_at')->orWhere('expires_at', '>', now());
-                })
-                ->whereDoesntHave('reads', fn ($q) => $q->where('user_id', $user->id))
-                ->pluck('title');
+ $unreadAnnouncements = Announcement::withoutGlobalScopes()
+ ->where('tenant_id', $user->tenant_id)
+ ->where(function ($q) {
+ $q->whereNull('expires_at')->orWhere('expires_at', '>', now());
+ })
+ ->whereDoesntHave('reads', fn ($q) => $q->where('user_id', $user->id))
+ ->pluck('title');
 
-            Mail::to($user->email, $user->name)->queue(new DailyDigestMail($user, $dueToday, $overdue, $pendingApprovals, $unreadAnnouncements));
-        }
-    }
+ Mail::to($user->email, $user->name)->queue(new DailyDigestMail($user, $dueToday, $overdue, $pendingApprovals, $unreadAnnouncements));
+ }
+ }
 }

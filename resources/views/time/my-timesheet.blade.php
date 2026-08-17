@@ -61,7 +61,7 @@
 </div>
 
 <div class="grid sm:grid-cols-2 gap-6">
-    <x-card title="By client" icon="🤝">
+    <x-card title="By client" icon="users">
         @foreach ($byClient as $clientName => $data)
             <div class="flex justify-between py-1.5 text-sm">
                 <span class="text-gray-700">{{ $clientName }}</span>
@@ -69,7 +69,7 @@
             </div>
         @endforeach
     </x-card>
-    <x-card title="Billable vs non-billable" icon="💵">
+    <x-card title="Billable vs non-billable" icon="banknotes">
         <div class="flex justify-between py-1.5 text-sm">
             <span class="text-gray-700">Billable</span>
             <span class="font-medium text-green-600">{{ round($totals['billable'] / 60, 1) }}h</span>

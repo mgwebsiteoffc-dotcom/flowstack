@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class KbArticleComment extends Model
 {
-    use TenantScoped;
+ use TenantScoped;
 
-    protected $fillable = ['tenant_id', 'article_id', 'user_id', 'comment'];
+ protected $fillable = ['tenant_id', 'article_id', 'user_id', 'comment'];
 
-    public function article()
-    {
-        return $this->belongsTo(KbArticle::class);
-    }
+ public function article()
+ {
+ return $this->belongsTo(KbArticle::class);
+ }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+ public function user()
+ {
+ return $this->belongsTo(User::class);
+ }
 }

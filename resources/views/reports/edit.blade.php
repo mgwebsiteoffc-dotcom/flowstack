@@ -4,7 +4,7 @@
 <form method="POST" action="{{ route('reports.update', $report) }}" class="max-w-4xl space-y-6">
     @csrf
     @method('PATCH')
-    <x-card title="Report details" icon="📝">
+    <x-card title="Report details" icon="pencil-square">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
                 <input type="text" name="title" value="{{ old('title', $report->title) }}" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
@@ -33,11 +33,11 @@
         </div>
     </x-card>
 
-    <x-card title="Metrics (JSON data, edit carefully)" icon="📊">
+    <x-card title="Metrics (JSON data, edit carefully)" icon="chart-bar">
         <textarea name="data_json" rows="10" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono">{{ old('data_json', json_encode($report->data, JSON_PRETTY_PRINT)) }}</textarea>
     </x-card>
 
-    <x-card title="Commentary" icon="💬">
+    <x-card title="Commentary" icon="chat-bubble-left-right">
         <div class="space-y-4">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">What worked</label>
                 <textarea name="insights" rows="3" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">{{ old('insights', $report->insights) }}</textarea></div>

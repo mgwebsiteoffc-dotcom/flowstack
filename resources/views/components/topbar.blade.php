@@ -6,7 +6,7 @@
     $runningEntry = \App\Models\TimeEntry::where('user_id', $user->id)->where('is_running', true)->first();
 @endphp
 <header class="bg-white border-b border-gray-200 h-16 flex items-center px-4 sm:px-6 gap-4">
-    <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 hover:text-gray-800 text-xl">☰</button>
+    <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 hover:text-gray-800 text-xl"><x-icon name="menu" class="w-4 h-4 inline-block" /></button>
 
     <div class="hidden md:block text-sm text-gray-500">
         @yield('breadcrumb', '')
@@ -22,16 +22,16 @@
     <div x-data="timerWidget()" x-init="init()" class="relative">
         <template x-if="running">
             <div class="flex items-center gap-2 bg-red-50 text-red-700 rounded-full px-3 py-1.5 text-sm">
-                <span class="animate-pulse">●</span>
+                <span class="animate-pulse"><x-icon name="circle" class="w-4 h-4 inline-block" /></span>
                 <span x-text="taskTitle" class="max-w-[120px] truncate hidden sm:inline"></span>
                 <span x-text="elapsed" class="font-mono tabular-nums"></span>
-                <button @click="stop()" class="font-bold hover:text-red-900">■</button>
+                <button @click="stop()" class="font-bold hover:text-red-900"><x-icon name="stop" class="w-4 h-4 inline-block" /></button>
             </div>
         </template>
         <template x-if="!running">
             <div class="relative">
                 <button @click="open = !open" class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 rounded-full px-3 py-1.5 text-sm text-gray-700">
-                    <span class="text-indigo-600">▶</span> Start timer
+                    <span class="text-indigo-600"><x-icon name="play" class="w-4 h-4 inline-block" /></span> Start timer
                 </button>
                 <div x-show="open" x-cloak @click.outside="open = false"
                      class="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-200 p-3 z-50">
@@ -51,7 +51,7 @@
     <!-- Notifications -->
     <div x-data="{ open: false }" class="relative">
         <button @click="open = !open" class="relative text-gray-500 hover:text-gray-800 text-xl p-1">
-            🔔
+            <x-icon name="bell" class="w-4 h-4 inline-block" />
             @if ($unread > 0)
                 <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[16px] h-4 px-0.5 flex items-center justify-center">{{ $unread > 9 ? '9+' : $unread }}</span>
             @endif

@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskAttachment extends Model
 {
-    use TenantScoped;
+ use TenantScoped;
 
-    protected $fillable = [
-        'tenant_id', 'task_id', 'file_name', 'file_path', 'file_size', 'mime_type', 'uploaded_by',
-    ];
+ protected $fillable = [
+ 'tenant_id', 'task_id', 'file_name', 'file_path', 'file_size', 'mime_type', 'uploaded_by',
+ ];
 
-    protected $casts = [
-        'file_size' => 'integer',
-    ];
+ protected $casts = [
+ 'file_size' => 'integer',
+ ];
 
-    public function task()
-    {
-        return $this->belongsTo(Task::class);
-    }
+ public function task()
+ {
+ return $this->belongsTo(Task::class);
+ }
 
-    public function uploader()
-    {
-        return $this->belongsTo(User::class, 'uploaded_by');
-    }
+ public function uploader()
+ {
+ return $this->belongsTo(User::class, 'uploaded_by');
+ }
 }

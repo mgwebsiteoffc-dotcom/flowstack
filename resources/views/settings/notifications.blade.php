@@ -7,7 +7,7 @@
     <div class="lg:col-span-3">
         <form method="POST" action="{{ route('settings.notifications.save') }}" class="space-y-6">
             @csrf
-            <x-card title="Email notifications" icon="🔔">
+            <x-card title="Email notifications" icon="bell">
                 <p class="text-xs text-gray-400 mb-4">These preferences apply to your account only. Emails are always sent through the queue.</p>
                 <div class="grid sm:grid-cols-2 gap-3">
                     @foreach ($types as $key => $label)

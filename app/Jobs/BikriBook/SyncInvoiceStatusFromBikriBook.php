@@ -14,30 +14,30 @@ use Illuminate\Queue\SerializesModels;
 
 class SyncInvoiceStatusFromBikriBook implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $tries = 2;
+ public int $tries = 2;
 
-    public function __construct(public int $invoiceId)
-    {
-    }
+ public function __construct(public int $invoiceId)
+ {
+ }
 
-    public function handle(): void
-    {
-        $invoice = Invoice::withoutGlobalScopes()->find($this->invoiceId);
+ public function handle(): void
+ {
+ $invoice = Invoice::withoutGlobalScopes()->find($this->invoiceId);
 
-        if (! $invoice || ! $invoice->bikribook_invoice_id) {
-            return;
-        }
+ if (! $invoice || ! $invoice->bikribook_invoice_id) {
+ return;
+ }
 
-        $tenant = Tenant::find($invoice->tenant_id);
+ $tenant = Tenant::find($invoice->tenant_id);
 
-        if (! $tenant || ! $tenant->bikribook_api_key) {
-            return;
-        }
+ if (! $tenant || ! $tenant->bikribook_api_key) {
+ return;
+ }
 
-        TenantScope::setCurrent($tenant->id);
+ TenantScope::setCurrent($tenant->id);
 
-        (new BikriBookService($tenant))->syncInvoiceStatus($invoice);
-    }
+ (new BikriBookService($tenant))->syncInvoiceStatus($invoice);
+ }
 }

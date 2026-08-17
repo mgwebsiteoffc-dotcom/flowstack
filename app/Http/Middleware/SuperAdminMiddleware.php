@@ -12,29 +12,29 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SuperAdminMiddleware
 {
-    public function handle(Request $request, Closure $next): Response
-    {
-        $superAdminId = $request->session()->get('super_admin');
+ public function handle(Request $request, Closure $next): Response
+ {
+ $superAdminId = $request->session()->get('super_admin');
 
-        if ($superAdminId === null) {
-            // Custom intended key - NEVER use redirect()->guest() here: it
-            // writes Laravel's shared 'url.intended', which would then send
-            // TEAM logins to the super-admin area (and vice versa).
-            $request->session()->put('super_admin.intended', $request->fullUrl());
+ if ($superAdminId === null) {
+ // Custom intended key - NEVER use redirect()->guest() here: it
+ // writes Laravel's shared 'url.intended', which would then send
+ // TEAM logins to the super-admin area (and vice versa).
+ $request->session()->put('super_admin.intended', $request->fullUrl());
 
-            return redirect()->route('super-admin.login');
-        }
+ return redirect()->route('super-admin.login');
+ }
 
-        $admin = \App\Models\SuperAdmin::find($superAdminId);
+ $admin = \App\Models\SuperAdmin::find($superAdminId);
 
-        if ($admin === null) {
-            $request->session()->forget('super_admin');
+ if ($admin === null) {
+ $request->session()->forget('super_admin');
 
-            return redirect()->route('super-admin.login');
-        }
+ return redirect()->route('super-admin.login');
+ }
 
-        $request->attributes->set('super_admin', $admin);
+ $request->attributes->set('super_admin', $admin);
 
-        return $next($request);
-    }
+ return $next($request);
+ }
 }

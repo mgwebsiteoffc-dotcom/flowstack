@@ -4,7 +4,7 @@
     <div x-show="open" class="fixed inset-0 z-50 flex items-center justify-center p-4" x-cloak>
         <div class="fixed inset-0 bg-black/40" @click="open = false"></div>
         <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
-            <div class="text-3xl mb-3">🗑️</div>
+            <div class="text-3xl mb-3"><x-icon name="trash" class="w-4 h-4 inline-block" /></div>
             <h3 class="font-semibold text-gray-900 text-lg">Are you sure?</h3>
             <p class="text-sm text-gray-500 mt-1">{{ $message }}</p>
             <div class="mt-5 flex gap-3 justify-end">

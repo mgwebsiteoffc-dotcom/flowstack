@@ -8,9 +8,9 @@ use Illuminate\Queue\SerializesModels;
 
 class LeadWon
 {
-    use Dispatchable, SerializesModels;
+ use Dispatchable, SerializesModels;
 
-    public function __construct(public Lead $lead)
-    {
-    }
+ public function __construct(public Lead $lead)
+ {
+ }
 }

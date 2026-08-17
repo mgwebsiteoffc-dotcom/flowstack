@@ -54,7 +54,7 @@
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-3">
                         <a href="{{ route('tasks.show', $task) }}" class="font-medium text-gray-900 hover:text-indigo-600">{{ $task->title }}</a>
-                        @if ($task->is_recurring)<span class="text-[10px] bg-purple-100 text-purple-700 rounded px-1.5 py-0.5">↻ recurring</span>@endif
+                        @if ($task->is_recurring)<span class="text-[10px] bg-purple-100 text-purple-700 rounded px-1.5 py-0.5"><x-icon name="arrow-path" class="w-4 h-4 inline-block" /> recurring</span>@endif
                     </td>
                     <td class="px-4 py-3"><x-status-badge :status="$task->status" /></td>
                     <td class="px-4 py-3"><x-priority-badge :priority="$task->priority" /></td>
@@ -69,7 +69,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6"><x-empty-state icon="✅" title="No tasks found" message="Adjust your filters or create a new task." :action="route('tasks.create')" actionLabel="New task" /></td></tr>
+                <tr><td colspan="6"><x-empty-state icon="check-circle" title="No tasks found" message="Adjust your filters or create a new task." :action="route('tasks.create')" actionLabel="New task" /></td></tr>
             @endforelse
         </tbody>
     </table>

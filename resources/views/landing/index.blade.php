@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
     <title>Agency OS — Run your agency on autopilot</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -37,13 +39,13 @@
 
     <section class="max-w-6xl mx-auto px-6 py-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
         @foreach ([
-            ['🤝', 'Client Hub', 'Retainers, onboarding checklists, health scores and portals.'],
-            ['✅', 'Task Engine', 'Boards, recurring tasks, approvals and time tracking.'],
-            ['🎯', 'Lead Pipeline', 'Native Lead365 sync with Meta Ads & form automation.'],
-            ['💰', 'Finance', 'Invoicing via BikriBook, expenses and profitability.'],
+            ['users', 'Client Hub', 'Retainers, onboarding checklists, health scores and portals.'],
+            ['check-circle', 'Task Engine', 'Boards, recurring tasks, approvals and time tracking.'],
+            ['target', 'Lead Pipeline', 'Native Lead365 sync with Meta Ads & form automation.'],
+            ['banknotes', 'Finance', 'Invoicing via BikriBook, expenses and profitability.'],
         ] as [$icon, $title, $desc])
             <div class="rounded-2xl border border-gray-200 p-6">
-                <div class="text-3xl mb-3">{{ $icon }}</div>
+                <div class="mb-3"><x-icon :name="$icon" class="w-8 h-8 text-indigo-600" /></div>
                 <h3 class="font-bold">{{ $title }}</h3>
                 <p class="text-sm text-gray-500 mt-1">{{ $desc }}</p>
             </div>
@@ -55,12 +57,12 @@
             <h2 class="text-3xl font-black">Every agency workflow, covered</h2>
             <div class="grid sm:grid-cols-3 gap-5 mt-10 text-left">
                 @foreach ([
-                    ['📊', 'Operations', 'Dashboards, automation rules, reporting and a knowledge base.'],
-                    ['🔗', 'Integrations', 'Lead365 for leads, BikriBook for invoices, Razorpay for billing.'],
-                    ['🏢', 'Client portal', 'Approvals, requests, reports and invoices for your clients.'],
+                    ['chart-bar', 'Operations', 'Dashboards, automation rules, reporting and a knowledge base.'],
+                    ['link', 'Integrations', 'Lead365 for leads, BikriBook for invoices, Razorpay for billing.'],
+                    ['building-office', 'Client portal', 'Approvals, requests, reports and invoices for your clients.'],
                 ] as [$icon, $title, $desc])
                     <div class="bg-white rounded-2xl border border-gray-200 p-6">
-                        <div class="text-2xl mb-2">{{ $icon }}</div>
+                        <div class="mb-2"><x-icon :name="$icon" class="w-7 h-7 text-gray-500" /></div>
                         <h3 class="font-semibold">{{ $title }}</h3>
                         <p class="text-sm text-gray-500 mt-1">{{ $desc }}</p>
                     </div>

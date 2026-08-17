@@ -10,7 +10,7 @@
                 @foreach ($article->tags as $tag)
                     <span class="bg-gray-100 text-gray-600 rounded-full px-2.5 py-1">#{{ $tag->name }}</span>
                 @endforeach
-                <span class="text-gray-400 ml-auto">👁 {{ $article->view_count }} views · {{ $article->updated_at->diffForHumans() }}</span>
+                <span class="text-gray-400 ml-auto"><x-icon name="eye" class="w-4 h-4 inline-block" /> {{ $article->view_count }} views · {{ $article->updated_at->diffForHumans() }}</span>
             </div>
 
             <h1 class="text-2xl font-bold text-gray-900 mb-6">{{ $article->title }}</h1>
@@ -18,7 +18,7 @@
             @if ($article->video_url)
                 <div class="aspect-video bg-gray-900 rounded-xl mb-6 flex items-center justify-center">
                     <a href="{{ $article->video_url }}" target="_blank" class="text-white text-center">
-                        <div class="text-4xl mb-2">▶️</div>
+                        <div class="text-4xl mb-2"><x-icon name="play" class="w-4 h-4 inline-block" /></div>
                         <div class="text-sm">Watch video</div>
                     </a>
                 </div>
@@ -40,7 +40,7 @@
             </div>
 
             <div class="border-t mt-8 pt-6">
-                <h3 class="font-semibold text-gray-900 text-sm mb-3">💬 Team comments ({{ $article->comments->count() }})</h3>
+                <h3 class="font-semibold text-gray-900 text-sm mb-3"><x-icon name="chat-bubble-left-right" class="w-4 h-4 inline-block" /> Team comments ({{ $article->comments->count() }})</h3>
                 <div class="space-y-3 mb-4 max-h-72 overflow-y-auto">
                     @forelse ($article->comments as $comment)
                         <div class="flex gap-2.5">
@@ -67,12 +67,12 @@
                     <form method="POST" action="{{ route('kb.articles.feedback', $article) }}" class="inline">
                         @csrf
                         <input type="hidden" name="helpful" value="1">
-                        <button class="ml-2 px-3 py-1 bg-green-50 text-green-700 rounded-lg text-xs">👍 Yes</button>
+                        <button class="ml-2 px-3 py-1 bg-green-50 text-green-700 rounded-lg text-xs"><x-icon name="hand-thumb-up" class="w-4 h-4 inline-block" /> Yes</button>
                     </form>
                     <form method="POST" action="{{ route('kb.articles.feedback', $article) }}" class="inline">
                         @csrf
                         <input type="hidden" name="helpful" value="0">
-                        <button class="px-3 py-1 bg-red-50 text-red-700 rounded-lg text-xs">👎 No</button>
+                        <button class="px-3 py-1 bg-red-50 text-red-700 rounded-lg text-xs"><x-icon name="hand-thumb-down" class="w-4 h-4 inline-block" /> No</button>
                     </form>
                 </div>
                 <div class="flex gap-2">
@@ -86,14 +86,14 @@
     </div>
 
     <div class="space-y-6">
-        <x-card title="Related articles" icon="🔗">
+        <x-card title="Related articles" icon="link">
             @forelse ($related as $relatedArticle)
                 <a href="{{ route('kb.articles.show', $relatedArticle) }}" class="block py-2 text-sm text-gray-700 hover:text-indigo-600 border-b border-gray-50 last:border-0">{{ $relatedArticle->title }}</a>
             @empty
                 <p class="text-sm text-gray-400 text-center py-2">No related articles</p>
             @endforelse
         </x-card>
-        <x-card title="Details" icon="ℹ️">
+        <x-card title="Details" icon="ℹ">
             <dl class="space-y-2 text-sm">
                 <div class="flex justify-between"><dt class="text-gray-400">Author</dt><dd>{{ $article->creator?->name }}</dd></div>
                 <div class="flex justify-between"><dt class="text-gray-400">Status</dt><dd>{{ ucfirst($article->status) }}</dd></div>
@@ -110,12 +110,12 @@
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.kb-content pre').forEach(function (pre) {
             const btn = document.createElement('button');
-            btn.textContent = '📋 Copy';
+            btn.textContent = 'clipboard Copy';
             btn.className = 'text-[10px] bg-gray-700 text-gray-200 hover:bg-gray-600 rounded px-2 py-1 float-right -mt-2 -mr-2 mb-1';
             btn.onclick = function () {
                 navigator.clipboard.writeText(pre.textContent.trim());
-                btn.textContent = 'Copied ✅';
-                setTimeout(() => btn.textContent = '📋 Copy', 2000);
+                btn.textContent = 'Copied check-circle';
+                setTimeout(() => btn.textContent = 'clipboard Copy', 2000);
             };
             pre.style.position = 'relative';
             pre.prepend(btn);

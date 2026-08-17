@@ -7,28 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class LeadActivity extends Model
 {
-    use TenantScoped;
+ use TenantScoped;
 
-    protected $fillable = [
-        'tenant_id', 'lead_id', 'activity_type', 'title', 'description',
-        'old_value', 'new_value', 'performed_by', 'source', 'lead365_event',
-        'scheduled_at', 'completed_at',
-    ];
+ protected $fillable = [
+ 'tenant_id', 'lead_id', 'activity_type', 'title', 'description',
+ 'old_value', 'new_value', 'performed_by', 'source', 'lead365_event',
+ 'scheduled_at', 'completed_at',
+ ];
 
-    protected $casts = [
-        'scheduled_at' => 'datetime',
-        'completed_at' => 'datetime',
-    ];
+ protected $casts = [
+ 'scheduled_at' => 'datetime',
+ 'completed_at' => 'datetime',
+ ];
 
-    public const TYPES = ['call', 'email', 'meeting', 'note', 'stage_change', 'assignment', 'webhook_event'];
+ public const TYPES = ['call', 'email', 'meeting', 'note', 'stage_change', 'assignment', 'webhook_event'];
 
-    public function lead()
-    {
-        return $this->belongsTo(Lead::class);
-    }
+ public function lead()
+ {
+ return $this->belongsTo(Lead::class);
+ }
 
-    public function performer()
-    {
-        return $this->belongsTo(User::class, 'performed_by');
-    }
+ public function performer()
+ {
+ return $this->belongsTo(User::class, 'performed_by');
+ }
 }

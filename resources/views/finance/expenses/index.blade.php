@@ -22,7 +22,7 @@
     </form>
     <div class="flex gap-2 items-center">
         <span class="text-sm text-gray-500">Total: <strong>₹{{ number_format($total) }}</strong></span>
-        <a href="{{ route('finance.expenses.index', array_merge(request()->query(), ['export' => 1])) }}" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm">⬇ Export</a>
+        <a href="{{ route('finance.expenses.index', array_merge(request()->query(), ['export' => 1])) }}" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm"><x-icon name="arrow-down-tray" class="w-4 h-4 inline-block" /> Export</a>
         <button x-data @click="$refs.expenseModal.showModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add expense</button>
     </div>
 </div>
@@ -81,7 +81,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7"><x-empty-state icon="💸" title="No expenses" message="Record expenses to track profitability." /></td></tr>
+                <tr><td colspan="7"><x-empty-state icon="banknotes" title="No expenses" message="Record expenses to track profitability." /></td></tr>
             @endforelse
         </tbody>
     </table>

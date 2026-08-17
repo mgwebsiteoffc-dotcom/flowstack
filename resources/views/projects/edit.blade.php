@@ -4,7 +4,7 @@
 <form method="POST" action="{{ route('projects.update', $project) }}" class="max-w-3xl space-y-6">
     @csrf
     @method('PATCH')
-    <x-card title="Project details" icon="📁">
+    <x-card title="Project details" icon="folder">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Project name *</label>

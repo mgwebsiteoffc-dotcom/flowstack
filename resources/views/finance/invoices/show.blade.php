@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="flex flex-wrap gap-2">
-        <a href="{{ route('finance.invoices.pdf', $invoice) }}" class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700">⬇ PDF</a>
+        <a href="{{ route('finance.invoices.pdf', $invoice) }}" class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700"><x-icon name="arrow-down-tray" class="w-4 h-4 inline-block" /> PDF</a>
         @if ($invoice->status === 'draft')
             <form method="POST" action="{{ route('finance.invoices.sync', $invoice) }}">@csrf
                 <button class="px-3 py-1.5 text-sm rounded-lg bg-indigo-600 text-white">⟳ Sync to BikriBook</button>
@@ -51,7 +51,7 @@
 
 <div class="grid lg:grid-cols-3 gap-6">
     <div class="lg:col-span-2 space-y-6">
-        <x-card title="Line items" icon="📋">
+        <x-card title="Line items" icon="clipboard">
             <table class="w-full text-sm">
                 <thead class="text-left text-xs text-gray-500 uppercase border-b">
                     <tr><th class="py-2">Description</th><th class="py-2 text-right">Qty</th><th class="py-2 text-right">Rate</th><th class="py-2 text-right">Tax</th><th class="py-2 text-right">Total</th></tr>
@@ -83,10 +83,10 @@
             </div>
         </x-card>
 
-        <x-card title="BikriBook sync history" icon="🔗">
+        <x-card title="BikriBook sync history" icon="link">
             @forelse ($invoice->bikribookSyncLogs as $log)
                 <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0 text-sm">
-                    <span class="w-6 text-center">{{ $log->status === 'success' ? '✅' : '❌' }}</span>
+                    <span class="w-6 text-center">@if ($log->status === 'success')<x-icon name="check-circle" class="w-4 h-4 text-green-600" />@else<x-icon name="x-circle" class="w-4 h-4 text-red-600" />@endif</span>
                     <span class="text-gray-800 flex-1 capitalize">{{ str_replace('_', ' ', $log->action) }}</span>
                     <span class="text-xs text-gray-400">{{ $log->created_at->diffForHumans() }}</span>
                 </div>
@@ -97,7 +97,7 @@
     </div>
 
     <div class="space-y-6">
-        <x-card title="Details" icon="ℹ️">
+        <x-card title="Details" icon="ℹ">
             <dl class="space-y-2 text-sm">
                 <div class="flex justify-between"><dt class="text-gray-400">Issue date</dt><dd>{{ $invoice->issue_date->format('d M Y') }}</dd></div>
                 <div class="flex justify-between"><dt class="text-gray-400">Due date</dt><dd>{{ $invoice->due_date->format('d M Y') }}</dd></div>
@@ -109,7 +109,7 @@
             @if ($invoice->notes)<p class="text-xs text-gray-500 mt-3 bg-gray-50 rounded-lg p-2">{{ $invoice->notes }}</p>@endif
         </x-card>
 
-        <x-card title="Client" icon="🤝">
+        <x-card title="Client" icon="users">
             <div class="text-sm text-gray-800 font-medium">{{ $invoice->client?->company_name }}</div>
             <div class="text-xs text-gray-500 mt-1">{{ $invoice->client?->address }}</div>
             @php $billing = $invoice->client?->contacts->firstWhere('is_billing_contact', true); @endphp

@@ -60,7 +60,7 @@
 </div>
 
 <div class="mt-6">
-    <x-card title="Capacity planning — open tasks due per day (next 7 days)" icon="📆" :padding="false">
+    <x-card title="Capacity planning — open tasks due per day (next 7 days)" icon="calendar-days" :padding="false">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-xs text-gray-500 uppercase">

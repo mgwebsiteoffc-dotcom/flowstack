@@ -15,17 +15,17 @@ use Illuminate\Queue\SerializesModels;
  */
 class CheckAutomationDelays implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(AutomationService $automation): void
-    {
-        $due = AutomationDelay::withoutGlobalScopes()
-            ->with('rule')
-            ->where('run_at', '<=', now())
-            ->get();
+ public function handle(AutomationService $automation): void
+ {
+ $due = AutomationDelay::withoutGlobalScopes()
+ ->with('rule')
+ ->where('run_at', '<=', now())
+ ->get();
 
-        foreach ($due as $delay) {
-            $automation->runDelayed($delay);
-        }
-    }
+ foreach ($due as $delay) {
+ $automation->runDelayed($delay);
+ }
+ }
 }

@@ -6,12 +6,12 @@
     <div>@include('settings.partials.nav', ['active' => 'subscription'])</div>
     <div class="lg:col-span-3 space-y-6">
         <div class="grid sm:grid-cols-3 gap-4">
-            <x-stat-card title="Users used" value="{{ $usage['users'] }} / {{ $tenant->max_users ?? '∞' }}" icon="👥" color="indigo" />
-            <x-stat-card title="Clients used" value="{{ $usage['clients'] }} / {{ $tenant->max_clients ?? '∞' }}" icon="🤝" color="blue" />
-            <x-stat-card title="Storage" value="{{ $usage['storage_gb'] }} GB" icon="💾" color="purple" />
+            <x-stat-card title="Users used" value="{{ $usage['users'] }} / {{ $tenant->max_users ?? '∞' }}" icon="users" color="indigo" />
+            <x-stat-card title="Clients used" value="{{ $usage['clients'] }} / {{ $tenant->max_clients ?? '∞' }}" icon="users" color="blue" />
+            <x-stat-card title="Storage" value="{{ $usage['storage_gb'] }} GB" icon="hard-drive" color="purple" />
         </div>
 
-        <x-card title="Current plan" icon="💳">
+        <x-card title="Current plan" icon="credit-card">
             <div class="flex items-center justify-between flex-wrap gap-3">
                 <div>
                     <div class="font-bold text-gray-900 text-lg">{{ $tenant->plan?->name ?? ($tenant->is_trial ? 'Free Trial' : '—') }}</div>
@@ -37,7 +37,7 @@
             </div>
         </x-card>
 
-        <x-card title="Billing history" icon="🧾" :padding="false">
+        <x-card title="Billing history" icon="receipt" :padding="false">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-left text-xs text-gray-500 uppercase">
                     <tr><th class="px-4 py-3">Date</th><th class="px-4 py-3">Plan</th><th class="px-4 py-3">Cycle</th><th class="px-4 py-3 text-right">Amount</th><th class="px-4 py-3">Status</th></tr>
@@ -58,7 +58,7 @@
             </table>
         </x-card>
 
-        <x-card title="Payments" icon="💵" :padding="false">
+        <x-card title="Payments" icon="banknotes" :padding="false">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-left text-xs text-gray-500 uppercase">
                     <tr><th class="px-4 py-3">Paid at</th><th class="px-4 py-3 text-right">Amount</th><th class="px-4 py-3">Gateway</th><th class="px-4 py-3">Status</th></tr>

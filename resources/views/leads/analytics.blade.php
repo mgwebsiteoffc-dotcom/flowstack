@@ -9,24 +9,24 @@
 </div>
 
 <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
-    <x-stat-card title="Total Leads" value="{{ $totalLeads }}" icon="🎯" color="indigo" />
-    <x-stat-card title="Won" value="{{ $wonLeads }} ({{ $winRate }}%)" icon="🏆" color="green" />
-    <x-stat-card title="Lost" value="{{ $lostLeads }}" icon="🚫" color="red" />
-    <x-stat-card title="Avg Deal Value" value="₹{{ number_format($avgDealValue) }}" icon="💎" color="purple" />
-    <x-stat-card title="Pipeline Value" value="₹{{ number_format($pipelineValue) }}" icon="💰" color="amber" />
+    <x-stat-card title="Total Leads" value="{{ $totalLeads }}" icon="target" color="indigo" />
+    <x-stat-card title="Won" value="{{ $wonLeads }} ({{ $winRate }}%)" icon="trophy" color="green" />
+    <x-stat-card title="Lost" value="{{ $lostLeads }}" icon="no-symbol" color="red" />
+    <x-stat-card title="Avg Deal Value" value="₹{{ number_format($avgDealValue) }}" icon="gem" color="purple" />
+    <x-stat-card title="Pipeline Value" value="₹{{ number_format($pipelineValue) }}" icon="banknotes" color="amber" />
 </div>
 
 <div class="grid lg:grid-cols-2 gap-6 mt-6">
-    <x-card title="Leads by source" icon="📊">
+    <x-card title="Leads by source" icon="chart-bar">
         <canvas id="sourceChart" height="120"></canvas>
     </x-card>
-    <x-card title="Leads by stage" icon="🪜">
+    <x-card title="Leads by stage" icon="view-columns">
         <canvas id="stageChart" height="120"></canvas>
     </x-card>
-    <x-card title="Leads over time (6 months)" icon="📈">
+    <x-card title="Leads over time (6 months)" icon="chart-bar">
         <canvas id="overTimeChart" height="120"></canvas>
     </x-card>
-    <x-card title="Conversion rate by source" icon="🎯">
+    <x-card title="Conversion rate by source" icon="target">
         <table class="w-full text-sm">
             <thead class="text-left text-xs text-gray-500 uppercase"><tr><th class="py-2">Source</th><th class="py-2 text-right">Leads</th><th class="py-2 text-right">Won</th><th class="py-2 text-right">Win rate</th></tr></thead>
             <tbody class="divide-y divide-gray-50">
@@ -50,7 +50,7 @@
 </div>
 
 <div class="mt-6">
-    <x-card title="Recent leads" icon="🎯">
+    <x-card title="Recent leads" icon="target">
         <div class="divide-y divide-gray-50">
             @forelse ($leads as $lead)
                 <a href="{{ route('leads.show', $lead) }}" class="flex items-center gap-3 py-2.5 hover:bg-gray-50 px-2 rounded-lg">

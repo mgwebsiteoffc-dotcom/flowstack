@@ -10,23 +10,23 @@ use Illuminate\Queue\SerializesModels;
 
 class TeamInviteMail extends Mailable
 {
-    use Queueable, SerializesModels;
+ use Queueable, SerializesModels;
 
-    public function __construct(
-        public string $agencyName,
-        public string $email,
-        public string $role,
-        public string $setPasswordUrl
-    ) {
-    }
+ public function __construct(
+ public string $agencyName,
+ public string $email,
+ public string $role,
+ public string $setPasswordUrl
+ ) {
+ }
 
-    public function envelope(): Envelope
-    {
-        return new Envelope(subject: 'You were invited to '.$this->agencyName);
-    }
+ public function envelope(): Envelope
+ {
+ return new Envelope(subject: 'You were invited to '.$this->agencyName);
+ }
 
-    public function content(): Content
-    {
-        return new Content(view: 'emails.team-invite');
-    }
+ public function content(): Content
+ {
+ return new Content(view: 'emails.team-invite');
+ }
 }

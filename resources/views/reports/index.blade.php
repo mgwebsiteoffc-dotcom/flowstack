@@ -33,7 +33,7 @@
             <div class="text-xs text-gray-400 mt-1">By {{ $report->creator?->name }}</div>
         </a>
     @empty
-        <div class="sm:col-span-3"><x-empty-state icon="📈" title="No reports" message="Build your first client report." :action="route('reports.create')" actionLabel="New report" /></div>
+        <div class="sm:col-span-3"><x-empty-state icon="chart-bar" title="No reports" message="Build your first client report." :action="route('reports.create')" actionLabel="New report" /></div>
     @endforelse
 </div>
 <x-pagination :paginator="$reports" />

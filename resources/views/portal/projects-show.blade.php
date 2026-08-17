@@ -12,7 +12,7 @@
             <div class="divide-y divide-gray-50">
                 @forelse ($project->tasks as $task)
                     <div class="flex items-center gap-3 py-2.5">
-                        <span class="w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] {{ $task->status === 'done' ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300' }}">{{ $task->status === 'done' ? '✓' : '' }}</span>
+                        <span class="w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] {{ $task->status === 'done' ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300' }}">{{ $task->status === 'done' ? '' : '' }}</span>
                         <span class="text-sm {{ $task->status === 'done' ? 'text-gray-400 line-through' : 'text-gray-800' }} flex-1">{{ $task->title }}</span>
                         @if ($task->due_date)
                             <span class="text-xs text-gray-400">{{ $task->due_date->format('d M') }}</span>

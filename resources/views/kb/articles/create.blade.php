@@ -3,7 +3,7 @@
 @section('content')
 <form method="POST" action="{{ route('kb.articles.store') }}" class="max-w-4xl space-y-6">
     @csrf
-    <x-card title="Article details" icon="📚">
+    <x-card title="Article details" icon="book-open">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
                 <input type="text" name="title" value="{{ old('title') }}" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>

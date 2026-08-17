@@ -94,14 +94,14 @@ class DefaultDataSeeder extends Seeder
     protected function kbCategories(int $tenantId): void
     {
         $categories = [
-            ['name' => 'Digital Marketing', 'icon' => '📈', 'color' => '#3B82F6', 'order_index' => 1],
-            ['name' => 'Shopify Operations', 'icon' => '🛍️', 'color' => '#10B981', 'order_index' => 2],
-            ['name' => 'Social Media', 'icon' => '📱', 'color' => '#EC4899', 'order_index' => 3],
-            ['name' => 'Website Management', 'icon' => '🌐', 'color' => '#8B5CF6', 'order_index' => 4],
-            ['name' => 'AI Automation', 'icon' => '🤖', 'color' => '#F59E0B', 'order_index' => 5],
-            ['name' => 'Client Management', 'icon' => '🤝', 'color' => '#06B6D4', 'order_index' => 6],
-            ['name' => 'Team and HR', 'icon' => '👥', 'color' => '#F97316', 'order_index' => 7],
-            ['name' => 'AI Prompts Library', 'icon' => '✨', 'color' => '#6366F1', 'order_index' => 8],
+            ['name' => 'Digital Marketing', 'icon' => 'chart-bar', 'color' => '#3B82F6', 'order_index' => 1],
+            ['name' => 'Shopify Operations', 'icon' => 'shopping-bag', 'color' => '#10B981', 'order_index' => 2],
+            ['name' => 'Social Media', 'icon' => 'device-phone-mobile', 'color' => '#EC4899', 'order_index' => 3],
+            ['name' => 'Website Management', 'icon' => 'globe-alt', 'color' => '#8B5CF6', 'order_index' => 4],
+            ['name' => 'AI Automation', 'icon' => 'bolt', 'color' => '#F59E0B', 'order_index' => 5],
+            ['name' => 'Client Management', 'icon' => 'users', 'color' => '#06B6D4', 'order_index' => 6],
+            ['name' => 'Team and HR', 'icon' => 'users', 'color' => '#F97316', 'order_index' => 7],
+            ['name' => 'AI Prompts Library', 'icon' => 'sparkles', 'color' => '#6366F1', 'order_index' => 8],
         ];
 
         foreach ($categories as $category) {
@@ -207,7 +207,7 @@ class DefaultDataSeeder extends Seeder
                 'trigger_delay_hours' => 0,
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'send_notification', 'params' => ['target' => 'assigned_to', 'message' => '⏰ Task "[task_title]" is overdue!']],
+                    ['type' => 'send_notification', 'params' => ['target' => 'assigned_to', 'message' => 'Task "[task_title]" is overdue!']],
                 ],
             ],
             [
@@ -216,7 +216,7 @@ class DefaultDataSeeder extends Seeder
                 'trigger_delay_hours' => 72,
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'send_notification', 'params' => ['target' => 'client_account_manager', 'message' => '⚠️ Task "[task_title]" has been overdue for 3 days.']],
+                    ['type' => 'send_notification', 'params' => ['target' => 'client_account_manager', 'message' => 'Task "[task_title]" has been overdue for 3 days.']],
                 ],
             ],
             [
@@ -243,7 +243,7 @@ class DefaultDataSeeder extends Seeder
                 'trigger_delay_hours' => 0,
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'send_notification', 'params' => ['target' => 'role', 'role' => 'admin', 'message' => '⚠️ A client contract is expiring within 30 days.']],
+                    ['type' => 'send_notification', 'params' => ['target' => 'role', 'role' => 'admin', 'message' => 'A client contract is expiring within 30 days.']],
                 ],
             ],
         ];

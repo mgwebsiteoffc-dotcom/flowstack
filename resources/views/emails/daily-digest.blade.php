@@ -7,27 +7,27 @@
             <span style="color: #ffffff; font-size: 20px; font-weight: 800;">Agency<span style="opacity: 0.8;">OS</span></span>
         </div>
         <div style="padding: 28px;">
-            <h1 style="font-size: 18px; color: #111827; margin: 0 0 4px;">Good morning, {{ $user->name }} 👋</h1>
+            <h1 style="font-size: 18px; color: #111827; margin: 0 0 4px;">Good morning, {{ $user->name }} hand-raised</h1>
             <p style="font-size: 13px; color: #6b7280; margin: 0 0 20px;">Here's your {{ now()->format('l, d M') }} digest.</p>
 
-            <h3 style="font-size: 13px; color: #111827; margin: 16px 0 8px;">📅 Due today</h3>
+            <h3 style="font-size: 13px; color: #111827; margin: 16px 0 8px;">calendar Due today</h3>
             @forelse ($dueToday as $title)
                 <div style="font-size: 13px; color: #4b5563; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">• {{ $title }}</div>
             @empty
-                <div style="font-size: 13px; color: #9ca3af;">Nothing due today 🎉</div>
+                <div style="font-size: 13px; color: #9ca3af;">Nothing due today sparkles</div>
             @endforelse
 
-            <h3 style="font-size: 13px; color: #111827; margin: 16px 0 8px;">⏰ Overdue</h3>
+            <h3 style="font-size: 13px; color: #111827; margin: 16px 0 8px;">Overdue</h3>
             @forelse ($overdue as $title)
                 <div style="font-size: 13px; color: #dc2626; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">• {{ $title }}</div>
             @empty
-                <div style="font-size: 13px; color: #9ca3af;">Nothing overdue 🎉</div>
+                <div style="font-size: 13px; color: #9ca3af;">Nothing overdue sparkles</div>
             @endforelse
 
-            <h3 style="font-size: 13px; color: #111827; margin: 16px 0 8px;">⏳ Pending approvals</h3>
+            <h3 style="font-size: 13px; color: #111827; margin: 16px 0 8px;">Pending approvals</h3>
             <div style="font-size: 13px; color: #4b5563;">{{ $pendingApprovals }} deliverable(s) waiting for client approval</div>
 
-            <h3 style="font-size: 13px; color: #111827; margin: 16px 0 8px;">📣 Announcements</h3>
+            <h3 style="font-size: 13px; color: #111827; margin: 16px 0 8px;">megaphone Announcements</h3>
             @forelse ($announcements as $title)
                 <div style="font-size: 13px; color: #4b5563; padding: 4px 0; border-bottom: 1px solid #f3f4f6;">• {{ $title }}</div>
             @empty

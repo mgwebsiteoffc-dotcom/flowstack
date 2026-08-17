@@ -11,7 +11,7 @@
             </div>
             <div class="text-sm font-bold text-gray-900">₹{{ number_format($invoice->total_amount) }}</div>
             <span class="text-xs px-2.5 py-1 rounded-full {{ $invoice->status === 'paid' ? 'bg-green-100 text-green-700' : ($invoice->status === 'overdue' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700') }}">{{ ucfirst($invoice->status) }}</span>
-            <a href="{{ route('portal.invoices.download', $invoice) }}" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg">⬇ PDF</a>
+            <a href="{{ route('portal.invoices.download', $invoice) }}" class="text-xs bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg"><x-icon name="arrow-down-tray" class="w-4 h-4 inline-block" /> PDF</a>
         </div>
     @empty
         <div class="py-12 text-center text-sm text-gray-400">No invoices yet.</div>

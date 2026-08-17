@@ -4,7 +4,7 @@
 @section('content')
 <div class="grid lg:grid-cols-3 gap-6">
     <div class="space-y-6">
-        <x-card title="Profile" icon="👤">
+        <x-card title="Profile" icon="user">
             <div class="flex items-center gap-4 mb-4">
                 <x-user-avatar :user="$user" size="lg" />
                 <div>
@@ -45,7 +45,7 @@
             @endcan
         </x-card>
 
-        <x-card title="Performance (this month)" icon="📊">
+        <x-card title="Performance (this month)" icon="chart-bar">
             <div class="grid grid-cols-3 gap-3 text-center">
                 <div><div class="text-xl font-bold text-gray-900">{{ $stats['tasks_completed_month'] }}</div><div class="text-[10px] text-gray-400">Completed</div></div>
                 <div><div class="text-xl font-bold text-gray-900">{{ $stats['on_time_rate'] }}%</div><div class="text-[10px] text-gray-400">On-time rate</div></div>
@@ -53,7 +53,7 @@
             </div>
         </x-card>
 
-        <x-card title="Assigned clients" icon="🤝">
+        <x-card title="Assigned clients" icon="users">
             @forelse ($clients as $client)
                 <a href="{{ route('clients.show', $client) }}" class="block py-1.5 text-sm text-gray-700 hover:text-indigo-600">{{ $client->company_name }}</a>
             @empty
@@ -63,7 +63,7 @@
     </div>
 
     <div class="lg:col-span-2">
-        <x-card title="Tasks" icon="✅">
+        <x-card title="Tasks" icon="check-circle">
             <div class="divide-y divide-gray-50">
                 @forelse ($tasks as $task)
                     <a href="{{ route('tasks.show', $task) }}" class="flex items-center gap-3 py-2.5 hover:bg-gray-50 px-2 rounded-lg">

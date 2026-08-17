@@ -3,19 +3,19 @@
 @section('breadcrumb', 'Dashboard')
 @section('content')
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <x-stat-card title="Monthly Revenue" value="₹{{ number_format($stats['monthly_revenue']) }}" icon="💰" color="green" />
-    <x-stat-card title="Active Clients" value="{{ $stats['active_clients'] }}" icon="🤝" color="indigo" />
-    <x-stat-card title="Overdue Tasks" value="{{ $stats['overdue_tasks'] }}" icon="⏰" color="{{ $stats['overdue_tasks'] > 0 ? 'red' : 'green' }}" />
-    <x-stat-card title="Pipeline Value" value="₹{{ number_format($stats['pipeline_value']) }}" icon="🎯" color="purple" />
+    <x-stat-card title="Monthly Revenue" value="₹{{ number_format($stats['monthly_revenue']) }}" icon="banknotes" color="green" />
+    <x-stat-card title="Active Clients" value="{{ $stats['active_clients'] }}" icon="users" color="indigo" />
+    <x-stat-card title="Overdue Tasks" value="{{ $stats['overdue_tasks'] }}" icon="clock" color="{{ $stats['overdue_tasks'] > 0 ? 'red' : 'green' }}" />
+    <x-stat-card title="Pipeline Value" value="₹{{ number_format($stats['pipeline_value']) }}" icon="target" color="purple" />
 </div>
 
 <div class="grid lg:grid-cols-3 gap-6 mt-6">
     <div class="lg:col-span-2 space-y-6">
-        <x-card title="Revenue (6 months)" icon="📈">
+        <x-card title="Revenue (6 months)" icon="chart-bar">
             <canvas id="revenueChart" height="90"></canvas>
         </x-card>
 
-        <x-card title="Client Health" icon="🩺">
+        <x-card title="Client Health" icon="pulse">
             @forelse ($clients as $client)
                 <a href="{{ route('clients.show', $client) }}" class="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 hover:bg-gray-50 rounded-lg px-2">
                     <x-health-badge :score="$client->health_score" />
@@ -24,11 +24,11 @@
                     <span class="text-xs font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</span>
                 </a>
             @empty
-                <x-empty-state icon="🤝" title="No clients yet" message="Add your first client to get started." :action="route('clients.create')" actionLabel="Add client" />
+                <x-empty-state icon="users" title="No clients yet" message="Add your first client to get started." :action="route('clients.create')" actionLabel="Add client" />
             @endforelse
         </x-card>
 
-        <x-card title="Recent Activity" icon="🕓">
+        <x-card title="Recent Activity" icon="clock">
             @forelse ($recentActivity as $log)
                 <div class="flex items-start gap-3 py-2 border-b border-gray-50 last:border-0">
                     <x-user-avatar :user="$log->user" size="sm" />
@@ -44,7 +44,7 @@
     </div>
 
     <div class="space-y-6">
-        <x-card title="Team Workload" icon="👥">
+        <x-card title="Team Workload" icon="users">
             @foreach ($teamWorkload as $member)
                 <div class="mb-3">
                     <div class="flex justify-between text-xs mb-1">
@@ -58,18 +58,18 @@
             @endforeach
         </x-card>
 
-        <x-card title="Tasks Due Today" icon="📅">
+        <x-card title="Tasks Due Today" icon="calendar">
             @forelse ($tasksDueToday as $task)
                 <a href="{{ route('tasks.show', $task) }}" class="flex items-center gap-2 py-2 border-b border-gray-50 last:border-0">
                     <x-priority-badge :priority="$task->priority" />
                     <span class="text-sm text-gray-800 truncate flex-1">{{ $task->title }}</span>
                 </a>
             @empty
-                <p class="text-sm text-gray-400 py-3 text-center">All clear today 🎉</p>
+                <p class="text-sm text-gray-400 py-3 text-center">All clear today <x-icon name="sparkles" class="w-4 h-4 inline-block" /></p>
             @endforelse
         </x-card>
 
-        <x-card title="Upcoming Deadlines" icon="⏳">
+        <x-card title="Upcoming Deadlines" icon="hourglass">
             @forelse ($upcomingDeadlines as $task)
                 <a href="{{ route('tasks.show', $task) }}" class="flex items-center gap-2 py-2 border-b border-gray-50 last:border-0">
                     <span class="text-xs bg-gray-100 rounded px-1.5 py-0.5 text-gray-600">{{ $task->due_date?->format('d M') }}</span>
@@ -80,7 +80,7 @@
             @endforelse
         </x-card>
 
-        <x-card title="Lead Pipeline" icon="🎯">
+        <x-card title="Lead Pipeline" icon="target">
             @foreach ($pipeline as $stage)
                 <div class="flex justify-between text-sm py-1.5">
                     <span class="text-gray-600 flex items-center gap-2">

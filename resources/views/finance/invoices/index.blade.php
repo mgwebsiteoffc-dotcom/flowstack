@@ -62,7 +62,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="8"><x-empty-state icon="🧾" title="No invoices" message="Create your first invoice." :action="route('finance.invoices.create')" actionLabel="New invoice" /></td></tr>
+                <tr><td colspan="8"><x-empty-state icon="receipt" title="No invoices" message="Create your first invoice." :action="route('finance.invoices.create')" actionLabel="New invoice" /></td></tr>
             @endforelse
         </tbody>
     </table>

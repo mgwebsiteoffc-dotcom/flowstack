@@ -13,8 +13,8 @@
         @forelse ($notifications as $notification)
             <a href="{{ route('notifications.read', $notification->id) }}"
                class="flex items-start gap-3 px-5 py-4 hover:bg-gray-50 {{ $notification->read_at ? '' : 'bg-indigo-50/50' }}">
-                <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-lg shrink-0">
-                    {{ ($notification->data['priority'] ?? '') === 'high' ? '🔴' : '🔔' }}
+                <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
+                    @if (($notification->data['priority'] ?? '') === 'high')<x-icon name="exclamation-triangle" class="w-4 h-4 text-red-600" />@else<x-icon name="bell" class="w-4 h-4 text-indigo-600" />@endif
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="text-sm font-medium text-gray-900">{{ $notification->data['title'] ?? 'Notification' }}</div>
@@ -26,7 +26,7 @@
                 @endif
             </a>
         @empty
-            <div class="py-12 text-center text-sm text-gray-400">You're all caught up! 🎉</div>
+            <div class="py-12 text-center text-sm text-gray-400">You're all caught up! <x-icon name="sparkles" class="w-4 h-4 inline-block" /></div>
         @endforelse
     </div>
     <div class="mt-4">{{ $notifications->links() }}</div>

@@ -19,7 +19,9 @@
             @endif
         </div>
         @if ($icon)
-            <div class="w-10 h-10 rounded-lg {{ $colors }} flex items-center justify-center text-xl">{{ $icon }}</div>
+            <div class="w-10 h-10 rounded-lg {{ $colors }} flex items-center justify-center">
+                <x-icon :name="$icon" class="w-5 h-5" />
+            </div>
         @endif
     </div>
 </div>

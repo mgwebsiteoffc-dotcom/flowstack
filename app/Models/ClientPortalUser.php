@@ -13,31 +13,31 @@ use Illuminate\Notifications\Notifiable;
  */
 class ClientPortalUser extends Authenticatable
 {
-    use Notifiable, TenantScoped;
+ use Notifiable, TenantScoped;
 
-    protected $fillable = [
-        'tenant_id', 'client_id', 'name', 'email', 'password',
-        'is_active', 'last_login_at',
-    ];
+ protected $fillable = [
+ 'tenant_id', 'client_id', 'name', 'email', 'password',
+ 'is_active', 'last_login_at',
+ ];
 
-    protected $hidden = ['password', 'remember_token'];
+ protected $hidden = ['password', 'remember_token'];
 
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-            'is_active' => 'boolean',
-            'last_login_at' => 'datetime',
-        ];
-    }
+ protected function casts(): array
+ {
+ return [
+ 'password' => 'hashed',
+ 'is_active' => 'boolean',
+ 'last_login_at' => 'datetime',
+ ];
+ }
 
-    public function client()
-    {
-        return $this->belongsTo(Client::class);
-    }
+ public function client()
+ {
+ return $this->belongsTo(Client::class);
+ }
 
-    public function requests()
-    {
-        return $this->hasMany(ClientRequest::class, 'submitted_by');
-    }
+ public function requests()
+ {
+ return $this->hasMany(ClientRequest::class, 'submitted_by');
+ }
 }

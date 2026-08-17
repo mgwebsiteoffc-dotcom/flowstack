@@ -4,7 +4,7 @@
 <form method="POST" action="{{ route('reports.store') }}" class="max-w-4xl space-y-6" x-data="{ clientId: {{ old('client_id', 'null') }}, services: [] }"
       @change="if ($event.target.name === 'client_id') { clientId = $event.target.value; fetch('/reports/__services?client_id=' + clientId).then(r => r.json()).then(d => services = d.services); }">
     @csrf
-    <x-card title="Step 1 · Basic info" icon="📝">
+    <x-card title="Step 1 · Basic info" icon="pencil-square">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
@@ -38,12 +38,12 @@
         </div>
     </x-card>
 
-    <x-card title="Step 2 · Metrics" icon="📊">
+    <x-card title="Step 2 · Metrics" icon="chart-bar">
         <p class="text-xs text-gray-400 mb-4">Sections appear based on the client's services.</p>
 
         <template x-if="services.includes('digital_marketing')">
             <div class="mb-6">
-                <h4 class="font-semibold text-sm text-gray-800 mb-3">📈 Paid Advertising</h4>
+                <h4 class="font-semibold text-sm text-gray-800 mb-3"><x-icon name="chart-bar" class="w-4 h-4 inline-block" /> Paid Advertising</h4>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     @foreach (['ad_spend' => 'Ad spend (₹)', 'impressions' => 'Impressions', 'clicks' => 'Clicks', 'conversions' => 'Conversions', 'revenue' => 'Revenue (₹)'] as $field => $label)
                         <div><label class="block text-xs text-gray-500 mb-1">{{ $label }}</label>
@@ -56,7 +56,7 @@
 
         <template x-if="services.includes('shopify_operations')">
             <div class="mb-6">
-                <h4 class="font-semibold text-sm text-gray-800 mb-3">🛍️ Shopify</h4>
+                <h4 class="font-semibold text-sm text-gray-800 mb-3"><x-icon name="shopping-bag" class="w-4 h-4 inline-block" /> Shopify</h4>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     @foreach (['orders' => 'Orders', 'revenue' => 'Revenue (₹)', 'visitors' => 'Visitors', 'cart_abandonment_rate' => 'Cart abandonment (%)'] as $field => $label)
                         <div><label class="block text-xs text-gray-500 mb-1">{{ $label }}</label>
@@ -69,7 +69,7 @@
 
         <template x-if="services.includes('social_media')">
             <div class="mb-6">
-                <h4 class="font-semibold text-sm text-gray-800 mb-3">📱 Social Media</h4>
+                <h4 class="font-semibold text-sm text-gray-800 mb-3"><x-icon name="device-phone-mobile" class="w-4 h-4 inline-block" /> Social Media</h4>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     @foreach (['followers_start' => 'Followers (start)', 'followers_end' => 'Followers (end)', 'posts' => 'Posts', 'reach' => 'Reach', 'engagements' => 'Engagements'] as $field => $label)
                         <div><label class="block text-xs text-gray-500 mb-1">{{ $label }}</label>
@@ -82,7 +82,7 @@
 
         <template x-if="services.includes('website_management')">
             <div class="mb-6">
-                <h4 class="font-semibold text-sm text-gray-800 mb-3">🌐 Website</h4>
+                <h4 class="font-semibold text-sm text-gray-800 mb-3"><x-icon name="globe-alt" class="w-4 h-4 inline-block" /> Website</h4>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     @foreach (['sessions' => 'Sessions', 'users' => 'Users', 'bounce_rate' => 'Bounce rate (%)', 'avg_session_duration' => 'Avg session (sec)', 'goal_completions' => 'Goal completions'] as $field => $label)
                         <div><label class="block text-xs text-gray-500 mb-1">{{ $label }}</label>
@@ -93,7 +93,7 @@
         </template>
     </x-card>
 
-    <x-card title="Step 3 · Commentary" icon="💬">
+    <x-card title="Step 3 · Commentary" icon="chat-bubble-left-right">
         <div class="space-y-4">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">What worked</label>
                 <textarea name="insights" rows="3" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">{{ old('insights') }}</textarea></div>

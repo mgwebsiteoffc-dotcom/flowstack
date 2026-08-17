@@ -7,7 +7,7 @@
     <div class="lg:col-span-3 space-y-6">
         <form method="POST" action="{{ route('settings.integrations.bikribook.save') }}" class="space-y-6">
             @csrf
-            <x-card title="API credentials" icon="🔐">
+            <x-card title="API credentials" icon="lock-closed">
                 <p class="text-xs text-gray-400 mb-4">Your API key is stored <strong>encrypted</strong> (AES-256). Only the last 4 characters are shown.</p>
                 <div class="grid sm:grid-cols-2 gap-4">
                     <div>
@@ -32,7 +32,7 @@
                 </div>
             </x-card>
 
-            <x-card title="Defaults & toggles" icon="⚙️">
+            <x-card title="Defaults & toggles" icon="cog-6-tooth">
                 <div class="space-y-3">
                     <label class="flex items-center gap-2 text-sm text-gray-600">
                         <input type="checkbox" name="auto_sync" value="1" class="rounded" {{ ($settings['bikribook_auto_sync'] ?? 1) ? 'checked' : '' }}>
@@ -68,7 +68,7 @@
             </div>
         </form>
 
-        <x-card title="Sync log (last 20)" icon="🕓" :padding="false">
+        <x-card title="Sync log (last 20)" icon="clock" :padding="false">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-left text-xs text-gray-500 uppercase">
                     <tr><th class="px-4 py-2.5">Time</th><th class="px-4 py-2.5">Invoice</th><th class="px-4 py-2.5">Action</th><th class="px-4 py-2.5">Result</th></tr>

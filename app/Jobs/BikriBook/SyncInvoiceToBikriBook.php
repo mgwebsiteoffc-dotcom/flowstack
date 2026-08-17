@@ -19,46 +19,46 @@ use Illuminate\Queue\SerializesModels;
  */
 class SyncInvoiceToBikriBook implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+ use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $tries = 3;
-    public array $backoff = [300, 300, 300];
+ public int $tries = 3;
+ public array $backoff = [300, 300, 300];
 
-    public function __construct(public int $invoiceId)
-    {
-    }
+ public function __construct(public int $invoiceId)
+ {
+ }
 
-    public function handle(): void
-    {
-        $invoice = Invoice::withoutGlobalScopes()->with('items', 'client')->find($this->invoiceId);
+ public function handle(): void
+ {
+ $invoice = Invoice::withoutGlobalScopes()->with('items', 'client')->find($this->invoiceId);
 
-        if (! $invoice) {
-            return;
-        }
+ if (! $invoice) {
+ return;
+ }
 
-        $tenant = Tenant::find($invoice->tenant_id);
+ $tenant = Tenant::find($invoice->tenant_id);
 
-        if (! $tenant || ! $tenant->bikribook_api_key) {
-            $invoice->bikribook_sync_status = 'failed';
-            $invoice->save();
+ if (! $tenant || ! $tenant->bikribook_api_key) {
+ $invoice->bikribook_sync_status = 'failed';
+ $invoice->save();
 
-            return;
-        }
+ return;
+ }
 
-        TenantScope::setCurrent($tenant->id);
+ TenantScope::setCurrent($tenant->id);
 
-        (new BikriBookService($tenant))->createInvoice($invoice);
-    }
+ (new BikriBookService($tenant))->createInvoice($invoice);
+ }
 
-    public function failed(\Throwable $e): void
-    {
-        Invoice::withoutGlobalScopes()->where('id', $this->invoiceId)->update([
-            'bikribook_sync_status' => 'failed',
-        ]);
+ public function failed(\Throwable $e): void
+ {
+ Invoice::withoutGlobalScopes()->where('id', $this->invoiceId)->update([
+ 'bikribook_sync_status' => 'failed',
+ ]);
 
-        logger()->error('SyncInvoiceToBikriBook failed permanently', [
-            'invoice_id' => $this->invoiceId,
-            'error' => $e->getMessage(),
-        ]);
-    }
+ logger()->error('SyncInvoiceToBikriBook failed permanently', [
+ 'invoice_id' => $this->invoiceId,
+ 'error' => $e->getMessage(),
+ ]);
+ }
 }

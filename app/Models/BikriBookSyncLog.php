@@ -7,20 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class BikriBookSyncLog extends Model
 {
-    use TenantScoped;
+ use TenantScoped;
 
-    protected $fillable = [
-        'tenant_id', 'invoice_id', 'action', 'request_payload',
-        'response_payload', 'status', 'error_message',
-    ];
+ protected $fillable = [
+ 'tenant_id', 'invoice_id', 'action', 'request_payload',
+ 'response_payload', 'status', 'error_message',
+ ];
 
-    protected $casts = [
-        'request_payload' => 'array',
-        'response_payload' => 'array',
-    ];
+ protected $casts = [
+ 'request_payload' => 'array',
+ 'response_payload' => 'array',
+ ];
 
-    public function invoice()
-    {
-        return $this->belongsTo(Invoice::class);
-    }
+ public function invoice()
+ {
+ return $this->belongsTo(Invoice::class);
+ }
 }
