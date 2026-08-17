@@ -2,7 +2,13 @@
     "name": "agency-os/agency-os",
     "type": "project",
     "description": "Agency OS - multi-tenant agency management SaaS (Laravel, Blade, Tailwind, Alpine.js)",
-    "keywords": ["saas", "laravel", "agency", "crm", "multi-tenant"],
+    "keywords": [
+        "saas",
+        "laravel",
+        "agency",
+        "crm",
+        "multi-tenant"
+    ],
     "license": "proprietary",
     "require": {
         "php": "^8.2",
@@ -10,7 +16,7 @@
         "cviebrock/eloquent-sluggable": "^11.0|^12.0",
         "guzzlehttp/guzzle": "^7.8",
         "intervention/image-laravel": "^1.5",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^13.0",
         "laravel/tinker": "^2.10",
         "maatwebsite/excel": "^3.1",
         "razorpay/razorpay": "^2.9"
