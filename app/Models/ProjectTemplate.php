@@ -20,7 +20,7 @@ class ProjectTemplate extends Model
 
  public function templateTasks()
  {
- return $this->hasMany(ProjectTemplateTask::class)->orderBy('order_index');
+ return $this->hasMany(ProjectTemplateTask::class, 'template_id')->orderBy('order_index');
  }
 
  public function creator()

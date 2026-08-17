@@ -17,6 +17,6 @@ class ProjectTemplateTask extends Model
 
  public function template()
  {
- return $this->belongsTo(ProjectTemplate::class);
+ return $this->belongsTo(ProjectTemplate::class, 'template_id');
  }
 }

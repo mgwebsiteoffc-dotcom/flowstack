@@ -61,9 +61,10 @@
         <div class="lg:col-span-2 space-y-6">
             <x-card title="Company info" icon="building-office">
                 <dl class="grid sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                    <div><dt class="text-gray-400 text-xs">Industry</dt><dd class="text-gray-800">{{ $client->industry === 'Other' ? ($client->industry_other ?? 'Other') : ($client->industry ?? '—') }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Website</dt><dd class="text-gray-800">{{ $client->website ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">GSTIN</dt><dd class="text-gray-800">{{ $client->gstin ?? '—' }}</dd></div>
-                    <div><dt class="text-gray-400 text-xs">Address</dt><dd class="text-gray-800">{{ $client->address ?: ($client->city ?: '—') }}</dd></div>
+                    <div><dt class="text-gray-400 text-xs">Address</dt><dd class="text-gray-800">{{ $client->address ?: '—' }}@if ($client->city || $client->pincode)<div class="text-xs">{{ $client->city }}{{ $client->state ? ', '.$client->state : '' }}{{ $client->pincode ? ' - '.$client->pincode : '' }}</div>@endif</dd></div>
                     <div><dt class="text-gray-400 text-xs">Account manager</dt><dd class="text-gray-800">{{ $client->accountManager?->name ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Contract</dt><dd class="text-gray-800">{{ $client->contract_start_date?->format('d M Y') }} → {{ $client->contract_end_date?->format('d M Y') ?? 'open' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Monthly retainer</dt><dd class="text-gray-800 font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</dd></div>

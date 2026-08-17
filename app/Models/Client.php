@@ -11,8 +11,8 @@ class Client extends Model
  use SoftDeletes, TenantScoped;
 
  protected $fillable = [
- 'tenant_id', 'company_name', 'industry', 'website', 'logo', 'address',
- 'city', 'state', 'country', 'gstin', 'status', 'health_score',
+ 'tenant_id', 'company_name', 'industry', 'industry_other', 'website', 'logo', 'address',
+ 'city', 'state', 'country', 'pincode', 'gstin', 'status', 'health_score',
  'health_score_reason', 'monthly_retainer', 'contract_start_date',
  'contract_end_date', 'account_manager_id', 'lead_id',
  'bikribook_customer_id', 'onboarding_completed_at',
