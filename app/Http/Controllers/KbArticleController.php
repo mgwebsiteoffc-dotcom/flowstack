@@ -114,10 +114,12 @@ class KbArticleController extends Controller
     {
         $request->validate(['helpful' => ['required', 'boolean']]);
 
-        // Lightweight feedback - store counts in the session for now.
-        $key = $request->boolean('helpful') ? 'kb_feedback_yes' : 'kb_feedback_no';
-        $count = (int) session($key, 0);
-        session([$key => $count + 1]);
+        // Persist per-article feedback counts in the settings table.
+        $flag = $request->boolean('helpful') ? 'yes' : 'no';
+        $key = 'kb_feedback_'.$article->id.'_'.$flag;
+        $count = (int) \App\Models\Setting::get($key, 0);
+
+        \App\Models\Setting::set($key, $count + 1);
 
         return back()->with('success', 'Thanks for your feedback!');
     }

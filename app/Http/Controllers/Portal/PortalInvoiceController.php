@@ -40,7 +40,13 @@ class PortalInvoiceController extends Controller
         }
 
         if ($content === null) {
-            $content = Pdf::loadView('finance.invoice-pdf', ['invoice' => $invoice->load('items', 'client')])->output();
+            try {
+                $content = Pdf::loadView('finance.invoice-pdf', ['invoice' => $invoice->load('items', 'client', 'tenant')])->output();
+            } catch (\Throwable $e) {
+                logger()->error('Portal invoice PDF failed', ['invoice' => $invoice->id, 'error' => $e->getMessage()]);
+
+                return back()->with('error', 'Could not generate the PDF right now. Please try again.');
+            }
         }
 
         return response($content, 200, [

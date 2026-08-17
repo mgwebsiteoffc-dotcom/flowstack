@@ -21,6 +21,14 @@ class TeamController extends Controller
 
     public function index()
     {
+        // "Online" = active session within the last 5 minutes (database session driver).
+        $onlineUserIds = \Illuminate\Support\Facades\DB::table('sessions')
+            ->where('last_activity', '>=', now()->subMinutes(5)->timestamp)
+            ->pluck('user_id')
+            ->filter()
+            ->unique()
+            ->values();
+
         $users = User::withCount([
             'assignedTasks' => fn ($q) => $q->whereNotIn('status', ['done', 'cancelled'])->whereNull('parent_task_id'),
             'assignedTasks as overdue_count' => fn ($q) => $q->overdue()->whereNull('parent_task_id'),
@@ -51,7 +59,7 @@ class TeamController extends Controller
             return [$u->id => $byDay];
         });
 
-        return view('team.index', compact('users', 'workloadByUser', 'capacityDays', 'capacity'));
+        return view('team.index', compact('users', 'workloadByUser', 'capacityDays', 'capacity', 'onlineUserIds'));
     }
 
     public function show(User $user)

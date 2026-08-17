@@ -129,6 +129,39 @@ class SettingController extends Controller
         return view('settings.integrations.lead365', compact('tenant', 'stages', 'users', 'logs', 'settings', 'stageMappings'));
     }
 
+    /**
+     * Fires a synthetic lead.created event through the real webhook pipeline so
+     * the tenant can verify end-to-end connectivity (appears in the event log).
+     */
+    public function testLead365()
+    {
+        $tenant = app('currentTenant');
+
+        $log = WebhookLog::withoutGlobalScopes()->create([
+            'tenant_id' => $tenant->id,
+            'source' => 'lead365',
+            'event_type' => 'test.connection',
+            'payload' => [
+                'event' => 'lead.created',
+                'test' => true,
+                'data' => [
+                    'id' => 'TEST-'.now()->timestamp,
+                    'name' => 'Test Lead',
+                    'email' => 'test@example.com',
+                    'company' => 'Test Company',
+                    'source' => 'Lead365 Test',
+                    'created_at' => now()->toIso8601String(),
+                ],
+            ],
+            'status' => 'received',
+            'ip_address' => request()->ip(),
+        ]);
+
+        \App\Jobs\Lead365\ProcessLead365Webhook::dispatch($log->payload, $tenant->id, $log->id);
+
+        return back()->with('success', 'Test event sent through the pipeline. Check the event log below - a "Test Lead" should appear shortly.');
+    }
+
     public function saveLead365(Request $request)
     {
         $tenant = app('currentTenant');

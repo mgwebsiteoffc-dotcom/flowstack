@@ -24,9 +24,9 @@
 <body>
     <div class="header">
         <div>
-            <div class="logo">Agency<span>OS</span> — {{ $invoice->tenant->name ?? app('currentTenant')->name }}</div>
-            <div class="meta">{{ app('currentTenant')->address ?? '' }}</div>
-            <div class="meta">{{ app('currentTenant')->email ?? '' }} {{ app('currentTenant')->phone ?? '' }}</div>
+            <div class="logo">Agency<span>OS</span> — {{ $agencyName }}</div>
+            <div class="meta">{{ $agencyAddress }}</div>
+            <div class="meta">{{ $agencyEmail }} {{ $agencyPhone }}</div>
         </div>
         <div style="text-align: right">
             <h1>INVOICE</h1>
@@ -66,7 +66,14 @@
         <div class="grand"><span>Total ({{ $invoice->currency }})</span><span>{{ number_format($invoice->total_amount, 2) }}</span></div>
     </div>
 
-    @php $settings = app('currentTenant')->settings ?? []; @endphp
+    @php
+    $agency = $invoice->tenant ?? app('currentTenant');
+    $agencyName = $agency?->name ?? config('app.name');
+    $agencyAddress = $agency?->address ?? '';
+    $agencyEmail = $agency?->email ?? '';
+    $agencyPhone = $agency?->phone ?? '';
+    $settings = $agency?->settings ?? [];
+@endphp
     @if (! empty($settings['bank_name']))
         <div class="bank">
             <strong>Bank details:</strong> {{ $settings['bank_name'] }} · A/C {{ $settings['bank_account_number'] }} ·

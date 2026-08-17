@@ -42,6 +42,15 @@ class CheckOverdueInvoices implements ShouldQueue
 
                 $automation->processEvent('invoice.overdue', $invoice, $tenant);
 
+                // Alert the team too (spec: "invoice overdue" email notification).
+                $notifications->emailRole(
+                    $tenant,
+                    ['admin', 'ops_manager'],
+                    '⚠️ Invoice overdue: '.$invoice->invoice_number,
+                    $invoice->client?->company_name.' — '.$invoice->total_amount.' '.$invoice->currency.' was due on '.$invoice->due_date->toFormattedDateString().'.',
+                    'invoice_overdue'
+                );
+
                 $billing = $invoice->client?->contacts->firstWhere('is_billing_contact', true);
                 $email = $billing?->email ?? $invoice->client?->contacts->first()?->email;
 

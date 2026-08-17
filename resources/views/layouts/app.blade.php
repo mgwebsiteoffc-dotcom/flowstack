@@ -19,6 +19,14 @@
     @include('components.sidebar')
     <div :class="sidebarOpen ? 'ml-64' : 'ml-0'" class="transition-all duration-200 min-h-screen flex flex-col">
         @include('components.topbar')
+        @if (session('impersonator_admin'))
+            <div class="bg-purple-600 text-white text-xs px-6 py-2 flex items-center justify-center gap-3">
+                <span>👁 You are impersonating this workspace as a super admin.</span>
+                <form method="POST" action="{{ route('super-admin.impersonate.stop') }}">@csrf
+                    <button class="font-bold underline hover:no-underline">Exit impersonation</button>
+                </form>
+            </div>
+        @endif
         @php $__tenant = app('currentTenant'); @endphp
         @if ($__tenant && $__tenant->is_trial && $__tenant->trial_ends_at)
             <div class="bg-amber-500 text-white text-xs px-6 py-2 flex items-center justify-center gap-2">

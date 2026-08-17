@@ -40,6 +40,32 @@
                 <input type="password" name="password_confirmation" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
             </div>
         </div>
+        <div x-data="{ mode: 'trial' }">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Billing</label>
+            <div class="space-y-2">
+                <label class="flex items-start gap-3 border rounded-lg px-3 py-2.5 cursor-pointer hover:border-indigo-400">
+                    <input type="radio" name="billing_mode" value="trial" x-model="mode" class="mt-0.5">
+                    <span>
+                        <span class="text-sm font-medium text-gray-800 block">Start 14-day free trial</span>
+                        <span class="text-xs text-gray-400">No credit card required. Upgrade anytime.</span>
+                    </span>
+                </label>
+                <label class="flex items-start gap-3 border rounded-lg px-3 py-2.5 cursor-pointer hover:border-indigo-400">
+                    <input type="radio" name="billing_mode" value="plan" x-model="mode" class="mt-0.5">
+                    <span>
+                        <span class="text-sm font-medium text-gray-800 block">Start with a paid plan</span>
+                        <span class="text-xs text-gray-400">Choose a plan and begin your subscription.</span>
+                    </span>
+                </label>
+                <select name="plan_id" x-show="mode === 'plan'" x-cloak class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+                    <option value="">Select a plan…</option>
+                    @foreach ($plans as $plan)
+                        <option value="{{ $plan->id }}">{{ $plan->name }} — ₹{{ number_format($plan->price_monthly) }}/month</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
         <label class="flex items-start gap-2 text-xs text-gray-500">
             <input type="checkbox" name="terms" value="1" required class="mt-0.5">
             I agree to the Terms of Service and Privacy Policy.

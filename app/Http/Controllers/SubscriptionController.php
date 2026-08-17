@@ -69,6 +69,30 @@ class SubscriptionController extends Controller
     }
 
     /**
+     * Cancel the active subscription (services continue until the paid period ends).
+     */
+    public function cancel(Request $request)
+    {
+        $tenant = app('currentTenant');
+
+        $subscription = Subscription::where('tenant_id', $tenant->id)
+            ->where('status', 'active')
+            ->latest()
+            ->first();
+
+        if (! $subscription) {
+            return back()->with('info', 'No active subscription to cancel.');
+        }
+
+        $subscription->update([
+            'status' => 'cancelled',
+            'cancelled_at' => now(),
+        ]);
+
+        return back()->with('success', 'Subscription cancelled. Access continues until '.$subscription->expires_at?->toFormattedDateString().'.');
+    }
+
+    /**
      * Verifies the Razorpay payment signature and activates the subscription.
      */
     public function callback(Request $request)

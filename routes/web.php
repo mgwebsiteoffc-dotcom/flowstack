@@ -127,6 +127,7 @@ Route::prefix('super-admin')->name('super-admin.')->group(function () {
     Route::get('/login', [SuperAdminAuthController::class, 'showLogin'])->middleware('guest')->name('login');
     Route::post('/login', [SuperAdminAuthController::class, 'login'])->middleware(['guest', 'throttle:login'])->name('login.store');
     Route::post('/logout', [SuperAdminAuthController::class, 'logout'])->name('logout');
+    Route::post('/impersonate/stop', [SuperAdminTenantController::class, 'stopImpersonation'])->name('impersonate.stop');
 
     Route::middleware('super.admin')->group(function () {
         Route::get('/', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
@@ -161,6 +162,7 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::get('/upgrade', [SubscriptionController::class, 'upgrade'])->name('upgrade');
     Route::post('/subscription/checkout', [SubscriptionController::class, 'checkout'])->name('subscription.checkout');
     Route::post('/subscription/callback', [SubscriptionController::class, 'callback'])->name('subscription.checkout.callback');
+    Route::post('/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
 
     // Clients
     Route::resource('clients', ClientController::class);
@@ -168,6 +170,7 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::patch('/clients/{client}/notes/{note}', [ClientController::class, 'updateNote'])->name('clients.notes.update');
     Route::delete('/clients/{client}/notes/{note}', [ClientController::class, 'destroyNote'])->name('clients.notes.destroy');
     Route::post('/clients/{client}/onboarding/{item}/toggle', [ClientController::class, 'toggleOnboarding'])->name('clients.onboarding.toggle');
+    Route::patch('/clients/{client}/onboarding/{item}', [ClientController::class, 'updateOnboarding'])->name('clients.onboarding.update');
     Route::post('/clients/{client}/portal-access', [ClientController::class, 'togglePortalAccess'])->name('clients.portal-access');
     Route::post('/clients/{client}/contacts', [ClientController::class, 'storeContact'])->name('clients.contacts.store');
     Route::delete('/clients/{client}/contacts/{contact}', [ClientController::class, 'destroyContact'])->name('clients.contacts.destroy');
@@ -197,6 +200,7 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::delete('/tasks/{task}/attachments/{attachment}', [TaskController::class, 'destroyAttachment'])->name('tasks.attachments.destroy');
     Route::post('/tasks/{task}/subtasks', [TaskController::class, 'storeSubtask'])->name('tasks.subtasks.store');
     Route::post('/tasks/{task}/watchers', [TaskController::class, 'toggleWatcher'])->name('tasks.watchers.toggle');
+    Route::post('/tasks/{task}/approval', [TaskController::class, 'submitApproval'])->name('tasks.approval.submit');
     Route::post('/tasks/board/reorder', [TaskController::class, 'reorderBoard'])->name('tasks.board.reorder');
 
     // Team
@@ -312,6 +316,7 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
     Route::get('/settings/users', [SettingController::class, 'users'])->name('settings.users');
     Route::get('/settings/integrations/lead365', [SettingController::class, 'lead365'])->name('settings.integrations.lead365');
     Route::post('/settings/integrations/lead365', [SettingController::class, 'saveLead365'])->name('settings.integrations.lead365.save');
+    Route::post('/settings/integrations/lead365/test', [SettingController::class, 'testLead365'])->name('settings.integrations.lead365.test');
     Route::get('/settings/integrations/bikribook', [SettingController::class, 'bikribook'])->name('settings.integrations.bikribook');
     Route::post('/settings/integrations/bikribook', [SettingController::class, 'saveBikribook'])->name('settings.integrations.bikribook.save');
     Route::post('/settings/integrations/bikribook/test', [SettingController::class, 'testBikribook'])->name('settings.integrations.bikribook.test');

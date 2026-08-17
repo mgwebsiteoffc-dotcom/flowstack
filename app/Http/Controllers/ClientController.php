@@ -296,6 +296,21 @@ class ClientController extends Controller
         return back()->with('success', 'Note deleted.');
     }
 
+    public function updateOnboarding(Request $request, Client $client, ClientOnboardingItem $item)
+    {
+        $validated = $request->validate([
+            'assigned_to' => ['nullable', 'exists:users,id'],
+            'due_date' => ['nullable', 'date'],
+        ]);
+
+        $item->update([
+            'assigned_to' => $validated['assigned_to'] ?: null,
+            'due_date' => $validated['due_date'] ?: null,
+        ]);
+
+        return back()->with('success', 'Onboarding item updated.');
+    }
+
     public function toggleOnboarding(Client $client, ClientOnboardingItem $item)
     {
         $item->update([

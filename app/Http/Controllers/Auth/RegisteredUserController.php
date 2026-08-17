@@ -22,7 +22,9 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        $plans = \App\Models\Plan::query()->where('is_active', true)->orderBy('price_monthly')->get();
+
+        return view('auth.register', compact('plans'));
     }
 
     public function store(RegisterRequest $request)
@@ -31,14 +33,22 @@ class RegisteredUserController extends Controller
 
         $slug = Str::slug($validated['agency_name'] ?? $validated['subdomain'] ?? $validated['name']);
 
+        // Plan choice: a selected plan starts a paid subscription; otherwise a
+        // 14-day free trial is created (spec: "select plan or start 14-day free trial").
+        $plan = $validated['plan_id'] ? \App\Models\Plan::find($validated['plan_id']) : null;
+
         $tenant = Tenant::create([
             'name' => $validated['agency_name'],
             'slug' => $validated['subdomain'],
             'email' => $validated['email'],
-            'is_trial' => true,
+            'is_trial' => $plan === null,
             'is_active' => true,
-            'trial_ends_at' => now()->addDays(14),
-            'plan_started_at' => now(),
+            'trial_ends_at' => $plan ? null : now()->addDays(14),
+            'plan_id' => $plan?->id,
+            'plan_started_at' => $plan ? now() : now(),
+            'plan_expires_at' => $plan ? now()->addMonth() : null,
+            'max_users' => $plan?->max_users,
+            'max_clients' => $plan?->max_clients,
             'settings' => [
                 'timezone' => 'Asia/Kolkata',
                 'currency' => 'INR',

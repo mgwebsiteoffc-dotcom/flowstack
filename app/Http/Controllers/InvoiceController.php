@@ -224,8 +224,14 @@ class InvoiceController extends Controller
         }
 
         if ($content === null) {
-            $pdf = Pdf::loadView('finance.invoice-pdf', ['invoice' => $invoice]);
-            $content = $pdf->output();
+            try {
+                $pdf = Pdf::loadView('finance.invoice-pdf', ['invoice' => $invoice]);
+                $content = $pdf->output();
+            } catch (\Throwable $e) {
+                logger()->error('Invoice PDF generation failed', ['invoice' => $invoice->id, 'error' => $e->getMessage()]);
+
+                return back()->with('error', 'Could not generate the PDF right now. Please try again.');
+            }
         }
 
         return response($content, 200, [

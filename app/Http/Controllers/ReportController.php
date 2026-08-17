@@ -143,14 +143,20 @@ class ReportController extends Controller
     {
         $this->authorize('view', $report);
 
-        $report->load('client');
+        $report->load('client', 'tenant');
 
-        $pdf = Pdf::loadView('reports.pdf', [
-            'report' => $report,
-            'tenant' => app('currentTenant'),
-        ]);
+        try {
+            $pdf = Pdf::loadView('reports.pdf', [
+                'report' => $report,
+                'tenant' => $report->tenant ?? app('currentTenant'),
+            ]);
 
-        return $pdf->download('report-'.Str::slug($report->title).'.pdf');
+            return $pdf->download('report-'.Str::slug($report->title).'.pdf');
+        } catch (\Throwable $e) {
+            logger()->error('Report PDF generation failed', ['report' => $report->id, 'error' => $e->getMessage()]);
+
+            return back()->with('error', 'Could not generate the report PDF right now. Please try again.');
+        }
     }
 
     /**

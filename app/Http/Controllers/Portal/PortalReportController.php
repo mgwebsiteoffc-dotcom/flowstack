@@ -45,12 +45,18 @@ class PortalReportController extends Controller
 
         $report->update(['client_viewed_at' => now()]);
 
-        $pdf = Pdf::loadView('reports.pdf', [
-            'report' => $report->load('client'),
-            'tenant' => $report->tenant ?? app('currentTenant'),
-        ]);
+        try {
+            $pdf = Pdf::loadView('reports.pdf', [
+                'report' => $report->load('client', 'tenant'),
+                'tenant' => $report->tenant,
+            ]);
 
-        return $pdf->download('report-'.Str::slug($report->title).'.pdf');
+            return $pdf->download('report-'.Str::slug($report->title).'.pdf');
+        } catch (\Throwable $e) {
+            logger()->error('Portal report PDF failed', ['report' => $report->id, 'error' => $e->getMessage()]);
+
+            return back()->with('error', 'Could not generate the PDF right now. Please try again.');
+        }
     }
 
     public function comment(Request $request, Report $report)

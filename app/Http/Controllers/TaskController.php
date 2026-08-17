@@ -390,6 +390,52 @@ class TaskController extends Controller
         return back()->with('success', 'Subtask added.');
     }
 
+    /**
+     * Submit a task deliverable for client approval (creates a ClientApproval
+     * visible in the client portal; sets the task to waiting_approval).
+     */
+    public function submitApproval(Request $request, Task $task)
+    {
+        $this->authorize('update', $task);
+
+        if (! $task->client_id) {
+            return back()->with('error', 'This task has no client - approvals require a client.');
+        }
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:5000'],
+            'files' => ['nullable', 'array', 'max:5'],
+            'files.*' => ['file', 'max:10240'],
+        ]);
+
+        $paths = [];
+
+        foreach ($request->file('files', []) as $file) {
+            $paths[] = $file->store('tenants/'.$task->tenant_id.'/approvals/'.$task->id, 'tenant');
+        }
+
+        \App\Models\ClientApproval::create([
+            'tenant_id' => $task->tenant_id,
+            'client_id' => $task->client_id,
+            'task_id' => $task->id,
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'file_paths' => $paths ?: null,
+            'status' => 'pending',
+            'submitted_by' => auth()->id(),
+        ]);
+
+        $task->update([
+            'approval_status' => 'pending',
+            'status' => 'waiting_approval',
+        ]);
+
+        ActivityLog::record('task.submitted_for_approval', $task, null, ['title' => $validated['title']]);
+
+        return back()->with('success', 'Deliverable submitted for client approval.');
+    }
+
     public function toggleWatcher(Task $task)
     {
         $existing = TaskWatcher::where('task_id', $task->id)->where('user_id', auth()->id())->first();

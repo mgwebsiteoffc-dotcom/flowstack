@@ -20,6 +20,9 @@ class FileController extends Controller
         $search = $request->input('search');
         $type = $request->input('type');
 
+        $currentFolder = $folderId ? FileFolder::find($folderId) : null;
+        $clientId = $clientId ?? $currentFolder?->client_id;
+
         $foldersQuery = FileFolder::withCount('files');
 
         if ($clientId) {
@@ -50,7 +53,6 @@ class FileController extends Controller
 
         $files = $filesQuery->orderBy('created_at', 'desc')->paginate(20)->withQueryString();
 
-        $currentFolder = $folderId ? FileFolder::find($folderId) : null;
         $breadcrumbs = $this->breadcrumbs($currentFolder);
 
         $clients = Client::orderBy('company_name')->get();

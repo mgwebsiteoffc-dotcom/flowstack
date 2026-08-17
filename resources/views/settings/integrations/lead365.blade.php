@@ -12,6 +12,11 @@
                         class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg" x-text="copied ? 'Copied ✅' : 'Copy'"></button>
             </div>
             <p class="text-xs text-gray-400 mt-2">Paste this URL in your Lead365 account and subscribe to: lead.created, lead.updated, lead.deleted, lead.stage_changed, lead.assigned, lead.won, lead.lost, form.submitted, meta.lead.received</p>
+            <div class="mt-3">
+                <form method="POST" action="{{ route('settings.integrations.lead365.test') }}">@csrf
+                    <button class="text-xs bg-gray-800 text-white px-4 py-1.5 rounded-lg">▶ Test Connection (send test event)</button>
+                </form>
+            </div>
         </x-card>
 
         <form method="POST" action="{{ route('settings.integrations.lead365.save') }}" class="space-y-6">

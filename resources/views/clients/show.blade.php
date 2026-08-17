@@ -93,18 +93,32 @@
             </x-card>
 
             <x-card title="Onboarding checklist" icon="📋">
-                <form method="POST" action="{{ route('clients.onboarding.toggle', [$client, 0]) }}" id="onboarding-form"></form>
                 @foreach ($client->onboardingItems as $item)
-                    <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
-                        <form method="POST" action="{{ route('clients.onboarding.toggle', [$client, $item->id]) }}">
+                    <div x-data="{ editing: false }" class="py-2 border-b border-gray-50 last:border-0">
+                        <div class="flex items-center gap-3">
+                            <form method="POST" action="{{ route('clients.onboarding.toggle', [$client, $item->id]) }}">
+                                @csrf
+                                <button type="submit" class="w-5 h-5 rounded border-2 {{ $item->is_completed ? 'bg-green-500 border-green-500' : 'border-gray-300' }} flex items-center justify-center text-white text-xs">
+                                    {{ $item->is_completed ? '✓' : '' }}
+                                </button>
+                            </form>
+                            <span class="text-sm {{ $item->is_completed ? 'text-gray-400 line-through' : 'text-gray-700' }} flex-1">{{ $item->title }}</span>
+                            <span class="text-xs text-gray-400">{{ $item->assignee?->name }}</span>
+                            @if ($item->due_date)<span class="text-xs text-gray-400">{{ $item->due_date->format('d M') }}</span>@endif
+                            <button @click="editing = !editing" class="text-xs text-gray-400 hover:text-gray-600">✏️</button>
+                        </div>
+                        <form method="POST" action="{{ route('clients.onboarding.update', [$client, $item->id]) }}" x-show="editing" x-cloak class="flex gap-2 mt-2 pl-8">
                             @csrf
-                            <button type="submit" class="w-5 h-5 rounded border-2 {{ $item->is_completed ? 'bg-green-500 border-green-500' : 'border-gray-300' }} flex items-center justify-center text-white text-xs">
-                                {{ $item->is_completed ? '✓' : '' }}
-                            </button>
+                            @method('PATCH')
+                            <select name="assigned_to" class="rounded-lg border border-gray-300 px-2 py-1 text-xs">
+                                <option value="">Unassigned</option>
+                                @foreach ($teamMembers as $member)
+                                    <option value="{{ $member->id }}" {{ $item->assigned_to === $member->id ? 'selected' : '' }}>{{ $member->name }}</option>
+                                @endforeach
+                            </select>
+                            <input type="date" name="due_date" value="{{ $item->due_date?->toDateString() }}" class="rounded-lg border border-gray-300 px-2 py-1 text-xs">
+                            <button class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-xs">Save</button>
                         </form>
-                        <span class="text-sm {{ $item->is_completed ? 'text-gray-400 line-through' : 'text-gray-700' }} flex-1">{{ $item->title }}</span>
-                        <span class="text-xs text-gray-400">{{ $item->assignee?->name }}</span>
-                        @if ($item->due_date)<span class="text-xs text-gray-400">{{ $item->due_date->format('d M') }}</span>@endif
                     </div>
                 @endforeach
             </x-card>

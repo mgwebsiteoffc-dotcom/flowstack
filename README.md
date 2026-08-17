@@ -24,8 +24,8 @@ php artisan queue:work            # REQUIRED — the platform depends on the que
 php artisan schedule:work         # runs scheduled jobs (or cron: * * * * * php artisan schedule:run)
 ```
 
-Register at `/register` — a tenant (14-day trial) + admin user are created for you,
-then the 6-step onboarding wizard takes over.
+Register at `/register` — a tenant + admin user are created for you (choose a
+14-day free trial or a paid plan), then the 6-step onboarding wizard takes over.
 
 > The auth scaffolding (login/register/reset/team invites) is already included —
 > **do not run `php artisan breeze:install`**, it would overwrite these files.
@@ -168,7 +168,8 @@ own GitHub account (the bot token used during development lacks the
 
 ## Production notes
 
-- Run the queue worker 24/7 via Supervisor: `php artisan queue:work database --tries=3`.
+- Run the queue worker 24/7 via Supervisor: `php artisan queue:work database --tries=3`
+  (see `deploy/supervisor.conf.example`).
 - Cron: `* * * * * php artisan schedule:run`.
 - Set `TENANT_DOMAIN` and wildcard DNS `*.yoursaas.com`; keep
   `TENANT_FALLBACK_SINGLE=false`.

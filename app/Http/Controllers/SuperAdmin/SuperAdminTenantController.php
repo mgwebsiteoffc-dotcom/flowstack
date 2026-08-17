@@ -94,6 +94,26 @@ class SuperAdminTenantController extends Controller
         return redirect()->route('dashboard')->with('success', 'Impersonating '.$tenant->name.' (admin: '.$admin->email.')');
     }
 
+    /**
+     * Ends a super-admin impersonation and restores the super admin session.
+     * This route must be reachable while logged in as the tenant admin, so it
+     * is registered outside the super.admin middleware group.
+     */
+    public function stopImpersonation()
+    {
+        if (! session()->has('impersonator_admin')) {
+            return redirect()->route('dashboard');
+        }
+
+        $superAdminId = session()->pull('impersonator_admin');
+        session()->put('super_admin', $superAdminId);
+
+        auth()->logout();
+        session()->regenerate();
+
+        return redirect()->route('super-admin.dashboard')->with('success', 'Impersonation ended.');
+    }
+
     public function extendTrial(Tenant $tenant)
     {
         $days = (int) request()->input('days', 14);

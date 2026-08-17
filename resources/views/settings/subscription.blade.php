@@ -23,9 +23,17 @@
                         @endif
                     </div>
                 </div>
-                <a href="{{ route('upgrade') }}" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium">
-                    {{ $tenant->is_trial ? 'Upgrade now' : 'Change plan' }}
-                </a>
+                <div class="flex gap-2">
+                    <a href="{{ route('upgrade') }}" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium">
+                        {{ $tenant->is_trial ? 'Upgrade now' : 'Change plan' }}
+                    </a>
+                    @if ($subscriptions->contains('status', 'active'))
+                        <form method="POST" action="{{ route('subscription.cancel') }}" onsubmit="return confirm('Cancel your subscription? Access continues until the end of the paid period.')">
+                            @csrf
+                            <button class="px-5 py-2 rounded-lg bg-white border border-red-200 text-red-600 text-sm">Cancel subscription</button>
+                        </form>
+                    @endif
+                </div>
             </div>
         </x-card>
 
