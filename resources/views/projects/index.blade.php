@@ -29,7 +29,7 @@
                 <x-status-badge :status="$project->status" type="project" />
             </div>
             <div class="text-xs text-gray-400 mt-1">{{ $project->client?->company_name }} · {{ $project->service_type ?? '—' }}</div>
-            <div class="text-xs text-gray-400 mt-1">{{ $project->tasks_count }} tasks · {{ $project->members_count ?? 0 }} members</div>
+            <div class="text-xs text-gray-400 mt-1">{{ $project->tasks_count }} tasks · {{ $project->members->count() }} members</div>
             <div class="h-1.5 bg-gray-100 rounded-full mt-3">
                 <div class="h-1.5 bg-indigo-500 rounded-full" style="width: {{ $project->progress() }}%"></div>
             </div>

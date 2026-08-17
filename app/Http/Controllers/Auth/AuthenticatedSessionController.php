@@ -44,6 +44,9 @@ class AuthenticatedSessionController extends Controller
 
         $user->update(['last_login_at' => now()]);
 
+        // Load the tenant explicitly so the container context is always set.
+        $user->loadMissing('tenant');
+
         if ($user->tenant) {
             TenantScope::setCurrentTenant($user->tenant);
         }

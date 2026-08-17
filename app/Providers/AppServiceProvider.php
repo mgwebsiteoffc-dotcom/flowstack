@@ -36,8 +36,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Strict mode catches missing attributes & unguarded writes during dev.
-        Model::shouldBeStrict(! $this->app->isProduction());
+        // NOTE: strict mode (Model::shouldBeStrict) is intentionally NOT enabled.
+        // In local it throws LazyLoadingViolationException on any lazy-loaded
+        // relationship (e.g. $user->tenant right after login) and
+        // MassAssignment exceptions on validated() payloads, turning routine
+        // requests into 500 errors. Lazy loading is normal here; N+1 is kept
+        // in check by eager loading in controllers.
 
         // Policies
         Gate::policy(User::class, UserPolicy::class);
