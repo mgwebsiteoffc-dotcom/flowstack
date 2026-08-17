@@ -147,6 +147,7 @@ class DemoTenantSeeder extends Seeder
         $clientModels = [];
         foreach ($clients as $data) {
             $contact = $data['contact'];
+            $services = $data['services'] ?? [];
             unset($data['contact'], $data['services']);
 
             $client = Client::withoutGlobalScopes()->firstOrCreate(
@@ -159,7 +160,7 @@ class DemoTenantSeeder extends Seeder
                 $contact + ['tenant_id' => $tenant->id, 'client_id' => $client->id]
             );
 
-            foreach ($data['services'] ?? [] as $service) {
+            foreach ($services as $service) {
                 ClientService::withoutGlobalScopes()->firstOrCreate(
                     ['tenant_id' => $tenant->id, 'client_id' => $client->id, 'service_type' => $service],
                     ['tenant_id' => $tenant->id, 'client_id' => $client->id, 'service_type' => $service]
