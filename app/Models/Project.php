@@ -62,6 +62,11 @@ class Project extends Model
  return $this->hasMany(TimeEntry::class);
  }
 
+ public function files()
+ {
+ return $this->hasMany(File::class, 'project_id');
+ }
+
  public function openTasksCount(): int
  {
  return $this->tasks()->whereNotIn('status', ['done', 'cancelled'])->count();

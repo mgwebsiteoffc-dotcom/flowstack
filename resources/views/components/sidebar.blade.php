@@ -32,7 +32,7 @@
 @endphp
 <aside x-show="sidebarOpen" x-transition
        class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-gray-300 flex flex-col z-40">
-    <div class="flex items-center gap-2 px-5 h-16 border-b border-gray-800">
+    <div class="flex items-center gap-2 px-4 h-14 border-b border-gray-800">
         <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-black">A</div>
         <div>
             <div class="text-white font-bold leading-tight">{{ app('currentTenant')?->name }}</div>
@@ -40,22 +40,22 @@
         </div>
     </div>
 
-    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-0.5 text-sm">
+    <nav class="flex-1 overflow-y-auto py-2 px-2.5 space-y-0.5 text-[13px]">
         @foreach ($navGroups as $groupName => $items)
             @php $visible = collect($items)->filter(fn ($i) => ! isset($i['key']) || \App\Support\MenuPermissions::can($user->role, $i['key']))->filter(fn ($i) => ! ($i['route'] === 'finance.index' && ! $user->canAccessFinance())); @endphp
             @if ($visible->isEmpty()) @continue @endif
-            <div class="px-3 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">{{ $groupName }}</div>
+            <div class="px-2.5 pt-2.5 pb-0.5 text-[9px] font-semibold uppercase tracking-wider text-gray-500">{{ $groupName }}</div>
             @foreach ($visible as $item)
                 <a href="{{ route($item['route']) }}"
-                   class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ (isset($item['active']) && $item['active']) || request()->routeIs($item['route'].'*') ? 'bg-gray-800 text-white' : 'hover:bg-gray-800 hover:text-white' }}">
-                    <x-icon :name="$item['icon']" class="w-5 h-5 shrink-0" />
+                   class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg transition {{ (isset($item['active']) && $item['active']) || request()->routeIs($item['route'].'*') ? 'bg-gray-800 text-white' : 'hover:bg-gray-800 hover:text-white' }}">
+                    <x-icon :name="$item['icon']" class="w-4 h-4 shrink-0" />
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach
         @endforeach
     </nav>
 
-    <div class="p-4 border-t border-gray-800 flex items-center gap-3">
+    <div class="px-3 py-2.5 border-t border-gray-800 flex items-center gap-2.5">
         <x-user-avatar :user="$user" size="md" />
         <div class="min-w-0 flex-1">
             <div class="text-white text-sm truncate">{{ $user->name }}</div>

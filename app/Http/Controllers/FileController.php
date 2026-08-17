@@ -79,11 +79,13 @@ class FileController extends Controller
  'folder_id' => ['nullable', 'exists:file_folders,id'],
  'client_id' => ['nullable', 'exists:clients,id'],
  'lead_id' => ['nullable', 'exists:leads,id'],
+ 'project_id' => ['nullable', 'exists:projects,id'],
  ]);
 
  $folder = $request->input('folder_id') ? FileFolder::find($request->input('folder_id')) : null;
  $clientId = $request->input('client_id') ?? $folder?->client_id;
  $leadId = $request->input('lead_id');
+ $projectId = $request->input('project_id');
 
  foreach ($request->file('files') as $file) {
  $extension = strtolower($file->getClientOriginalExtension());
@@ -106,7 +108,9 @@ class FileController extends Controller
  $storedName = Str::uuid().'.'.$extension;
  $path = $leadId
  ? 'tenants/'.$tenant->id.'/leads/'.$leadId
- : 'tenants/'.$tenant->id.'/clients/'.($clientId ?? 'general').'/'.($folder?->name ?? 'root');
+ : ($projectId
+ ? 'tenants/'.$tenant->id.'/projects/'.$projectId
+ : 'tenants/'.$tenant->id.'/clients/'.($clientId ?? 'general').'/'.($folder?->name ?? 'root'));
 
  $storedPath = $file->storeAs($path, $storedName, 'tenant');
 
@@ -115,6 +119,7 @@ class FileController extends Controller
  'folder_id' => $folder?->id,
  'client_id' => $clientId,
  'lead_id' => $leadId,
+ 'project_id' => $projectId,
  'original_name' => $file->getClientOriginalName(),
  'stored_name' => $storedName,
  'file_path' => $storedPath,
