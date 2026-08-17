@@ -33,7 +33,7 @@
         <x-card title="Summary by member" icon="users">
             @foreach ($summary as $userId => $data)
                 <div class="flex justify-between py-1.5 text-sm">
-                    <span class="text-gray-700 truncate">{{ $data['user']?->name }}</span>
+                    <span class="text-gray-700 truncate">{{ ($data['user'] ?? null)?->name }}</span>
                     <span class="font-medium">{{ round($data['minutes'] / 60, 1) }}h</span>
                 </div>
             @endforeach

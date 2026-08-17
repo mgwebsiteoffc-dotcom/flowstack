@@ -24,7 +24,7 @@
         <div class="w-64 shrink-0 bg-gray-200/60 rounded-xl p-3">
             <div class="flex items-center justify-between px-1 mb-2">
                 <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">{{ str_replace('_', ' ', $status) }}</span>
-                <span class="text-xs bg-white rounded-full px-2 py-0.5 text-gray-500">{{ $tasks[$status]?->count() ?? 0 }}</span>
+                <span class="text-xs bg-white rounded-full px-2 py-0.5 text-gray-500">{{ $tasks->get($status)?->count() ?? 0 }}</span>
             </div>
             <div data-status="{{ $status }}" class="board-column space-y-2 min-h-[120px]">
                 @foreach ($tasks[$status] ?? [] as $task)
