@@ -16,7 +16,9 @@ class EnsureSubscriptionActive
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $tenant = app('currentTenant');
+        // Belt & braces: never let app('currentTenant') throw on the few
+        // paths where the key could still be unresolvable.
+        $tenant = app()->bound('currentTenant') ? app('currentTenant') : null;
 
         if ($tenant === null) {
             return $next($request);

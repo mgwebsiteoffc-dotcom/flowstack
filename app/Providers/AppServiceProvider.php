@@ -36,13 +36,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // ALWAYS bind the tenant context keys (default null) so that
-        // app('currentTenant') never throws "Target class [currentTenant] does
-        // not exist" on routes that do NOT run TenantMiddleware (login,
+        // ALWAYS make the tenant context keys resolvable (returning null) so
+        // that app('currentTenant') never throws "Target class [currentTenant]
+        // does not exist" on routes that do NOT run TenantMiddleware (login,
         // register, portal, super-admin, webhooks, /dev/* diagnostics).
-        // TenantMiddleware overrides them with the real tenant.
-        app()->instance('currentTenant', null);
-        app()->instance('currentTenantId', null);
+        //
+        // IMPORTANT: this must be a CLOSURE binding, NOT app()->instance(key,
+        // null). Laravel's container resolves instances via isset(), and
+        // isset(null) is false in PHP, so a null instance is silently ignored
+        // and the container still tries to build a class named 'currentTenant'
+        // (BindingResolutionException). A closure binding is always resolved
+        // and is allowed to return null.
+        $this->app->bind('currentTenant', fn () => null);
+        $this->app->bind('currentTenantId', fn () => null);
+        // TenantMiddleware later overrides via app()->instance('currentTenant',
+        // $tenant) - real objects ARE returned by isset(), so the override wins.
 
         // NOTE: strict mode (Model::shouldBeStrict) is intentionally NOT enabled.
         // In local it throws LazyLoadingViolationException on any lazy-loaded

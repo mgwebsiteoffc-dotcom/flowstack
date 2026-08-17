@@ -121,6 +121,15 @@ class AppDoctor extends Command
             $fail++;
         }
 
+        // 6b. Tenant context resolution (the classic "Target class [currentTenant]" bug)
+        try {
+            $tenant = app('currentTenant');
+            $this->info("[OK] app('currentTenant') resolves (".($tenant?->slug ?? 'null').')');
+        } catch (\Throwable $e) {
+            $this->error("[FAIL] app('currentTenant') throws: ".$e->getMessage());
+            $fail++;
+        }
+
         // 7. Login event log (last 6) - shows exactly what the login flow did
         $log = storage_path('logs/laravel.log');
         if (is_file($log)) {
