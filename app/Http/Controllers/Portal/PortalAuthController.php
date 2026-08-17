@@ -38,10 +38,12 @@ class PortalAuthController extends Controller
 
         $user->update(['last_login_at' => now()]);
 
+        $intended = $request->session()->pull('portal.intended');
+
         $request->session()->put('portal_user', $user->id);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('portal.dashboard'));
+        return redirect($intended ?? route('portal.dashboard'));
     }
 
     public function logout(Request $request)

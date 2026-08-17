@@ -85,7 +85,22 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
+        // Redirect to the intended URL ONLY when it is a safe internal app
+        // URL. Never honor URLs pointing at the super-admin or portal areas:
+        // a stale 'url.intended' from an earlier /super-admin or /portal visit
+        // (they share this same session) used to bounce team logins to the
+        // super-admin login screen after a successful login.
+        $intended = $request->session()->pull('url.intended');
         $target = route('dashboard');
+
+        if ($intended
+            && str_starts_with($intended, '/')
+            && ! str_starts_with($intended, '//')
+            && ! str_contains($intended, '/super-admin')
+            && ! str_contains($intended, '/portal')
+        ) {
+            $target = $intended;
+        }
 
         logger()->info('Login success', [
             'email' => $user->email,
@@ -95,7 +110,7 @@ class AuthenticatedSessionController extends Controller
             'redirect' => $target,
         ]);
 
-        return redirect()->intended($target);
+        return redirect($target);
     }
 
     public function destroy(Request $request)

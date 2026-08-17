@@ -50,8 +50,8 @@ use Illuminate\Support\Facades\Route;
 | Public routes (no tenant, no auth)
 |--------------------------------------------------------------------------
 */
-// --- DEVELOPMENT DIAGNOSTIC (remove in production) ---------------------
-if (app()->environment('local')) {
+// --- DEVELOPMENT DIAGNOSTIC (available when APP_DEBUG=true) -------------
+if (config('app.debug')) {
     Route::get('/dev/session', function () {
         $probe = (int) session('_probe', 0);
         session(['_probe' => $probe + 1]);

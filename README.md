@@ -154,6 +154,29 @@ verified server-side → subscription + payment recorded, tenant plan activated.
 `app/Console/Kernel.php` mirrors the same schedule for Laravel-10-style setups
 (the file is ignored by L11+ to avoid double execution).
 
+## Local development notes (Windows / Laragon included)
+
+- Use `APP_ENV=local` and `APP_DEBUG=true` while developing - with
+  `APP_ENV=production`/`APP_DEBUG=false` error details are hidden and the
+  `/dev/*` diagnostics are disabled.
+- **Session cookie pitfalls (the classic "login keeps looping back" cause):**
+  - `SESSION_SECURE_COOKIE` must be unset/`false` when testing over plain
+    `http://127.0.0.1` - a secure cookie is never sent over HTTP, so the
+    session never persists and every page acts logged-out.
+  - `SESSION_DOMAIN` must be empty (host-only) when testing on `127.0.0.1` -
+    a value like `yoursaas.com` scopes the cookie away from localhost.
+  - `php artisan app:doctor` checks both and will tell you.
+- **Diagnostics (when `APP_DEBUG=true`):**
+  - `/dev/session` - session persistence probe (reload it: `probe_visits`
+    must increment) + auth/tenant state summary.
+  - `/dev/error` - renders the last exceptions from `storage/logs/laravel.log`.
+- **Login events are logged** (`Login success` / `Login failed` / `Super admin
+  login`) - see `storage/logs/laravel.log`, or the "Last login events" section
+  of `php artisan app:doctor`.
+- Team login only honors an intended URL inside the internal app; super-admin
+  and portal logins use their own intended keys, so the three auth areas can
+  never redirect each other into login loops.
+
 ## Testing & CI
 
 ```bash

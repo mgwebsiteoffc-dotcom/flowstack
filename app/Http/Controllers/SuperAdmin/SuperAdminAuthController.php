@@ -36,18 +36,21 @@ class SuperAdminAuthController extends Controller
             throw ValidationException::withMessages(['email' => 'Invalid credentials.']);
         }
 
+        // Custom intended key (super_admin.intended), never Laravel's shared
+        // 'url.intended' - that shared key used to bounce super admins to the
+        // TEAM dashboard and team logins to the super-admin login screen.
+        $intended = $request->session()->pull('super_admin.intended');
+
         $request->session()->put('super_admin', $admin->id);
         $request->session()->regenerate();
 
         logger()->info('Super admin login success', [
             'email' => $admin->email,
             'session_id' => $request->session()->getId(),
+            'redirect' => $intended ?? route('super-admin.dashboard'),
         ]);
 
-        // Direct redirect, NOT intended(): a stale "intended URL" (e.g. /dashboard
-        // left over from an earlier team-auth attempt) would bounce the super
-        // admin to the TEAM dashboard -> team login page loop.
-        return redirect()->route('super-admin.dashboard');
+        return redirect($intended ?? route('super-admin.dashboard'));
     }
 
     public function logout(Request $request)

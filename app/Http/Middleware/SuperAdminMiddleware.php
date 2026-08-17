@@ -17,7 +17,12 @@ class SuperAdminMiddleware
         $superAdminId = $request->session()->get('super_admin');
 
         if ($superAdminId === null) {
-            return redirect()->guest(route('super-admin.login'));
+            // Custom intended key - NEVER use redirect()->guest() here: it
+            // writes Laravel's shared 'url.intended', which would then send
+            // TEAM logins to the super-admin area (and vice versa).
+            $request->session()->put('super_admin.intended', $request->fullUrl());
+
+            return redirect()->route('super-admin.login');
         }
 
         $admin = \App\Models\SuperAdmin::find($superAdminId);

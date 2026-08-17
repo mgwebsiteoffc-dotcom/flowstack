@@ -19,7 +19,11 @@ class PortalAuthMiddleware
         $portalUserId = $request->session()->get('portal_user');
 
         if ($portalUserId === null) {
-            return redirect()->guest(route('portal.login'));
+            // Custom intended key - redirect()->guest() would pollute the
+            // shared 'url.intended' used by the team login.
+            $request->session()->put('portal.intended', $request->fullUrl());
+
+            return redirect()->route('portal.login');
         }
 
         $user = \App\Models\ClientPortalUser::withoutGlobalScopes()

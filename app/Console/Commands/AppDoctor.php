@@ -75,8 +75,11 @@ class AppDoctor extends Command
             }
         }
 
-        // 4. Session driver
+        // 4. Session driver + cookie configuration
         $this->line('      Session driver: '.config('session.driver'));
+        $this->line('      Session cookie: '.config('session.cookie')
+            .' | secure: '.(config('session.secure') ? 'YES' : 'no')
+            .' | domain: '.(config('session.domain') ?: 'host-only'));
         if (config('session.driver') === 'database') {
             try {
                 DB::table('sessions')->limit(1)->get();
@@ -85,6 +88,20 @@ class AppDoctor extends Command
                 $this->error('[FAIL] sessions table: '.$e->getMessage().' (run: php artisan migrate)');
                 $fail++;
             }
+        }
+
+        if (config('session.secure')) {
+            $this->error('[FAIL] SESSION_SECURE_COOKIE is true - the session cookie is only sent over HTTPS, so http://127.0.0.1 logins never persist (you stay on the login page). Remove it or set SESSION_SECURE_COOKIE=false for local dev.');
+            $fail++;
+        }
+
+        if (config('session.domain')) {
+            $this->error('[FAIL] SESSION_DOMAIN='.config('session.domain').' - the cookie is scoped to that domain and will NOT be sent to 127.0.0.1. Remove SESSION_DOMAIN (or set it to 127.0.0.1) for local dev.');
+            $fail++;
+        }
+
+        if (app()->environment('production') && ! config('app.debug')) {
+            $this->warn('[WARN] APP_ENV=production with APP_DEBUG=false hides error details. For local development use APP_ENV=local and APP_DEBUG=true (then /dev/session and /dev/error diagnostics work).');
         }
 
         // 5. Queue driver
@@ -104,7 +121,20 @@ class AppDoctor extends Command
             $fail++;
         }
 
-        // 7. Recent log errors (last 5 ERROR/CRITICAL lines)
+        // 7. Login event log (last 6) - shows exactly what the login flow did
+        $log = storage_path('logs/laravel.log');
+        if (is_file($log)) {
+            $lines = array_filter(file($log), fn ($l) => preg_match('/Login (success|failed)|Super admin login|Post-login setup/', $l));
+            $recent = array_slice(array_values($lines), -6);
+            if ($recent) {
+                $this->line('--- Last login events ---');
+                foreach ($recent as $line) {
+                    $this->line('  '.substr(trim($line), 0, 240));
+                }
+            }
+        }
+
+        // 8. Recent log errors (last 5 ERROR/CRITICAL lines)
         $log = storage_path('logs/laravel.log');
         if (is_file($log)) {
             $lines = array_filter(file($log), fn ($l) => preg_match('/\.(ERROR|CRITICAL|EMERGENCY):/', $l));
