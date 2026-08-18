@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 use App\Exceptions\BikriBookApiException;
 use App\Exceptions\BikriBookAuthException;
@@ -43,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
+        // Friendly branded pages for known errors.
         $exceptions->render(function (TenantNotFoundException $e, Request $request) {
             if ($request->expectsJson()) {
                 return response()->json(['message' => $e->getMessage()], 404);
@@ -74,10 +76,27 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return back()->with('error', $e->getMessage());
         });
+
+        // Production: NEVER show code/stack traces - show the friendly 500 page.
+        // Errors are still logged to storage/logs/laravel.log for the team.
+        // (404/403/419/429 keep Laravel's own branded pages - this only
+        // catches unhandled 500-class exceptions.)
+        $exceptions->render(function (\Throwable $e, Request $request) {
+            if (app()->environment('production') && ! $request->expectsJson()) {
+                $status = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
+                if ($status >= 500) {
+                    Log::error('Unhandled error', ['exception' => $e->getMessage(), 'url' => $request->fullUrl()]);
+
+                    return response()->view('errors.500', [], 500);
+                }
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Something went wrong. Our team has been notified.'], 500);
+            }
+        });
     })
     ->withSchedule(function (Schedule $schedule) {
-        // Laravel 11+ defines scheduled jobs here (see app/Console/Kernel.php for
-        // the Laravel 10 equivalent kept for reference).
         $schedule->job(new CheckAutomationDelays)->hourly();
         $schedule->job(new CheckOverdueTasks)->dailyAt('07:00');
         $schedule->job(new CheckOverdueInvoices)->dailyAt('07:00');

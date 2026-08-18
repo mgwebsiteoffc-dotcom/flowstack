@@ -70,7 +70,22 @@ class DashboardController extends Controller
  $pipeline = \App\Models\LeadPipelineStage::withCount(['leads' => fn ($q) => $q->where('status', 'active')])
  ->orderBy('order_index')->get();
 
- return view('dashboard.index', compact('stats', 'clients', 'tasksDueToday', 'upcomingDeadlines', 'teamWorkload', 'recentActivity', 'pipeline'));
+ // Google Calendar upcoming-events widget (when connected).
+ $upcomingEvents = [];
+ $calendarConnected = IntegrationToken::withoutGlobalScopes()
+ ->where('provider', GoogleCalendarService::PROVIDER)
+ ->where('tenant_id', $tenant->id)
+ ->exists();
+
+ if ($calendarConnected) {
+ try {
+ $upcomingEvents = (new GoogleCalendarService($tenant))->listUpcomingEvents(6);
+ } catch (\Throwable $e) {
+ GoogleCalendarService::logFailure($e, 'dashboard widget');
+ }
+ }
+
+ return view('dashboard.index', compact('stats', 'clients', 'tasksDueToday', 'upcomingDeadlines', 'teamWorkload', 'recentActivity', 'pipeline', 'upcomingEvents', 'calendarConnected'));
  }
 
  protected function accountManagerDashboard($user)
