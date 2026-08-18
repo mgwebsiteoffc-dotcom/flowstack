@@ -1,0 +1,24 @@
+; Task365 - Supervisor configuration example
+; Place in /etc/supervisor/conf.d/task365.conf and run:
+;   sudo supervisorctl reread && sudo supervisorctl update
+
+[program:task365-queue]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/task365/artisan queue:work database --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/var/www/task365/storage/logs/queue-worker.log
+stopwaitsecs=3600
+
+[program:task365-scheduler]
+command=php /var/www/task365/artisan schedule:work
+autostart=true
+autorestart=true
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/www/task365/storage/logs/scheduler.log

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Task365') · {{ app('currentTenant')?->name ?? 'Task365' }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+
+        /* Finance masking (toggled from the topbar, persisted in localStorage) */
+        .money { white-space: nowrap; }
+        .money-mask { display: none; user-select: none; }
+        body.finance-masked .money-value { display: none; }
+        body.finance-masked .money-mask { display: inline; }
+        .money-chart { transition: filter .15s ease; }
+        body.finance-masked .money-chart { filter: blur(7px); user-select: none; pointer-events: none; }
+        body.finance-masked #finance-mask-toggle { color: #4f46e5; background: #eef2ff; }
+
+        /* Mobile nav drawer */
+        body.nav-open { overflow: hidden; }
+    </style>
+    <script>
+        function appShell() {
+            const stored = localStorage.getItem('sidebarOpen');
+            return {
+                // Persistent sidebar (desktop only); defaults to open on large screens.
+                sidebarOpen: stored !== null ? stored === '1' : window.innerWidth >= 1024,
+                // Slide-in drawer (mobile only).
+                mobileNavOpen: false,
+                init() {
+                    this.$watch('sidebarOpen', v => localStorage.setItem('sidebarOpen', v ? '1' : '0'));
+                    this.$watch('mobileNavOpen', v => document.body.classList.toggle('nav-open', v));
+                },
+                toggleNav() {
+                    if (window.innerWidth >= 1024) {
+                        this.sidebarOpen = !this.sidebarOpen;
+                    } else {
+                        this.mobileNavOpen = !this.mobileNavOpen;
+                    }
+                },
+            };
+        }
+        window.toggleFinanceMask = function () {
+            const masked = document.body.classList.toggle('finance-masked');
+            localStorage.setItem('financeMasked', masked ? '1' : '0');
+        };
+    </script>
+    @stack('styles')
+</head>
+<body x-data="appShell()" class="bg-gray-100 min-h-screen">
+    <script>
+        // Restore the finance mask before first paint so amounts never flash on screen-share.
+        if (localStorage.getItem('financeMasked') === '1') {
+            document.body.classList.add('finance-masked');
+        }
+    </script>
+    @include('components.sidebar')
+    <div x-show="mobileNavOpen" x-cloak x-transition.opacity @click="mobileNavOpen = false"
+         class="fixed inset-0 bg-black/50 z-40 lg:hidden" aria-hidden="true"></div>
+    <div :class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'" class="transition-all duration-200 min-h-screen flex flex-col">
+        @include('components.topbar')
+        @if (session('impersonator_admin'))
+            <div class="bg-purple-600 text-white text-xs px-6 py-2 flex items-center justify-center gap-3">
+                <span><x-icon name="eye" class="w-4 h-4 inline-block" /> You are impersonating this workspace as a super admin.</span>
+                <form method="POST" action="{{ route('super-admin.impersonate.stop') }}">@csrf
+                    <button class="font-bold underline hover:no-underline">Exit impersonation</button>
+                </form>
+            </div>
+        @endif
+        @php $__tenant = app('currentTenant'); @endphp
+        @if ($__tenant && $__tenant->is_trial && $__tenant->trial_ends_at)
+            <div class="bg-amber-500 text-white text-xs px-6 py-2 flex items-center justify-center gap-2">
+                <x-icon name="hourglass" class="w-4 h-4" /><span>{{ $__tenant->trialDaysRemaining() }} days remaining in your free trial</span>
+                <a href="{{ route('upgrade') }}" class="font-bold underline hover:no-underline">Upgrade →</a>
+            </div>
+        @endif
+        <main class="p-6 flex-1">
+            @include('components.alert')
+            @yield('content')
+        </main>
+        <footer class="px-6 pb-4 text-xs text-gray-400">
+            &copy; {{ date('Y') }} {{ app('currentTenant')?->name ?? 'Task365' }} · A product by Akestech Infotech Pvt Ltd · <a href="{{ route('upgrade') }}" class="hover:text-gray-600">Subscription</a>
+        </footer>
+    </div>
+    @include('components.toast')
+    @stack('scripts')
+</body>
+</html>
