@@ -218,6 +218,14 @@ All in one place - `config/brand.php` or `.env`:
   and portal logins use their own intended keys, so the three auth areas can
   never redirect each other into login loops.
 
+## Free tools & blog content
+
+- `/tools` - free agency calculators (retainer calculator, invoice due-date +
+  GST calculator, proposal value calculator) with SEO meta; linked from nav.
+- `php artisan db:seed --class=BlogSeeder` - seeds 4 published blog articles
+  (onboarding checklist, retainer pricing, automation rules, client portals)
+  across 4 categories so `/blog` and `/resources` have content.
+
 ## Testing & CI
 
 ```bash

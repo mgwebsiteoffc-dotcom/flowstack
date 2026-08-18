@@ -36,6 +36,7 @@ class SiteController extends Controller
         return view('site.feature', [
             'feature' => $features[$slug],
             'slug' => $slug,
+            'current' => $slug,
             'all' => $features,
         ]);
     }
@@ -46,6 +47,11 @@ class SiteController extends Controller
             'client-management' => [
                 'title' => 'Client Management',
                 'icon' => 'users',
+                'badge' => 'Client Success',
+                'meta_description' => 'Client management software for agencies: onboarding checklists, health scores, retainers, contracts and a branded client portal. Start your free trial.',
+                'section_title' => 'From signed to delivered in days, not weeks',
+                'section_text' => 'The first 30 days decide the next 3 years of a client relationship. Agency OS gives you a proven 20-step onboarding checklist, contract and retainer tracking, and a health score so every account manager knows exactly where each client stands.',
+                'section_points' => ['Assign onboarding steps to teammates with due dates', 'Track retainers, contracts and renewal dates automatically', 'Give clients a branded portal with approvals and requests'],
                 'excerpt' => 'Retainers, onboarding checklists, health scores and a branded client portal.',
                 'description' => 'Track every client from onboarding to offboarding with contracts, retainers, health scores and a 20-step onboarding checklist. Your account managers always know what is happening.',
                 'bullets' => ['20-step onboarding checklists', 'Client health scores with reasons', 'Contracts, retainers & GST details', 'Client portal with approvals & requests', 'System folders for every client'],
@@ -59,6 +65,11 @@ class SiteController extends Controller
             'project-tasks' => [
                 'title' => 'Projects & Tasks',
                 'icon' => 'check-circle',
+                'badge' => 'Delivery & Operations',
+                'meta_description' => 'Project and task management for agencies: kanban boards, recurring tasks, checklists, approvals, time tracking and workload views. Free 14-day trial.',
+                'section_title' => 'Ship work without the status meetings',
+                'section_text' => 'Agencies lose hours every week to "where are we at?" updates. Agency OS replaces them with a live kanban board, self-creating recurring tasks and workload views that show who is overloaded before things slip.',
+                'section_points' => ['Drag-and-drop tasks between status columns', 'Recurring tasks create their next instance automatically', 'Checklists, subtasks, attachments and comments in one place'],
                 'excerpt' => 'Kanban boards, recurring tasks, approvals, time tracking and workload views.',
                 'description' => 'Organize client work into projects, seed them from templates, and run them on drag-and-drop kanban boards. Recurring tasks create themselves automatically.',
                 'bullets' => ['Drag-and-drop kanban board', 'Recurring tasks with auto-instances', 'Subtasks, checklists & attachments', 'Task templates per service', 'Calendar & my-tasks views'],
@@ -72,6 +83,11 @@ class SiteController extends Controller
             'leads-crm' => [
                 'title' => 'Leads & CRM',
                 'icon' => 'target',
+                'badge' => 'Sales & Pipeline',
+                'meta_description' => 'Agency CRM: Lead365 sync, Meta Ads capture, pipeline stages, auto-assignment, proposals with PDF and email, and one-click lead-to-client conversion.',
+                'section_title' => 'Never lose another lead to the spreadsheet',
+                'section_text' => 'Leads land from Lead365 webhooks and Meta Ads forms, flow through your pipeline automatically, and convert to full clients with onboarding in one click. Proposals go out as branded PDFs.',
+                'section_points' => ['9 Lead365 webhook events handled automatically', 'Meta Ads leads create urgent call tasks', 'Won leads convert to clients with onboarding in 1 click'],
                 'excerpt' => 'Pipeline, Lead365 sync, Meta Ads capture, proposals and win/loss tracking.',
                 'description' => 'A real pipeline with drag-and-drop stages, source badges for Meta Ads / forms / Lead365, auto-assignment rules and one-click proposal generation.',
                 'bullets' => ['Visual pipeline with stage totals', 'Lead365 webhook sync (9 events)', 'Meta Ads & form lead capture', 'Auto-assignment rules', 'Proposals with PDF & email'],
@@ -85,6 +101,11 @@ class SiteController extends Controller
             'finance-invoicing' => [
                 'title' => 'Finance & Invoicing',
                 'icon' => 'banknotes',
+                'badge' => 'Money & Billing',
+                'meta_description' => 'Agency invoicing and finance: GST invoices, BikriBook sync, expenses, profitability with margin colours, Razorpay billing. Free 14-day trial.',
+                'section_title' => 'Get paid on time, every time',
+                'section_text' => 'Invoices are saved locally first (so an integration outage never blocks you), then synced to BikriBook, sent to clients, and tracked until paid. The profitability page shows true margins per client.',
+                'section_points' => ['Auto-numbered GST invoices with PDF preview', 'BikriBook sync with retry and full logs', 'Profitability: revenue vs team cost vs tools cost'],
                 'excerpt' => 'BikriBook sync, GST invoices, expenses and per-client profitability.',
                 'description' => 'Create GST-ready invoices locally first, sync to BikriBook, send to clients and track payments. Know exactly which clients are profitable.',
                 'bullets' => ['GST invoices with auto-numbering', 'BikriBook sync with retry & logs', 'Expenses with receipt uploads', 'Profitability by client & margin', 'Razorpay-powered plans'],
@@ -98,6 +119,11 @@ class SiteController extends Controller
             'reporting' => [
                 'title' => 'Reporting',
                 'icon' => 'chart-bar',
+                'badge' => 'Client Reporting',
+                'meta_description' => 'Agency reporting software: weekly and monthly client reports with auto-calculated CTR, ROAS, AOV and engagement metrics, branded PDFs and portal sharing.',
+                'section_title' => 'Reports clients actually read',
+                'section_text' => 'Enter raw numbers once and get auto-calculated metrics, a branded executive summary and a one-click PDF. Share it to the client portal and they get an email with a link.',
+                'section_points' => ['CTR, ROAS, CPL, AOV auto-calculated', 'Branded PDFs with agency and client logos', 'Share to portal with one click'],
                 'excerpt' => 'Weekly/monthly client reports with auto-calculated metrics and PDFs.',
                 'description' => 'Build beautiful client reports in minutes: pick the period, enter metrics, and get auto-calculated CTR, ROAS, AOV and engagement rates with one-click PDF export.',
                 'bullets' => ['4-step report builder', 'Auto-calculated marketing metrics', 'Branded PDFs with logos', 'Share with client portal', 'Report templates'],
@@ -111,6 +137,11 @@ class SiteController extends Controller
             'automation' => [
                 'title' => 'Automation',
                 'icon' => 'bolt',
+                'badge' => 'Automation',
+                'meta_description' => 'Agency automation: no-code rules for overdue tasks, meta leads, invoices and contracts. Notifications, task creation and follow-ups on autopilot.',
+                'section_title' => 'Your agency runs itself',
+                'section_text' => 'Set a rule once and Agency OS handles the follow-up: overdue task alerts, meta-lead call tasks, invoice reminders, contract expiry warnings. Every execution is logged.',
+                'section_points' => ['14 trigger events with conditions and delays', 'Send notifications, emails or create tasks', 'Test any rule with a dry run before enabling'],
                 'excerpt' => 'No-code rules: notifications, task creation and follow-ups on autopilot.',
                 'description' => 'Set rules once and let Agency OS handle the follow-up: overdue task alerts, meta-lead call tasks, invoice reminders, contract expiry warnings.',
                 'bullets' => ['14 trigger events', 'Conditions & delayed actions', 'Send notifications or emails', 'Auto-create tasks & projects', 'Execution log for every rule'],

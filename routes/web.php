@@ -27,6 +27,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TaskController;
@@ -151,6 +152,12 @@ Route::get('/integrations', [SiteController::class, 'integrations'])->name('site
 Route::get('/resources', [SiteController::class, 'resources'])->name('site.resources');
 Route::get('/faq', [SiteController::class, 'faq'])->name('site.faq');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
+// Free tools
+Route::get('/tools', [ToolsController::class, 'index'])->name('tools.index');
+Route::get('/tools/retainer-calculator', [ToolsController::class, 'retainerCalculator'])->name('tools.retainer');
+Route::get('/tools/invoice-due-calculator', [ToolsController::class, 'invoiceDueCalculator'])->name('tools.invoice-due');
+Route::get('/tools/proposal-value-calculator', [ToolsController::class, 'proposalValueCalculator'])->name('tools.proposal-value');
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:login')->name('contact.store');
 Route::get('/sitemap.xml', function () {
     $posts = \App\Models\BlogPost::published()->get(['slug', 'updated_at']);

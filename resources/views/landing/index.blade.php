@@ -51,6 +51,7 @@
                 <a href="{{ route('site.integrations') }}" class="hover:text-gray-900">Integrations</a>
                 <a href="{{ route('pricing') }}" class="hover:text-gray-900">Pricing</a>
                 <a href="{{ route('site.resources') }}" class="hover:text-gray-900">Resources</a>
+                <a href="{{ route('tools.index') }}" class="hover:text-gray-900">Free Tools</a>
                 <a href="{{ route('blog.index') }}" class="hover:text-gray-900">Blog</a>
             </div>
             <div class="flex items-center gap-3 text-sm">

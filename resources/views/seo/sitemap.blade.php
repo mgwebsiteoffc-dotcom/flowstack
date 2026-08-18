@@ -17,6 +17,10 @@
     <url><loc>{{ url('/resources') }}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
     <url><loc>{{ url('/faq') }}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
     <url><loc>{{ url('/contact') }}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+    <url><loc>{{ url('/tools') }}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+    <url><loc>{{ url('/tools/retainer-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    <url><loc>{{ url('/tools/invoice-due-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    <url><loc>{{ url('/tools/proposal-value-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
     @foreach ($categories as $category)
         <url><loc>{{ url('/blog/category/'.$category->slug) }}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
     @endforeach
