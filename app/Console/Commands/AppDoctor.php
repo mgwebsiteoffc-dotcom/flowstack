@@ -107,6 +107,23 @@ class AppDoctor extends Command
  // 5. Queue driver
  $this->line(' Queue driver: '.config('queue.default'));
 
+ // 5b. Mail (Gmail SMTP)
+ $mailer = config('mail.default', 'log');
+ $this->line(' Mailer: '.$mailer.($mailer === 'smtp' ? ' ('.config('mail.mailers.smtp.host').':'.config('mail.mailers.smtp.port').')' : ''));
+ if ($mailer === 'log') {
+ $this->warn('[WARN] MAIL_MAILER=log - emails go to storage/logs, nothing is sent. Configure Gmail in Settings > Email (Gmail) or in .env.');
+ } elseif ($mailer === 'smtp') {
+ $smtpHost = config('mail.mailers.smtp.host');
+ $smtpUser = config('mail.mailers.smtp.username');
+ $smtpPass = config('mail.mailers.smtp.password');
+ if ($smtpHost && $smtpUser && $smtpPass) {
+ $this->info('[OK] SMTP configured: '.$smtpUser.' @ '.$smtpHost);
+ } else {
+ $this->error('[FAIL] SMTP is missing host/username/password. For Gmail use an App Password (Google Account > Security > App passwords), then run: php artisan app:test-mail');
+ $fail++;
+ }
+ }
+
  // 6. Tenant seed check
  try {
  $tenants = DB::table('tenants')->count();

@@ -162,6 +162,35 @@ Requires `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`
 `/upgrade` → order creation via the Razorpay SDK → checkout.js → signature
 verified server-side → subscription + payment recorded, tenant plan activated.
 
+### Gmail SMTP (outgoing email)
+
+All outgoing mail — welcome emails, invoices, reports, portal invites, automation
+alerts — is sent through Gmail SMTP. Two ways to configure:
+
+**In the app (recommended):** Settings → **Email (Gmail)** (admin role). Enter the Gmail
+address, paste the 16-character App Password, Save, then click **Send test email**.
+
+**Or via `.env`:**
+
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=you@gmail.com
+MAIL_PASSWORD=<16-char app password>
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=you@gmail.com
+MAIL_FROM_NAME="Task365"
+```
+
+To create an App Password: Google Account → Security → turn on **2-Step Verification**,
+then Security → **App passwords** → create one for Mail. Your normal Gmail password will
+NOT work. Works with free Gmail and Google Workspace accounts.
+
+Verify with `php artisan app:test-mail` (or `php artisan app:test-mail you@example.com`);
+`php artisan app:doctor` also checks the mail configuration. Port 465 + SSL is supported
+if your network blocks 587.
+
 ## Scheduler (Laravel 11+ `bootstrap/app.php` → `withSchedule`)
 
 | Job | Schedule |

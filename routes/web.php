@@ -18,6 +18,7 @@ use App\Http\Controllers\KbCategoryController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\MailSettingController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PricingController;
@@ -489,6 +490,9 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
  Route::get('/settings/integrations/google-calendar/callback', [IntegrationController::class, 'googleCallback'])->name('settings.integrations.google-calendar.callback');
  Route::post('/settings/integrations/google-calendar/disconnect', [IntegrationController::class, 'googleDisconnect'])->name('settings.integrations.google-calendar.disconnect');
  Route::post('/settings/integrations/google-calendar/save', [IntegrationController::class, 'saveCalendarSettings'])->name('settings.integrations.google-calendar.save');
+ Route::get('/settings/mail', [MailSettingController::class, 'index'])->name('settings.mail');
+ Route::post('/settings/mail', [MailSettingController::class, 'save'])->name('settings.mail.save');
+ Route::post('/settings/mail/test', [MailSettingController::class, 'test'])->name('settings.mail.test');
  Route::post('/tasks/{task}/meet', [TaskController::class, 'generateMeet'])->name('tasks.meet');
  Route::get('/settings/notifications', [SettingController::class, 'notifications'])->name('settings.notifications');
  Route::post('/settings/notifications', [SettingController::class, 'saveNotifications'])->name('settings.notifications.save');

@@ -41,7 +41,7 @@
             ['calendar','Google Calendar','Sync'],
             ['video-camera','Google Meet','Meetings'],
             ['device-phone-mobile','Meta Ads','Leads'],
-            ['envelope','Email','Notify'],
+            ['envelope','Gmail SMTP','Email'],
             ['bolt','Webhooks','Custom'],
             ['clock','Scheduler','Automation'],
             ['document-text','Zapier-style','Coming'],
@@ -66,6 +66,8 @@
          ['OAuth 2.0 connect, tokens encrypted','Tasks → 10 AM calendar events','Automatic Meet conference links','Upcoming events on the dashboard'], 'bg-blue-50'],
         ['chat-bubble-left-right','Slack & Teams — updates where your team lives','Push new leads, task overdues, invoice payments and client requests to your Slack or Teams channel.',
          ['Incoming webhooks, no app needed','10 event types with toggles','Adaptive Cards on Teams','Test buttons on the settings page'], 'bg-amber-50'],
+        ['envelope','Gmail — real emails from your own address','Invoices, reports, portal invites, welcome emails and automation alerts are sent from your own Gmail or Google Workspace address via SMTP.',
+         ['App Password auth, no OAuth setup','In-app settings page with test button','From address = your Gmail address','Log mailer fallback for local dev'], 'bg-rose-50'],
     ] as [$icon,$title,$desc,$bullets,$tint])
         <div class="grid lg:grid-cols-2 gap-10 items-center">
             <div class="{{ $loop->even ? 'lg:order-2' : '' }}">
