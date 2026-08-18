@@ -13,7 +13,7 @@
     <div class="flex items-start justify-between">
         <div>
             <div class="text-xs font-medium text-gray-500 uppercase tracking-wide">{{ $title }}</div>
-            <div class="text-2xl font-bold text-gray-900 mt-1">{{ $value }}</div>
+            <div class="text-2xl font-bold text-gray-900 mt-1">{!! $value !!}</div>
             @if ($change !== null)
                 <div class="text-xs mt-1 {{ str_starts_with((string) $change, '-') ? 'text-red-600' : 'text-green-600' }}">{{ $change }}</div>
             @endif

@@ -61,24 +61,24 @@
                         <tr>
                             <td class="py-2.5">{{ $item->description }}</td>
                             <td class="py-2.5 text-right">{{ $item->quantity }}</td>
-                            <td class="py-2.5 text-right">₹{{ number_format($item->unit_price, 2) }}</td>
+                            <td class="py-2.5 text-right"><x-money :value="$item->unit_price" decimals="2" /></td>
                             <td class="py-2.5 text-right">{{ $item->tax_rate }}%</td>
-                            <td class="py-2.5 text-right font-medium">₹{{ number_format($item->total, 2) }}</td>
+                            <td class="py-2.5 text-right font-medium"><x-money :value="$item->total" decimals="2" /></td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
             <div class="mt-4 space-y-1.5 text-sm max-w-xs ml-auto">
-                <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span>₹{{ number_format($invoice->subtotal, 2) }}</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span><x-money :value="$invoice->subtotal" decimals="2" /></span></div>
                 @if ($invoice->discount_amount > 0)
-                    <div class="flex justify-between"><span class="text-gray-500">Discount</span><span class="text-red-500">-₹{{ number_format($invoice->discount_amount, 2) }}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-500">Discount</span><span class="text-red-500">-<x-money :value="$invoice->discount_amount" decimals="2" /></span></div>
                 @endif
-                <div class="flex justify-between"><span class="text-gray-500">Tax ({{ $invoice->tax_rate }}%)</span><span>₹{{ number_format($invoice->tax_amount, 2) }}</span></div>
-                <div class="flex justify-between font-bold text-base"><span>Total</span><span>₹{{ number_format($invoice->total_amount, 2) }}</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Tax ({{ $invoice->tax_rate }}%)</span><span><x-money :value="$invoice->tax_amount" decimals="2" /></span></div>
+                <div class="flex justify-between font-bold text-base"><span>Total</span><span><x-money :value="$invoice->total_amount" decimals="2" /></span></div>
                 @if ($invoice->status === 'paid')
-                    <div class="flex justify-between text-green-600"><span>Paid</span><span>₹{{ number_format($invoice->paid_amount, 2) }}</span></div>
+                    <div class="flex justify-between text-green-600"><span>Paid</span><span><x-money :value="$invoice->paid_amount" decimals="2" /></span></div>
                 @else
-                    <div class="flex justify-between text-amber-600"><span>Balance due</span><span>₹{{ number_format($invoice->balanceDue(), 2) }}</span></div>
+                    <div class="flex justify-between text-amber-600"><span>Balance due</span><span><x-money :value="$invoice->balanceDue()" decimals="2" /></span></div>
                 @endif
             </div>
         </x-card>

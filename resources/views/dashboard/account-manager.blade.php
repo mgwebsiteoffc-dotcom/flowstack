@@ -15,7 +15,7 @@
             <a href="{{ route('clients.show', $client) }}" class="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 hover:bg-gray-50 rounded-lg px-2">
                 <x-health-badge :score="$client->health_score" />
                 <span class="text-sm font-medium text-gray-800 flex-1">{{ $client->company_name }}</span>
-                <span class="text-xs text-gray-400">₹{{ number_format($client->monthly_retainer ?? 0) }}/mo</span>
+                <span class="text-xs text-gray-400"><x-money :value="$client->monthly_retainer ?? 0" />/mo</span>
             </a>
         @empty
             <x-empty-state icon="users" title="No clients assigned" message="Clients assigned to you will appear here." />

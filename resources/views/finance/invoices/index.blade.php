@@ -48,7 +48,7 @@
                     <td class="px-4 py-3 text-gray-800">{{ $invoice->client?->company_name }}</td>
                     <td class="px-4 py-3"><x-status-badge :status="$invoice->status" type="invoice" /></td>
                     <td class="px-4 py-3"><x-bb-status :invoice="$invoice" /></td>
-                    <td class="px-4 py-3 text-right font-medium">₹{{ number_format($invoice->total_amount) }}</td>
+                    <td class="px-4 py-3 text-right font-medium"><x-money :value="$invoice->total_amount" /></td>
                     <td class="px-4 py-3 text-gray-500 text-xs">{{ $invoice->issue_date?->format('d M Y') }}</td>
                     <td class="px-4 py-3 text-xs {{ $invoice->status === 'overdue' ? 'text-red-600 font-medium' : 'text-gray-500' }}">{{ $invoice->due_date?->format('d M Y') }}</td>
                     <td class="px-4 py-3 text-right whitespace-nowrap">

@@ -18,10 +18,10 @@
             @forelse ($rows as $row)
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-3 font-medium text-gray-800">{{ $row->client->company_name }}</td>
-                    <td class="px-4 py-3 text-right">₹{{ number_format($row->revenue) }}</td>
-                    <td class="px-4 py-3 text-right text-gray-600">-₹{{ number_format($row->team_cost) }}</td>
-                    <td class="px-4 py-3 text-right text-gray-600">-₹{{ number_format($row->tools_cost) }}</td>
-                    <td class="px-4 py-3 text-right font-medium {{ $row->profit < 0 ? 'text-red-600' : 'text-gray-900' }}">₹{{ number_format($row->profit) }}</td>
+                    <td class="px-4 py-3 text-right"><x-money :value="$row->revenue" /></td>
+                    <td class="px-4 py-3 text-right text-gray-600">-<x-money :value="$row->team_cost" /></td>
+                    <td class="px-4 py-3 text-right text-gray-600">-<x-money :value="$row->tools_cost" /></td>
+                    <td class="px-4 py-3 text-right font-medium {{ $row->profit < 0 ? 'text-red-600' : 'text-gray-900' }}"><x-money :value="$row->profit" /></td>
                     <td class="px-4 py-3 text-right font-bold {{ $row->status === 'green' ? 'text-green-600' : ($row->status === 'yellow' ? 'text-amber-600' : 'text-red-600') }}">{{ $row->margin }}%</td>
                     <td class="px-4 py-3">
                         <span class="inline-flex items-center gap-1.5 text-xs">
@@ -35,10 +35,10 @@
             @endforelse
             <tr class="bg-gray-50 font-bold">
                 <td class="px-4 py-3">Agency total</td>
-                <td class="px-4 py-3 text-right">₹{{ number_format($totals->revenue) }}</td>
-                <td class="px-4 py-3 text-right">-₹{{ number_format($totals->team_cost) }}</td>
-                <td class="px-4 py-3 text-right">-₹{{ number_format($totals->tools_cost) }}</td>
-                <td class="px-4 py-3 text-right">₹{{ number_format($totals->profit) }}</td>
+                <td class="px-4 py-3 text-right"><x-money :value="$totals->revenue" /></td>
+                <td class="px-4 py-3 text-right">-<x-money :value="$totals->team_cost" /></td>
+                <td class="px-4 py-3 text-right">-<x-money :value="$totals->tools_cost" /></td>
+                <td class="px-4 py-3 text-right"><x-money :value="$totals->profit" /></td>
                 <td class="px-4 py-3 text-right">{{ $totals->margin }}%</td>
                 <td class="px-4 py-3"></td>
             </tr>
@@ -48,7 +48,7 @@
 
 <div class="grid lg:grid-cols-2 gap-6">
     <x-card title="Monthly trend (revenue vs cost)" icon="chart-bar">
-        <canvas id="trendChart" height="120"></canvas>
+        <div class="money-chart"><canvas id="trendChart" height="120"></canvas></div>
     </x-card>
     <x-card title="Team cost this month" icon="users">
         <table class="w-full text-sm">
@@ -63,7 +63,7 @@
                     <tr>
                         <td class="py-2">{{ $member->name }}</td>
                         <td class="py-2 text-right">{{ $hours }}h</td>
-                        <td class="py-2 text-right">₹{{ number_format($cost) }}</td>
+                        <td class="py-2 text-right"><x-money :value="$cost" /></td>
                     </tr>
                 @endforeach
             </tbody>

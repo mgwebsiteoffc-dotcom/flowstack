@@ -30,44 +30,29 @@
         ],
     ];
 @endphp
-<aside x-show="sidebarOpen" x-transition
-       class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-gray-300 flex flex-col z-40">
-    <div class="flex items-center gap-2 px-4 h-14 border-b border-gray-800">
-        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-black">A</div>
-        <div>
-            <div class="text-white font-bold leading-tight">{{ app('currentTenant')?->name }}</div>
-            <div class="text-[10px] text-gray-500">{{ app('currentTenant')?->slug }}.{{ config('tenancy.tenant_domain') }}</div>
-        </div>
-    </div>
 
-    <nav class="flex-1 overflow-y-auto py-2 px-2.5 space-y-0.5 text-[13px]">
-        @php
-            $menuMap = \App\Http\Controllers\AdminUserController::resolveMap();
-            $roleMenus = $menuMap[$user->role] ?? \App\Support\MenuPermissions::MENUS;
-        @endphp
-        @foreach ($navGroups as $groupName => $items)
-            @php $visible = collect($items)->filter(fn ($i) => ! isset($i['key']) || in_array($i['key'], $roleMenus, true))->filter(fn ($i) => ! ($i['route'] === 'finance.index' && ! $user->canAccessFinance())); @endphp
-            @if ($visible->isEmpty()) @continue @endif
-            <div class="px-2.5 pt-2.5 pb-0.5 text-[9px] font-semibold uppercase tracking-wider text-gray-500">{{ $groupName }}</div>
-            @foreach ($visible as $item)
-                <a href="{{ route($item['route']) }}"
-                   class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg transition {{ (isset($item['active']) && $item['active']) || request()->routeIs($item['route'].'*') ? 'bg-gray-800 text-white' : 'hover:bg-gray-800 hover:text-white' }}">
-                    <x-icon :name="$item['icon']" class="w-4 h-4 shrink-0" />
-                    <span>{{ $item['label'] }}</span>
-                </a>
-            @endforeach
-        @endforeach
-    </nav>
+{{--
+    Desktop sidebar: persistent panel, toggled via the topbar hamburger
+    (state persisted in localStorage by appShell()).
+--}}
+<aside x-show="sidebarOpen" x-cloak
+       class="hidden lg:flex fixed inset-y-0 left-0 w-64 bg-gray-900 text-gray-300 flex-col z-30">
+    @include('components.sidebar-nav')
+</aside>
 
-    <div class="px-3 py-2.5 border-t border-gray-800 flex items-center gap-2.5">
-        <x-user-avatar :user="$user" size="md" />
-        <div class="min-w-0 flex-1">
-            <div class="text-white text-sm truncate">{{ $user->name }}</div>
-            <div class="text-xs text-gray-500 capitalize">{{ str_replace('_', ' ', $user->role) }}</div>
-        </div>
-        <form method="POST" action="{{ route('logout') }}">@csrf
-            <button title="Logout" class="text-gray-500 hover:text-white"><x-icon name="logout" class="w-5 h-5" /></button>
-        </form>
-    </div>
+{{--
+    Mobile drawer: slides over the page below the lg breakpoint.
+    Backdrop + Escape handling live in layouts/app.blade.php.
+--}}
+<aside x-show="mobileNavOpen" x-cloak
+       x-transition:enter="transition ease-out duration-200"
+       x-transition:enter-start="-translate-x-full opacity-50"
+       x-transition:enter-end="translate-x-0 opacity-100"
+       x-transition:leave="transition ease-in duration-150"
+       x-transition:leave-start="translate-x-0 opacity-100"
+       x-transition:leave-end="-translate-x-full opacity-50"
+       @keydown.escape.window="mobileNavOpen = false"
+       class="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-gray-900 text-gray-300 flex flex-col z-50 lg:hidden">
+    @include('components.sidebar-nav')
 </aside>
 @endauth
