@@ -13,17 +13,7 @@
 <body class="bg-white text-gray-900 antialiased">
     <x-tracking placement="body" />
 
-    <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="{{ route('home') }}" class="text-2xl font-black tracking-tight">Agency<span class="text-indigo-600">OS</span></a>
-            <div class="flex items-center gap-6 text-sm">
-                <a href="{{ route('pricing') }}" class="text-gray-600 hover:text-gray-900">Pricing</a>
-                <a href="{{ route('blog.index') }}" class="text-gray-600 hover:text-gray-900">Blog</a>
-                <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900">Sign in</a>
-                <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">Start free trial</a>
-            </div>
-        </div>
-    </nav>
+    @include('components.site-nav')
 
     <header class="max-w-3xl mx-auto px-6 pt-16 pb-10 text-center">
         <h1 class="text-4xl font-black tracking-tight">Let's talk</h1>
@@ -79,10 +69,6 @@
         </div>
     </div>
 
-    <footer class="border-t border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 py-8 text-center text-sm text-gray-400">
-            © {{ date('Y') }} Agency OS · <a href="{{ route('pricing') }}" class="hover:text-gray-600">Pricing</a> · <a href="{{ route('blog.index') }}" class="hover:text-gray-600">Blog</a> · <a href="{{ route('login') }}" class="hover:text-gray-600">Sign in</a>
-        </div>
-    </footer>
+    @include('components.site-footer')
 </body>
 </html>

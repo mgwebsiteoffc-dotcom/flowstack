@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <x-brand-head />
     <x-tracking placement="head" />
     <x-seo
@@ -29,16 +30,7 @@
 </head>
 <body class="bg-white text-gray-900">
     <x-tracking placement="body" />
-    <nav class="max-w-4xl mx-auto px-6 py-5 flex items-center justify-between">
-        <a href="{{ route('home') }}" class="text-2xl font-black tracking-tight">Agency<span class="text-indigo-600">OS</span></a>
-        <div class="flex items-center gap-6 text-sm">
-            <a href="{{ route('pricing') }}" class="text-gray-600 hover:text-gray-900">Pricing</a>
-            <a href="{{ route('blog.index') }}" class="text-gray-600 hover:text-gray-900">Blog</a>
-            <a href="{{ route('contact') }}" class="text-gray-600 hover:text-gray-900">Contact</a>
-            <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900">Sign in</a>
-            <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">Start free trial</a>
-        </div>
-    </nav>
+    @include('components.site-nav')
 
     <article class="max-w-3xl mx-auto px-6 pb-16">
         <nav class="text-xs text-gray-400 mb-6">
@@ -88,8 +80,6 @@
         </div>
     </section>
 
-    <footer class="max-w-7xl mx-auto px-6 py-10 text-center text-sm text-gray-400 border-t">
-        © {{ date('Y') }} Agency OS · <a href="{{ route('pricing') }}" class="hover:text-gray-600">Pricing</a> · <a href="{{ route('blog.index') }}" class="hover:text-gray-600">Blog</a> · <a href="{{ route('login') }}" class="hover:text-gray-600">Sign in</a>
-    </footer>
+    @include('components.site-footer')
 </body>
 </html>
