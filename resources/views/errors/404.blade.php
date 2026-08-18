@@ -14,7 +14,7 @@
         <div class="mt-6 flex items-center justify-center gap-3">
             <a href="{{ auth()->check() ? route('dashboard') : route('home') }}" class="inline-block bg-indigo-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-indigo-700">← Back to {{ auth()->check() ? 'dashboard' : 'home' }}</a>
         </div>
-        <div class="text-xs text-gray-400 mt-6">Agency OS · <a href="{{ route('contact') }}" class="hover:text-gray-600 underline">Contact support</a></div>
+        <div class="text-xs text-gray-400 mt-6">Task365 · <a href="{{ route('contact') }}" class="hover:text-gray-600 underline">Contact support</a></div>
     </div>
 </body>
 </html>

@@ -24,7 +24,7 @@
 <body>
     <div class="header">
         <div>
-            <div class="logo">Agency<span>OS</span> — {{ $agencyName }}</div>
+            <div class="logo">Task<span>365</span> — {{ $agencyName }}</div>
             <div class="meta">{{ $agencyAddress }}</div>
             <div class="meta">{{ $agencyEmail }} {{ $agencyPhone }}</div>
         </div>

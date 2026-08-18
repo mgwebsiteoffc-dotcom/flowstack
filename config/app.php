@@ -2,7 +2,7 @@
 
 return [
 
-    'name' => env('APP_NAME', 'Agency OS'),
+    'name' => env('APP_NAME', 'Task365'),
 
     'env' => env('APP_ENV', 'production'),
 
@@ -18,7 +18,7 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
-    'super_admin_email' => env('SUPER_ADMIN_EMAIL', 'superadmin@agencyos.test'),
+    'super_admin_email' => env('SUPER_ADMIN_EMAIL', 'superadmin@task365.test'),
 
     'cipher' => 'AES-256-CBC',
 

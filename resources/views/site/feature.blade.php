@@ -2,7 +2,7 @@
 @section('title', $feature['title'])
 @php
     $seo = [
-        'title' => $feature['title'].' — Agency OS',
+        'title' => $feature['title'].' — Task365',
         'description' => $feature['meta_description'] ?? $feature['excerpt'],
         'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'WebPage', 'name' => $feature['title'], 'description' => $feature['excerpt'], 'url' => url()->current(), 'isPartOf' => ['@type' => 'WebSite', 'name' => config('app.name'), 'url' => url('/')]]],
     ];
@@ -14,7 +14,7 @@
     <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl"></div>
     <div class="max-w-4xl mx-auto px-6 pt-16 pb-14 text-center relative">
         <div class="inline-flex items-center gap-2 bg-white border border-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm mb-6">
-            <span class="w-2 h-2 rounded-full bg-green-500"></span> {{ $feature['badge'] ?? 'Agency OS Feature' }}
+            <span class="w-2 h-2 rounded-full bg-green-500"></span> {{ $feature['badge'] ?? 'Task365 Feature' }}
         </div>
         <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center mx-auto mb-6 shadow-lg shadow-indigo-200"><x-icon :name="$feature['icon']" class="w-7 h-7" /></div>
         <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-tight">{{ $feature['title'] }}</h1>
@@ -81,7 +81,7 @@
             <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
             <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-            <span class="ml-2 text-[10px] text-gray-400">{{ $feature['title'] }} · Agency OS</span>
+            <span class="ml-2 text-[10px] text-gray-400">{{ $feature['title'] }} · Task365</span>
         </div>
         <div class="space-y-2.5">
             @foreach (array_slice($feature['bullets'], 0, 4) as $i => $b)

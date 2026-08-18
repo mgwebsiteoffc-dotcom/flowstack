@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <x-brand-head />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <x-seo title="Contact us" description="Talk to the Agency OS team about switching your agency to one operating system." />
+    <x-seo title="Contact us" description="Talk to the Task365 team about switching your agency to one operating system." />
     <x-tracking placement="head" />
 </head>
 <body class="bg-white text-gray-900 antialiased">
@@ -17,14 +17,14 @@
 
     <header class="max-w-3xl mx-auto px-6 pt-16 pb-10 text-center">
         <h1 class="text-4xl font-black tracking-tight">Let's talk</h1>
-        <p class="text-gray-500 mt-3">Questions about Agency OS, onboarding your team, or switching from another tool? We reply within one business day.</p>
+        <p class="text-gray-500 mt-3">Questions about Task365, onboarding your team, or switching from another tool? We reply within one business day.</p>
     </header>
 
     <div class="max-w-5xl mx-auto px-6 pb-20 grid md:grid-cols-5 gap-10">
         <div class="md:col-span-2 space-y-5">
             @foreach ([
-                ['envelope','Email us','hello@agencyos.test','For sales and general enquiries'],
-                ['chat-bubble-left-right','Live demo','Book a 20-min walkthrough','See how Agency OS fits your agency'],
+                ['envelope','Email us','hello@task365.test','For sales and general enquiries'],
+                ['chat-bubble-left-right','Live demo','Book a 20-min walkthrough','See how Task365 fits your agency'],
                 ['clock','Response time','Under 24 hours','Mon-Fri, IST business hours'],
             ] as [$icon,$title,$value,$sub])
                 <div class="flex gap-4 bg-gray-50 rounded-2xl p-5">

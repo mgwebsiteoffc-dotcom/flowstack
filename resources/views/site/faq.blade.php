@@ -12,7 +12,7 @@
         ['Can I switch plans later?','Anytime. Upgrade or downgrade from Settings → Subscription; the price adjusts to your billing cycle.'],
     ];
     $seo = [
-        'title' => 'FAQ — Agency OS',
+        'title' => 'FAQ — Task365',
         'description' => 'Answers about trials, data security, integrations, client portals and pricing.',
         'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => array_map(fn ($f) => ['@type' => 'Question', 'name' => $f[0], 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f[1]]], $faqs)]],
     ];

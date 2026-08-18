@@ -7,9 +7,9 @@
     'jsonLd' => null,
 ])
 @php
-    $siteName = config('app.name', 'Agency OS');
+    $siteName = config('app.name', 'Task365');
     $pageTitle = $title ? $title.' · '.$siteName : $siteName.' — Run your agency on autopilot';
-    $pageDesc = $description ?: 'Agency OS is the all-in-one agency management platform: clients, projects, tasks, leads, proposals, invoicing, reporting and a client portal.';
+    $pageDesc = $description ?: 'Task365 is the all-in-one agency management platform: clients, projects, tasks, leads, proposals, invoicing, reporting and a client portal.';
     $pageImage = $image ?: url('/favicon.svg');
     $pageUrl = $canonical ?: url()->current();
 @endphp

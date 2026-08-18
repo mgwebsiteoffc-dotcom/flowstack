@@ -1,7 +1,7 @@
 @extends('layouts.site')
 @section('title', 'Resources')
 @php
-    $seo = ['title' => 'Resources — Agency OS', 'description' => 'Guides, playbooks and insights to help your agency grow faster and deliver better.'];
+    $seo = ['title' => 'Resources — Task365', 'description' => 'Guides, playbooks and insights to help your agency grow faster and deliver better.'];
 @endphp
 @section('content')
 
@@ -54,7 +54,7 @@
                     </div>
                     <h3 class="font-bold group-hover:text-indigo-600">{{ $post->title }}</h3>
                     <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ $post->excerpt }}</p>
-                    <div class="text-xs text-gray-400 mt-3">{{ $post->author_name ?? 'Agency OS' }} · {{ $post->published_at?->format('d M Y') }}</div>
+                    <div class="text-xs text-gray-400 mt-3">{{ $post->author_name ?? 'Task365' }} · {{ $post->published_at?->format('d M Y') }}</div>
                 </div>
             </a>
         @empty
@@ -72,7 +72,7 @@
         <div>
             <div class="text-xs font-semibold text-indigo-600 uppercase tracking-wide">Free playbook</div>
             <h2 class="text-2xl font-black mt-2">The Agency Onboarding Playbook</h2>
-            <p class="text-gray-500 mt-2">20 steps to take any new client from signed to delivered — the exact checklist we built into Agency OS.</p>
+            <p class="text-gray-500 mt-2">20 steps to take any new client from signed to delivered — the exact checklist we built into Task365.</p>
             <a href="{{ route('register') }}" class="inline-block mt-5 bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700">Get the playbook</a>
         </div>
         <div class="space-y-2.5">

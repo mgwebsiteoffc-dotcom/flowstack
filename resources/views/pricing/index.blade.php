@@ -2,9 +2,9 @@
 @section('title', 'Pricing')
 @php
     $seo = [
-        'title' => 'Pricing — Agency OS',
+        'title' => 'Pricing — Task365',
         'description' => 'Simple, honest pricing for agencies. Starter ₹2,999/mo, Professional ₹6,999/mo, Enterprise ₹14,999/mo. Start your 14-day free trial - no credit card required.',
-        'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'Product', 'name' => 'Agency OS', 'description' => 'All-in-one agency management platform', 'offers' => array_map(fn ($p) => ['@type' => 'Offer', 'name' => $p->name, 'price' => (float) $p->price_monthly, 'priceCurrency' => 'INR', 'availability' => 'https://schema.org/InStock'], $plans->all())]],
+        'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'Product', 'name' => 'Task365', 'description' => 'All-in-one agency management platform', 'offers' => array_map(fn ($p) => ['@type' => 'Offer', 'name' => $p->name, 'price' => (float) $p->price_monthly, 'priceCurrency' => 'INR', 'availability' => 'https://schema.org/InStock'], $plans->all())]],
     ];
 @endphp
 @section('content')
@@ -200,7 +200,7 @@
 <!-- CTA -->
 <section class="max-w-7xl mx-auto px-6 pb-20">
     <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-14 text-center text-white">
-        <h2 class="text-3xl font-black">Try Agency OS free for 14 days</h2>
+        <h2 class="text-3xl font-black">Try Task365 free for 14 days</h2>
         <p class="text-indigo-100 mt-2">Set up your workspace in minutes. No credit card required.</p>
         <a href="{{ route('register') }}" class="inline-block mt-7 bg-white text-indigo-700 px-8 py-3.5 rounded-xl font-bold hover:bg-indigo-50 shadow-xl">Start free trial</a>
     </div>

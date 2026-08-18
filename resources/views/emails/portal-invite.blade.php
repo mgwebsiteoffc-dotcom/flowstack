@@ -7,7 +7,7 @@
             <span style="color: #ffffff; font-size: 20px; font-weight: 800;">{{ $clientName }} <span style="opacity: 0.8;">Portal</span></span>
         </div>
         <div style="padding: 28px;">
-            <h1 style="font-size: 18px; color: #111827; margin: 0 0 12px;">Your client portal is ready sparkles</h1>
+            <h1 style="font-size: 18px; color: #111827; margin: 0 0 12px;">Your client portal is ready</h1>
             <p style="font-size: 14px; color: #4b5563; line-height: 1.6;">
                 You can now track your projects, view reports, approve deliverables, download invoices and submit requests.
             </p>

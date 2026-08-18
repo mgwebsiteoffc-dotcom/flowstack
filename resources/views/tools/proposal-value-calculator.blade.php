@@ -1,7 +1,7 @@
 @php
     $tool = [
     'title' => 'Proposal Value Calculator',
-    'seo_title' => 'Proposal Value Calculator — Price Agency Projects | Agency OS',
+    'seo_title' => 'Proposal Value Calculator — Price Agency Projects | Task365',
     'meta_description' => 'Free proposal pricing calculator: estimate the value of an agency proposal from services, hours and rates. Perfect for digital marketing and creative agencies.',
     'h1' => 'Proposal Value Calculator — Price Your Next Project',
     'sub' => 'Add the services, hours and rates for any proposal and see the total value instantly.',

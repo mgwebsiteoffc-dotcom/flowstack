@@ -155,6 +155,6 @@ class SubscriptionController extends Controller
  'max_clients' => $subscription->plan?->max_clients,
  ]);
 
- return redirect()->route('dashboard')->with('success', 'sparkles Payment successful! Your plan is now active.');
+ return redirect()->route('dashboard')->with('success', 'Payment successful! Your plan is now active.');
  }
 }

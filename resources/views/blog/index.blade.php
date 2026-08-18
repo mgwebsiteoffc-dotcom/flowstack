@@ -10,7 +10,7 @@
     <x-tracking placement="head" />
     <x-seo
         title="{{ $category->name ?? 'Blog' }}"
-        description="Agency growth insights, marketing playbooks and operations tips from the Agency OS team."
+        description="Agency growth insights, marketing playbooks and operations tips from the Task365 team."
         :jsonLd="[
             '@context' => 'https://schema.org',
             '@type' => 'CollectionPage',
@@ -25,7 +25,7 @@
     @include('components.site-nav')
 
     <header class="max-w-4xl mx-auto px-6 pt-14 pb-10 text-center">
-        <h1 class="text-4xl font-black tracking-tight">{{ $category->name ?? 'Agency OS Blog' }}</h1>
+        <h1 class="text-4xl font-black tracking-tight">{{ $category->name ?? 'Task365 Blog' }}</h1>
         <p class="text-gray-500 mt-3">Growth strategies, client delivery playbooks and operations tips for modern agencies.</p>
     </header>
 
@@ -43,7 +43,7 @@
                     <div class="text-xs text-indigo-600 font-semibold uppercase">Featured</div>
                     <h2 class="text-2xl font-bold mt-2 group-hover:text-indigo-600">{{ $featured->title }}</h2>
                     <p class="text-gray-500 mt-2 text-sm">{{ $featured->excerpt }}</p>
-                    <div class="text-xs text-gray-400 mt-4">{{ $featured->author_name ?? 'Agency OS' }} · {{ $featured->published_at->format('d M Y') }}</div>
+                    <div class="text-xs text-gray-400 mt-4">{{ $featured->author_name ?? 'Task365' }} · {{ $featured->published_at->format('d M Y') }}</div>
                 </div>
             </a>
         </div>
@@ -77,7 +77,7 @@
                         </div>
                         <h3 class="font-bold group-hover:text-indigo-600">{{ $post->title }}</h3>
                         <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ $post->excerpt }}</p>
-                        <div class="text-xs text-gray-400 mt-3">{{ $post->author_name ?? 'Agency OS' }} · {{ $post->published_at->format('d M Y') }}</div>
+                        <div class="text-xs text-gray-400 mt-3">{{ $post->author_name ?? 'Task365' }} · {{ $post->published_at->format('d M Y') }}</div>
                     </div>
                 </a>
             @empty

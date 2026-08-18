@@ -2,7 +2,7 @@
 @section('title', $case['title'])
 @php
     $seo = [
-        'title' => $case['title'].' — Agency OS',
+        'title' => $case['title'].' — Task365',
         'description' => $case['blurb'],
         'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'WebPage', 'name' => $case['title'], 'description' => $case['blurb'], 'url' => url()->current()]],
     ];
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div>
-            <h2 class="text-2xl font-black mb-5 flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-green-50 text-green-600 flex items-center justify-center"><x-icon name="check" class="w-4 h-4" /></span>With Agency OS</h2>
+            <h2 class="text-2xl font-black mb-5 flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-green-50 text-green-600 flex items-center justify-center"><x-icon name="check" class="w-4 h-4" /></span>With Task365</h2>
             <div class="space-y-3">
                 @foreach ($case['solutions'] as $solution)
                     <div class="flex items-start gap-3 bg-green-50/50 rounded-xl p-4">

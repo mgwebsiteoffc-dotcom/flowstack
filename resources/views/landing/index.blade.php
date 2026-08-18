@@ -8,11 +8,11 @@
     <x-brand-head />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <x-seo
-        title="Agency OS — Client, Project & Lead Management for Agencies"
+        title="Task365 — Client, Project & Lead Management for Agencies"
         description="Run your agency on one operating system: clients, projects, tasks, leads, proposals, invoicing, reporting and a client portal. Start your 14-day free trial."
         :jsonLd="[
-            ['@context' => 'https://schema.org', '@type' => 'Organization', 'name' => 'Agency OS', 'url' => url('/'), 'logo' => url('/favicon.svg')],
-            ['@context' => 'https://schema.org', '@type' => 'WebSite', 'name' => 'Agency OS', 'url' => url('/'), 'potentialAction' => ['@type' => 'SearchAction', 'target' => url('/blog?q={search_term_string}'), 'query-input' => 'required name=search_term_string']],
+            ['@context' => 'https://schema.org', '@type' => 'Organization', 'name' => 'Task365', 'url' => url('/'), 'logo' => url('/favicon.svg')],
+            ['@context' => 'https://schema.org', '@type' => 'WebSite', 'name' => 'Task365', 'url' => url('/'), 'potentialAction' => ['@type' => 'SearchAction', 'target' => url('/blog?q={search_term_string}'), 'query-input' => 'required name=search_term_string']],
         ]"
     />
     <x-tracking placement="head" />
@@ -68,7 +68,7 @@
             <!-- Big product screenshot: real screenshot when uploaded, else CSS mockup -->
             <div class="relative">
             @if ($dash)
-                <img src="{{ $dash }}" alt="Agency OS dashboard" class="rounded-2xl shadow-2xl shadow-indigo-200/50 border border-gray-100 w-full">
+                <img src="{{ $dash }}" alt="Task365 dashboard" class="rounded-2xl shadow-2xl shadow-indigo-200/50 border border-gray-100 w-full">
             @else
             <!-- Big product screenshot (We360 hero image) -->
             <div class="relative">
@@ -361,7 +361,7 @@
                                 <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
                                 <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
                                 <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                                <span class="ml-2 text-[10px] text-gray-400">{{ $ind['tab'] }} · Agency OS</span>
+                                <span class="ml-2 text-[10px] text-gray-400">{{ $ind['tab'] }} · Task365</span>
                             </div>
                             <div class="space-y-2.5">
                                 @foreach ([

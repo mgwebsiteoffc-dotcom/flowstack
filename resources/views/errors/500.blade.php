@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <title>Something went wrong · Agency OS</title>
+    <title>Something went wrong · Task365</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
@@ -20,7 +20,7 @@
             <button onclick="location.reload()" class="px-6 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50">Try again</button>
         </div>
         <div class="text-xs text-gray-400 mt-6">
-            Agency OS · <a href="{{ route('contact') }}" class="hover:text-gray-600 underline">Contact support</a>
+            Task365 · <a href="{{ route('contact') }}" class="hover:text-gray-600 underline">Contact support</a>
         </div>
     </div>
 </body>

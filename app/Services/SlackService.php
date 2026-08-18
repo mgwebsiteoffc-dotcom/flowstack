@@ -28,7 +28,7 @@ class SlackService
         return $response->successful();
     }
 
-    public function test(string $text = 'Agency OS connected to Slack successfully.'): bool
+    public function test(string $text = 'Task365 connected to Slack successfully.'): bool
     {
         return $this->send($text);
     }

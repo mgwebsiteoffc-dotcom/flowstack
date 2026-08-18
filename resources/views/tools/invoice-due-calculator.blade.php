@@ -1,7 +1,7 @@
 @php
     $tool = [
     'title' => 'Invoice Due Date & GST Calculator',
-    'seo_title' => 'Invoice Due Date & GST Calculator — Due Dates, GST Amount, Total | Agency OS',
+    'seo_title' => 'Invoice Due Date & GST Calculator — Due Dates, GST Amount, Total | Task365',
     'meta_description' => 'Free invoice calculator: calculate GST amount, total including GST, due date and overdue status for any invoice. Perfect for freelancers and agencies in India.',
     'h1' => 'Invoice Due Date & GST Calculator',
     'sub' => 'Know exactly when an invoice is due, how much GST to charge and whether it is overdue — in one click.',

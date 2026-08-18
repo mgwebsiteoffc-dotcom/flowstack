@@ -1,7 +1,7 @@
 @extends('layouts.site')
 @section('title', 'About us')
 @php
-    $seo = ['title' => 'About Agency OS', 'description' => 'We build the operating system that helps modern agencies run clients, projects, leads, invoices and reports from one place.'];
+    $seo = ['title' => 'About Task365', 'description' => 'We build the operating system that helps modern agencies run clients, projects, leads, invoices and reports from one place.'];
 @endphp
 @section('content')
 
@@ -89,7 +89,7 @@
 <!-- CTA -->
 <section class="max-w-7xl mx-auto px-6 pb-20">
     <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-14 text-center text-white">
-        <h2 class="text-3xl font-black">Come run your agency on Agency OS</h2>
+        <h2 class="text-3xl font-black">Come run your agency on Task365</h2>
         <p class="text-indigo-100 mt-2">Start free for 14 days - no credit card required.</p>
         <a href="{{ route('register') }}" class="inline-block mt-7 bg-white text-indigo-700 px-8 py-3.5 rounded-xl font-bold hover:bg-indigo-50 shadow-xl">Start free trial</a>
     </div>

@@ -33,7 +33,7 @@ class TeamsService
                     'body' => [
                         ['type' => 'TextBlock', 'size' => 'Medium', 'weight' => 'Bolder', 'text' => $title, 'wrap' => true, 'color' => 'Attention'],
                         ['type' => 'TextBlock', 'text' => $message, 'wrap' => true],
-                        ['type' => 'TextBlock', 'text' => 'Sent by Agency OS · '.now()->format('d M Y H:i'), 'isSubtle' => true, 'size' => 'Small'],
+                        ['type' => 'TextBlock', 'text' => 'Sent by Task365 · '.now()->format('d M Y H:i'), 'isSubtle' => true, 'size' => 'Small'],
                     ],
                 ],
             ]],
@@ -45,7 +45,7 @@ class TeamsService
         return $response->successful();
     }
 
-    public function test(string $title = 'Agency OS connected to Microsoft Teams', string $message = 'Your channel is now receiving Agency OS notifications.'): bool
+    public function test(string $title = 'Task365 connected to Microsoft Teams', string $message = 'Your channel is now receiving Task365 notifications.'): bool
     {
         return $this->send($title, $message);
     }

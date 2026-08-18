@@ -2,9 +2,9 @@
 @section('title', 'Integrations')
 @php
     $seo = [
-        'title' => 'Integrations — Agency OS',
-        'description' => 'Agency OS connects with Lead365 for leads, BikriBook for invoicing, Razorpay for payments, Slack, Microsoft Teams, Google Calendar + Meet and more.',
-        'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => 'Agency OS integrations', 'url' => url()->current()]],
+        'title' => 'Integrations — Task365',
+        'description' => 'Task365 connects with Lead365 for leads, BikriBook for invoicing, Razorpay for payments, Slack, Microsoft Teams, Google Calendar + Meet and more.',
+        'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => 'Task365 integrations', 'url' => url()->current()]],
     ];
 @endphp
 @section('content')

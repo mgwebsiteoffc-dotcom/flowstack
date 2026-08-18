@@ -1,7 +1,7 @@
 {{-- Canonical public site navigation — used on EVERY public page so the menu never changes between pages. --}}
 <nav class="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="{{ route('home') }}" class="text-2xl font-black tracking-tight">Agency<span class="text-indigo-600">OS</span></a>
+        <a href="{{ route('home') }}" class="text-2xl font-black tracking-tight">Task<span class="text-indigo-600">365</span></a>
         <div class="hidden lg:flex items-center gap-6 text-sm text-gray-600">
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open" class="hover:text-gray-900 flex items-center gap-1 {{ request()->routeIs('site.feature*', 'site.features') ? 'text-indigo-600 font-medium' : '' }}">Features

@@ -4,7 +4,7 @@
 <body style="font-family: Arial, sans-serif; background: #f3f4f6; margin: 0; padding: 24px;">
     <div style="max-width: 560px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden;">
         <div style="background: #4f46e5; padding: 20px 28px;">
-            <span style="color: #ffffff; font-size: 20px; font-weight: 800;">Agency<span style="opacity: 0.8;">OS</span></span>
+            <span style="color: #ffffff; font-size: 20px; font-weight: 800;">Task<span style="opacity: 0.8;">365</span></span>
         </div>
         <div style="padding: 28px;">
             <h1 style="font-size: 18px; color: #111827; margin: 0 0 4px;">Weekly summary, {{ $user->name }}</h1>

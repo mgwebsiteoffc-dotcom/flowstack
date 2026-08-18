@@ -6,7 +6,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Agency OS') · {{ app('currentTenant')?->name ?? 'Agency OS' }}</title>
+    <title>@yield('title', 'Task365') · {{ app('currentTenant')?->name ?? 'Task365' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -41,7 +41,7 @@
             @yield('content')
         </main>
         <footer class="px-6 pb-4 text-xs text-gray-400">
-            &copy; {{ date('Y') }} {{ app('currentTenant')?->name ?? 'Agency OS' }} · <a href="{{ route('upgrade') }}" class="hover:text-gray-600">Subscription</a>
+            &copy; {{ date('Y') }} {{ app('currentTenant')?->name ?? 'Task365' }} · A product by Akestech Infotech Pvt Ltd · <a href="{{ route('upgrade') }}" class="hover:text-gray-600">Subscription</a>
         </footer>
     </div>
     @include('components.toast')

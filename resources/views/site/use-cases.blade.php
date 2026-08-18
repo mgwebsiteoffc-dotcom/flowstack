@@ -2,9 +2,9 @@
 @section('title', 'Use cases')
 @php
     $seo = [
-        'title' => 'Use cases — Agency OS',
-        'description' => 'Agency OS works for digital marketing agencies, creative studios, web developers, consultants, SaaS agencies and freelancers.',
-        'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => 'Agency OS use cases', 'url' => url()->current()]],
+        'title' => 'Use cases — Task365',
+        'description' => 'Task365 works for digital marketing agencies, creative studios, web developers, consultants, SaaS agencies and freelancers.',
+        'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => 'Task365 use cases', 'url' => url()->current()]],
     ];
 @endphp
 @section('content')

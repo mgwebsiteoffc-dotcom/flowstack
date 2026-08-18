@@ -18,7 +18,7 @@
             </div>
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Author</label>
-                <input type="text" name="author_name" value="{{ old('author_name', $post->author_name ?? '') }}" placeholder="Agency OS" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
+                <input type="text" name="author_name" value="{{ old('author_name', $post->author_name ?? '') }}" placeholder="Task365" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white">
             </div>
             <div class="sm:col-span-2">
                 <label class="block text-xs text-gray-500 mb-1">Excerpt (shown on cards)</label>

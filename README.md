@@ -1,4 +1,4 @@
-# Agency OS — Multi-tenant Agency Management SaaS
+# Task365 — Multi-tenant Agency Management SaaS
 
 A complete agency operating system for digital marketing & operations agencies
 (8–10 remote team members, 5–6 clients), built as a multi-tenant SaaS where each
@@ -259,7 +259,7 @@ own GitHub account (the bot token used during development lacks the
 - **URL:** `/super-admin/login` (route `super-admin.login`) - linked from the landing page footer.
 - **Seed once:** `php artisan db:seed --class=SuperAdminSeeder` (also included in `php artisan db:seed`).
 - **Credentials:** `SUPER_ADMIN_EMAIL` / `SUPER_ADMIN_PASSWORD` from `.env`
-  (defaults: `superadmin@agencyos.test` / `ChangeMe123!` - change immediately after first login).
+  (defaults: `superadmin@task365.test` / `ChangeMe123!` - change immediately after first login).
   Note: with `php artisan config:cache`, `env()` is unavailable at runtime, so the
   seeders fall back to those defaults - set the env vars before seeding.
 - **Capabilities:** platform dashboard (tenants, MRR, signups, churn), tenant list/detail

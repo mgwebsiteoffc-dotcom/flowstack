@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <title>@yield('title', 'Agency OS')</title>
+    <title>@yield('title', 'Task365')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <x-brand-head />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -22,8 +22,8 @@
             <div class="absolute bottom-40 -left-20 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl"></div>
 
             <a href="{{ route('home') }}" class="relative flex items-center gap-2.5">
-                <span class="w-9 h-9 rounded-xl bg-white/15 backdrop-blur flex items-center justify-center font-black text-lg">A</span>
-                <span class="text-xl font-black tracking-tight">Agency<span class="text-white/70">OS</span></span>
+                <span class="w-9 h-9 rounded-xl bg-white/15 backdrop-blur flex items-center justify-center font-black text-lg">T</span>
+                <span class="text-xl font-black tracking-tight">Task<span class="text-white/70">365</span></span>
             </a>
 
             <div class="relative max-w-md">
@@ -78,7 +78,7 @@
             </div>
 
             <div class="relative text-xs text-indigo-200/80">
-                © {{ date('Y') }} Agency OS · <a href="{{ route('pricing') }}" class="hover:text-white">Pricing</a> · <a href="{{ route('blog.index') }}" class="hover:text-white">Blog</a>
+                © {{ date('Y') }} Task365 · A product by Akestech Infotech Pvt Ltd · <a href="{{ route('pricing') }}" class="hover:text-white">Pricing</a> · <a href="{{ route('blog.index') }}" class="hover:text-white">Blog</a>
             </div>
         </div>
 
@@ -87,8 +87,8 @@
             <div class="w-full max-w-md">
                 <div class="lg:hidden mb-8 text-center">
                     <a href="{{ route('home') }}" class="inline-flex items-center gap-2">
-                        <span class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-lg">A</span>
-                        <span class="text-xl font-black tracking-tight text-gray-900">Agency<span class="text-indigo-600">OS</span></span>
+                        <span class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-lg">T</span>
+                        <span class="text-xl font-black tracking-tight text-gray-900">Task<span class="text-indigo-600">365</span></span>
                     </a>
                 </div>
                 <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/60 border border-gray-100 p-8">
@@ -96,7 +96,7 @@
                     @yield('content')
                 </div>
                 <p class="text-center text-xs text-gray-400 mt-6">
-                    © {{ date('Y') }} Agency OS · <a href="{{ route('home') }}" class="hover:text-gray-600">Home</a> · <a href="{{ route('pricing') }}" class="hover:text-gray-600">Pricing</a> · <a href="{{ route('blog.index') }}" class="hover:text-gray-600">Blog</a>
+                    © {{ date('Y') }} Task365 · A product by Akestech Infotech Pvt Ltd · <a href="{{ route('home') }}" class="hover:text-gray-600">Home</a> · <a href="{{ route('pricing') }}" class="hover:text-gray-600">Pricing</a> · <a href="{{ route('blog.index') }}" class="hover:text-gray-600">Blog</a>
                 </p>
             </div>
         </div>

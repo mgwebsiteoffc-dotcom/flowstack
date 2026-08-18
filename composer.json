@@ -1,7 +1,7 @@
 {
-    "name": "agency-os/agency-os",
+    "name": "task365/task365",
     "type": "project",
-    "description": "Agency OS - multi-tenant agency management SaaS (Laravel, Blade, Tailwind, Alpine.js)",
+    "description": "Task365 - multi-tenant agency management SaaS (Laravel, Blade, Tailwind, Alpine.js)",
     "keywords": [
         "saas",
         "laravel",

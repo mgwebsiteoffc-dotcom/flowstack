@@ -77,7 +77,7 @@ class RegisteredUserController extends Controller
  try {
  app(\App\Services\NotificationService::class)->sendEmail(
  $user,
- 'Welcome to Agency OS! sparkles',
+ 'Welcome to Task365!',
  'Your workspace '.$tenant->name.' ('.$tenant->slug.'.'.config('tenancy.tenant_domain').') is ready.\n\nComplete the onboarding wizard to set up your agency in minutes.',
  'welcome'
  );
@@ -94,6 +94,6 @@ class RegisteredUserController extends Controller
 
  Auth::login($user);
 
- return redirect()->route('onboarding')->with('success', 'Welcome to Agency OS! Let\'s set up your workspace.');
+ return redirect()->route('onboarding')->with('success', 'Welcome to Task365! Let\'s set up your workspace.');
  }
 }

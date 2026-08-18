@@ -1,7 +1,7 @@
 @extends('layouts.site')
 @section('title', 'Free tools for agencies')
 @php
-    $seo = ['title' => 'Free agency tools — Agency OS', 'description' => 'Free calculators and generators for agencies: retainer calculator, invoice due-date calculator and proposal value calculator.'];
+    $seo = ['title' => 'Free agency tools — Task365', 'description' => 'Free calculators and generators for agencies: retainer calculator, invoice due-date calculator and proposal value calculator.'];
 @endphp
 @section('content')
 

@@ -14,13 +14,13 @@ class AppDoctor extends Command
 {
  protected $signature = 'app:doctor';
 
- protected $description = 'Check the environment for common Agency OS startup problems';
+ protected $description = 'Check the environment for common Task365 startup problems';
 
  public function handle(): int
  {
  $fail = 0;
 
- $this->info('=== Agency OS environment doctor ===');
+ $this->info('=== Task365 environment doctor ===');
  $this->line('PHP: '.PHP_VERSION.' ('.PHP_OS_FAMILY.')');
  $this->line('Laravel: '.\Illuminate\Foundation\Application::VERSION);
  $this->line('Env: '.app()->environment());

@@ -2,7 +2,7 @@
 <footer class="border-t border-gray-100">
     <div class="max-w-7xl mx-auto px-6 py-12 grid sm:grid-cols-4 gap-8">
         <div class="sm:col-span-2">
-            <div class="text-xl font-black">Agency<span class="text-indigo-600">OS</span></div>
+            <div class="text-xl font-black">Task<span class="text-indigo-600">365</span></div>
             <p class="text-sm text-gray-500 mt-2 max-w-xs">The operating system for modern agencies. Clients, projects, leads, invoices and reports in one place.</p>
         </div>
         <div>
@@ -28,7 +28,7 @@
     </div>
     <div class="border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between text-xs text-gray-400">
-            <span>© {{ date('Y') }} Agency OS. All rights reserved.</span>
+            <span>© {{ date('Y') }} Task365 · A product by Akestech Infotech Pvt Ltd. All rights reserved.</span>
             <span>Made for agencies that ship.</span>
         </div>
     </div>

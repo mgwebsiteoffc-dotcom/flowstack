@@ -1,7 +1,7 @@
 @php
     $tool = [
         'title' => 'Profit Margin Calculator',
-        'seo_title' => 'Profit Margin Calculator — Margin & Markup | Agency OS',
+        'seo_title' => 'Profit Margin Calculator — Margin & Markup | Task365',
         'meta_description' => 'Free profit margin calculator: calculate profit, margin percentage and markup from cost and selling price. Essential for agency pricing.',
         'h1' => 'Profit Margin Calculator — Cost, Price, Margin',
         'sub' => 'Enter your cost and selling price to see profit, margin % and markup % instantly.',

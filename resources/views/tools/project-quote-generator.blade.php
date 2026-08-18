@@ -1,7 +1,7 @@
 @php
     $tool = [
         'title' => 'Project Quote Generator',
-        'seo_title' => 'Project Quote Generator — Instant Client Quotes | Agency OS',
+        'seo_title' => 'Project Quote Generator — Instant Client Quotes | Task365',
         'meta_description' => 'Free project quote generator for agencies: create a professional client quote with line items, markup and total in seconds.',
         'h1' => 'Project Quote Generator — Build a Client Quote in Seconds',
         'sub' => 'Add line items, apply your markup, and get a clean quote total your client will understand.',

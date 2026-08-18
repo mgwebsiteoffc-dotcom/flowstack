@@ -230,8 +230,8 @@ class Lead365WebhookService
 
  $this->automation->processEvent('lead.won', $lead, $tenant);
 
- $this->notifications->notifyRole($tenant, ['admin', 'ops_manager'], 'sparkles Lead Won', $lead->contact_name.' — '.$lead->won_value, 'leads.show', ['lead' => $lead->id], 'high');
- $this->notifications->emailRole($tenant, ['admin', 'ops_manager'], 'sparkles Lead won: '.$lead->contact_name, $lead->contact_name.' ('.$lead->company_name.') closed for '.$lead->won_value.'.', 'lead_won');
+ $this->notifications->notifyRole($tenant, ['admin', 'ops_manager'], 'Lead Won', $lead->contact_name.' — '.$lead->won_value, 'leads.show', ['lead' => $lead->id], 'high');
+ $this->notifications->emailRole($tenant, ['admin', 'ops_manager'], 'Lead won: '.$lead->contact_name, $lead->contact_name.' ('.$lead->company_name.') closed for '.$lead->won_value.'.', 'lead_won');
 
  return ['status' => 'processed', 'lead' => $lead];
  }

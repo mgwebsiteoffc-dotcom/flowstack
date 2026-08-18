@@ -2,9 +2,9 @@
 @section('title', 'Features')
 @php
     $seo = [
-        'title' => 'Features — Agency OS',
-        'description' => 'Explore every Agency OS feature: client management, projects & tasks, leads & CRM, finance & invoicing, reporting and automation.',
-        'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => 'Agency OS features', 'url' => url()->current(), 'isPartOf' => ['@type' => 'WebSite', 'name' => config('app.name'), 'url' => url('/')]]],
+        'title' => 'Features — Task365',
+        'description' => 'Explore every Task365 feature: client management, projects & tasks, leads & CRM, finance & invoicing, reporting and automation.',
+        'jsonLd' => [['@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => 'Task365 features', 'url' => url()->current(), 'isPartOf' => ['@type' => 'WebSite', 'name' => config('app.name'), 'url' => url('/')]]],
     ];
 @endphp
 @section('content')

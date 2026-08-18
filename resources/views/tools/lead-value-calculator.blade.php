@@ -1,7 +1,7 @@
 @php
     $tool = [
         'title' => 'Lead Value Calculator',
-        'seo_title' => 'Lead Value Calculator — What Is a Lead Worth? | Agency OS',
+        'seo_title' => 'Lead Value Calculator — What Is a Lead Worth? | Task365',
         'meta_description' => 'Free lead value calculator for agencies: estimate what each lead is worth based on conversion rate, average deal value and win rate.',
         'h1' => 'Lead Value Calculator — What Is Each Lead Worth?',
         'sub' => 'Know exactly how much you can afford to spend acquiring a lead. Enter your numbers and see the lead value instantly.',
@@ -12,7 +12,7 @@
             ['What should I spend per lead?', 'As a rule, spend no more than 20-30% of lead value on acquisition. If a lead is worth ₹20,000, your cost per lead should stay under ₹4,000-₹6,000.'],
             ['Why is lead value important?', 'It tells you which channels are profitable. If Meta Ads cost ₹5,000 per lead but your lead value is ₹8,000, you are winning. If it is ₹3,000, you are losing money on every click.'],
         ],
-        'content' => '<h2>Turn leads into a number you can optimise</h2><p>Most agencies track lead counts but not lead <em>value</em>. Once you know what a lead is worth, every marketing decision becomes clear: what to bid, which channels to scale, and when to stop spending.</p><p>Combine this with a CRM pipeline (like the one built into Agency OS) and you will always know your numbers.</p>',
+        'content' => '<h2>Turn leads into a number you can optimise</h2><p>Most agencies track lead counts but not lead <em>value</em>. Once you know what a lead is worth, every marketing decision becomes clear: what to bid, which channels to scale, and when to stop spending.</p><p>Combine this with a CRM pipeline (like the one built into Task365) and you will always know your numbers.</p>',
     ];
 @endphp
 

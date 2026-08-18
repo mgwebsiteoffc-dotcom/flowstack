@@ -63,7 +63,7 @@ class DispatchChannelNotification implements ShouldQueue
                     'body' => [
                         ['type' => 'TextBlock', 'size' => 'Medium', 'weight' => 'Bolder', 'text' => $this->title, 'wrap' => true],
                         ['type' => 'TextBlock', 'text' => $this->message, 'wrap' => true],
-                        ['type' => 'TextBlock', 'text' => 'Agency OS · '.now()->format('d M Y H:i'), 'isSubtle' => true, 'size' => 'Small'],
+                        ['type' => 'TextBlock', 'text' => 'Task365 · '.now()->format('d M Y H:i'), 'isSubtle' => true, 'size' => 'Small'],
                     ],
                 ],
             ]],

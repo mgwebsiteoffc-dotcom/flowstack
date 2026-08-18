@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-@section('title', 'Sign in to Agency OS')
+@section('title', 'Sign in to Task365')
 @section('content')
 <h1 class="text-2xl font-bold text-gray-900">Welcome back</h1>
 <p class="text-sm text-gray-500 mt-1 mb-6">Sign in to your agency workspace.</p>
@@ -54,7 +54,7 @@
 </form>
 
 <div class="mt-6 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
-    New to Agency OS?
+    New to Task365?
     <a href="{{ route('register') }}" class="text-indigo-600 hover:underline font-semibold">Start your free trial</a>
 </div>
 @endsection

@@ -1,7 +1,7 @@
 @php
     $tool = [
     'title' => 'Agency Retainer Calculator',
-    'seo_title' => 'Agency Retainer Calculator (2026) — Price Monthly Retainers | Agency OS',
+    'seo_title' => 'Agency Retainer Calculator (2026) — Price Monthly Retainers | Task365',
     'meta_description' => 'Free retainer calculator for agencies: estimate the monthly retainer you should charge based on team hours, hourly rate, tools cost and target margin. Includes the retainer pricing formula and examples.',
     'h1' => 'Agency Retainer Calculator — How Much Should You Charge Per Month?',
     'sub' => 'Stop guessing your monthly retainers. Enter your team hours, blended hourly cost and target margin to get a data-backed retainer price in seconds.',

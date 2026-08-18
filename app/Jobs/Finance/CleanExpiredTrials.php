@@ -44,7 +44,7 @@ class CleanExpiredTrials implements ShouldQueue
 
  try {
  \Illuminate\Support\Facades\Mail::to($tenant->email)->queue(new \App\Mail\AgencyMail(
- 'Your Agency OS trial data will be deleted soon',
+ 'Your Task365 trial data will be deleted soon',
  'Your '.$tenant->name.' trial ended '.$tenant->trial_ends_at->toFormattedDateString().'. All workspace data will be permanently deleted in 15 days unless you upgrade.\n\nUpgrade here: '.url('/upgrade'),
  []
  ));

@@ -35,7 +35,7 @@ class ContactController extends Controller
 
         // Email the super admin (never blocks the request).
         try {
-            Mail::to(config('app.super_admin_email', env('SUPER_ADMIN_EMAIL', 'superadmin@agencyos.test')))
+            Mail::to(config('app.super_admin_email', env('SUPER_ADMIN_EMAIL', 'superadmin@task365.test')))
                 ->queue(new AgencyMail(
                     'New website enquiry: '.$validated['name'],
                     "Name: {$validated['name']}\nEmail: {$validated['email']}\nCompany: ".($validated['company'] ?? '—')."\n\nMessage:\n".$validated['message']

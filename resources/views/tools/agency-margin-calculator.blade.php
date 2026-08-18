@@ -1,7 +1,7 @@
 @php
     $tool = [
         'title' => 'Agency Margin Calculator',
-        'seo_title' => 'Agency Margin Calculator — Gross & Net Margin | Agency OS',
+        'seo_title' => 'Agency Margin Calculator — Gross & Net Margin | Task365',
         'meta_description' => 'Free agency margin calculator: work out your gross and net margin from revenue, team cost and overheads. Know if your agency is actually profitable.',
         'h1' => 'Agency Margin Calculator — Are You Actually Profitable?',
         'sub' => 'Revenue is vanity, margin is sanity. Enter your numbers and see your real agency margin in seconds.',
@@ -12,7 +12,7 @@
             ['Gross vs net margin — what is the difference?', 'Gross margin excludes overheads: (revenue − delivery cost) ÷ revenue. Net margin subtracts everything: (revenue − all costs) ÷ revenue. Track both.'],
             ['How can I improve agency margins?', 'Raise retainers, cut low-margin services, track team utilisation, and automate reporting so your team spends time on billable work.'],
         ],
-        'content' => '<h2>Know your real margin</h2><p>Most agencies think they are profitable until they add up the tools, the free work and the management time. This calculator gives you the honest number.</p><p>In Agency OS, the Profitability page tracks margin per client automatically from your time entries and expenses.</p>',
+        'content' => '<h2>Know your real margin</h2><p>Most agencies think they are profitable until they add up the tools, the free work and the management time. This calculator gives you the honest number.</p><p>In Task365, the Profitability page tracks margin per client automatically from your time entries and expenses.</p>',
     ];
 @endphp
 

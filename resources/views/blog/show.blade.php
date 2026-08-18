@@ -21,7 +21,7 @@
             'image' => $post->cover_url,
             'datePublished' => $post->published_at?->toIso8601String(),
             'dateModified' => $post->updated_at->toIso8601String(),
-            'author' => ['@type' => 'Person', 'name' => $post->author_name ?? 'Agency OS'],
+            'author' => ['@type' => 'Person', 'name' => $post->author_name ?? 'Task365'],
             'publisher' => ['@type' => 'Organization', 'name' => config('app.name'), 'logo' => ['@type' => 'ImageObject', 'url' => url('/favicon.svg')]],
             'mainEntityOfPage' => url()->current(),
         ]"
@@ -45,7 +45,7 @@
 
         <h1 class="text-3xl sm:text-4xl font-black leading-tight">{{ $post->title }}</h1>
         <div class="flex items-center gap-3 mt-4 text-sm text-gray-400">
-            <span>{{ $post->author_name ?? 'Agency OS' }}</span>
+            <span>{{ $post->author_name ?? 'Task365' }}</span>
             <span>·</span>
             <time datetime="{{ $post->published_at->toIso8601String() }}">{{ $post->published_at->format('d M Y') }}</time>
             <span>·</span>

@@ -10,7 +10,7 @@ class SuperAdminSeeder extends Seeder
 {
     public function run(): void
     {
-        $email = env('SUPER_ADMIN_EMAIL', 'superadmin@agencyos.test');
+        $email = env('SUPER_ADMIN_EMAIL', 'superadmin@task365.test');
         $password = env('SUPER_ADMIN_PASSWORD', 'ChangeMe123!');
 
         SuperAdmin::updateOrCreate(
