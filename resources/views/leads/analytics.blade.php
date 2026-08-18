@@ -12,8 +12,8 @@
     <x-stat-card title="Total Leads" value="{{ $totalLeads }}" icon="target" color="indigo" />
     <x-stat-card title="Won" value="{{ $wonLeads }} ({{ $winRate }}%)" icon="trophy" color="green" />
     <x-stat-card title="Lost" value="{{ $lostLeads }}" icon="no-symbol" color="red" />
-    <x-stat-card title="Avg Deal Value" value="₹{{ number_format($avgDealValue) }}" icon="gem" color="purple" />
-    <x-stat-card title="Pipeline Value" value="₹{{ number_format($pipelineValue) }}" icon="banknotes" color="amber" />
+    <x-stat-card title="Avg Deal Value" :value="\App\Support\Money::format($avgDealValue)" icon="gem" color="purple" />
+    <x-stat-card title="Pipeline Value" :value="\App\Support\Money::format($pipelineValue)" icon="banknotes" color="amber" />
 </div>
 
 <div class="grid lg:grid-cols-2 gap-6 mt-6">
@@ -43,7 +43,7 @@
         <div class="mt-4 text-sm font-medium text-gray-700">Monthly won value</div>
         <div class="flex flex-wrap gap-2 mt-2">
             @foreach ($monthlyWonValue as $month => $value)
-                <span class="text-xs bg-green-50 text-green-700 rounded-full px-3 py-1">{{ $month }}: ₹{{ number_format($value) }}</span>
+                <span class="text-xs bg-green-50 text-green-700 rounded-full px-3 py-1">{{ $month }}: <x-money :value="$value" /></span>
             @endforeach
         </div>
     </x-card>
@@ -58,7 +58,7 @@
                     <span class="text-sm text-gray-800 flex-1">{{ $lead->contact_name }}</span>
                     <span class="text-xs text-gray-400">{{ $lead->company_name }}</span>
                     <x-status-badge :status="$lead->status" type="lead" />
-                    <span class="text-xs font-medium">₹{{ number_format($lead->estimated_value ?? 0) }}</span>
+                    <span class="text-xs font-medium"><x-money :value="$lead->estimated_value ?? 0" /></span>
                 </a>
             @empty
                 <p class="text-sm text-gray-400 text-center py-4">No leads yet.</p>

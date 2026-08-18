@@ -3,16 +3,16 @@
 @section('breadcrumb', 'Finance')
 @section('content')
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <x-stat-card title="Revenue" value="₹{{ number_format($stats['revenue']) }}" icon="banknotes" color="green" />
-    <x-stat-card title="Outstanding" value="₹{{ number_format($stats['outstanding']) }}" icon="hourglass" color="amber" />
-    <x-stat-card title="Paid This Month" value="₹{{ number_format($stats['paid_this_month']) }}" icon="banknotes" color="indigo" />
+    <x-stat-card title="Revenue" :value="\App\Support\Money::format($stats['revenue'])" icon="banknotes" color="green" />
+    <x-stat-card title="Outstanding" :value="\App\Support\Money::format($stats['outstanding'])" icon="hourglass" color="amber" />
+    <x-stat-card title="Paid This Month" :value="\App\Support\Money::format($stats['paid_this_month'])" icon="banknotes" color="indigo" />
     <x-stat-card title="Overdue Invoices" value="{{ $stats['overdue_count'] }}" icon="exclamation-triangle" color="{{ $stats['overdue_count'] > 0 ? 'red' : 'green' }}" />
 </div>
 
 <div class="grid lg:grid-cols-3 gap-6 mt-6">
     <div class="lg:col-span-2 space-y-6">
         <x-card title="Revenue (6 months)" icon="chart-bar">
-            <canvas id="revChart" height="90"></canvas>
+            <div class="money-chart"><canvas id="revChart" height="90"></canvas></div>
         </x-card>
 
         <x-card title="Recent invoices" icon="receipt">
@@ -23,7 +23,7 @@
                         <span class="text-sm text-gray-800 flex-1">{{ $invoice->client?->company_name }}</span>
                         <x-status-badge :status="$invoice->status" type="invoice" />
                         <x-bb-status :invoice="$invoice" />
-                        <span class="text-sm font-medium">₹{{ number_format($invoice->total_amount) }}</span>
+                        <span class="text-sm font-medium"><x-money :value="$invoice->total_amount" /></span>
                     </a>
                 @empty
                     <p class="text-sm text-gray-400 text-center py-4">No invoices yet.</p>
@@ -47,7 +47,7 @@
             </div>
         </x-card>
         <x-card title="Expenses this month" icon="banknotes">
-            <div class="text-2xl font-bold text-gray-900">₹{{ number_format($stats['expenses_this_month']) }}</div>
+            <div class="text-2xl font-bold text-gray-900"><x-money :value="$stats['expenses_this_month']" /></div>
             <a href="{{ route('finance.expenses.index') }}" class="text-xs text-indigo-600 mt-2 inline-block">View expenses →</a>
         </x-card>
     </div>

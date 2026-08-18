@@ -64,7 +64,7 @@
                         </div>
                     </td>
                     <td class="px-4 py-3 text-gray-600">{{ $client->accountManager?->name ?? '—' }}</td>
-                    <td class="px-4 py-3 text-right font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</td>
+                    <td class="px-4 py-3 text-right font-medium"><x-money :value="$client->monthly_retainer ?? 0" /></td>
                 </tr>
             @empty
                 <tr><td colspan="6">

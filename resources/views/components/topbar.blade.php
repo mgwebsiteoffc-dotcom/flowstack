@@ -6,11 +6,20 @@
     $runningEntry = \App\Models\TimeEntry::where('user_id', $user->id)->where('is_running', true)->first();
 @endphp
 <header class="bg-white border-b border-gray-200 h-16 flex items-center px-4 sm:px-6 gap-4">
-    <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 hover:text-gray-800 text-xl"><x-icon name="menu" class="w-4 h-4 inline-block" /></button>
+    <button @click="toggleNav()" class="text-gray-500 hover:text-gray-800 text-xl p-1 -ml-1" aria-label="Toggle navigation">
+        <x-icon name="menu" class="w-5 h-5 inline-block" />
+    </button>
 
     <div class="hidden md:block text-sm text-gray-500">
         @yield('breadcrumb', '')
     </div>
+
+    @if ($user->canAccessFinance())
+        <button id="finance-mask-toggle" onclick="toggleFinanceMask()" title="Mask / unmask financial figures"
+                class="text-gray-500 hover:text-gray-800 p-1.5 rounded-lg" aria-label="Mask or unmask financial figures">
+            <x-icon name="eye" class="w-4 h-4 inline-block" />
+        </button>
+    @endif
 
     <!-- Global search -->
     <form action="{{ route('search') }}" method="GET" class="hidden sm:block flex-1 max-w-md ml-auto">

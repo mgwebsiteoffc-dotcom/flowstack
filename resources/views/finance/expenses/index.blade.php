@@ -21,7 +21,7 @@
         <button class="bg-gray-800 text-white px-4 py-1.5 rounded-lg">Filter</button>
     </form>
     <div class="flex gap-2 items-center">
-        <span class="text-sm text-gray-500">Total: <strong>₹{{ number_format($total) }}</strong></span>
+        <span class="text-sm text-gray-500">Total: <strong><x-money :value="$total" /></strong></span>
         <a href="{{ route('finance.expenses.index', array_merge(request()->query(), ['export' => 1])) }}" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-600 text-sm"><x-icon name="arrow-down-tray" class="w-4 h-4 inline-block" /> Export</a>
         <button x-data @click="$refs.expenseModal.showModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add expense</button>
     </div>
@@ -71,7 +71,7 @@
                     <td class="px-4 py-3 font-medium text-gray-800">{{ $expense->title }}</td>
                     <td class="px-4 py-3"><span class="text-xs bg-gray-100 rounded-full px-2 py-0.5">{{ $expense->category?->name ?? '—' }}</span></td>
                     <td class="px-4 py-3 text-gray-600">{{ $expense->client?->company_name ?? '—' }}</td>
-                    <td class="px-4 py-3 text-right font-medium">₹{{ number_format($expense->amount) }}</td>
+                    <td class="px-4 py-3 text-right font-medium"><x-money :value="$expense->amount" /></td>
                     <td class="px-4 py-3 text-gray-500">{{ $expense->expense_date->format('d M Y') }}</td>
                     <td class="px-4 py-3 text-gray-500 text-xs">{{ $expense->addedBy?->name }}</td>
                     <td class="px-4 py-3 text-right">

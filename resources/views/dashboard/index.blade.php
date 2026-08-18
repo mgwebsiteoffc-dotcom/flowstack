@@ -3,16 +3,16 @@
 @section('breadcrumb', 'Dashboard')
 @section('content')
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    <x-stat-card title="Monthly Revenue" value="₹{{ number_format($stats['monthly_revenue']) }}" icon="banknotes" color="green" />
+    <x-stat-card title="Monthly Revenue" :value="\App\Support\Money::format($stats['monthly_revenue'])" icon="banknotes" color="green" />
     <x-stat-card title="Active Clients" value="{{ $stats['active_clients'] }}" icon="users" color="indigo" />
     <x-stat-card title="Overdue Tasks" value="{{ $stats['overdue_tasks'] }}" icon="clock" color="{{ $stats['overdue_tasks'] > 0 ? 'red' : 'green' }}" />
-    <x-stat-card title="Pipeline Value" value="₹{{ number_format($stats['pipeline_value']) }}" icon="target" color="purple" />
+    <x-stat-card title="Pipeline Value" :value="\App\Support\Money::format($stats['pipeline_value'])" icon="target" color="purple" />
 </div>
 
 <div class="grid lg:grid-cols-3 gap-6 mt-6">
     <div class="lg:col-span-2 space-y-6">
         <x-card title="Revenue (6 months)" icon="chart-bar">
-            <canvas id="revenueChart" height="90"></canvas>
+            <div class="money-chart"><canvas id="revenueChart" height="90"></canvas></div>
         </x-card>
 
         <x-card title="Client Health" icon="pulse">
@@ -21,7 +21,7 @@
                     <x-health-badge :score="$client->health_score" />
                     <span class="text-sm font-medium text-gray-800 flex-1">{{ $client->company_name }}</span>
                     <span class="text-xs text-gray-400">{{ $client->accountManager?->name }}</span>
-                    <span class="text-xs font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</span>
+                    <span class="text-xs font-medium"><x-money :value="$client->monthly_retainer ?? 0" /></span>
                 </a>
             @empty
                 <x-empty-state icon="users" title="No clients yet" message="Add your first client to get started." :action="route('clients.create')" actionLabel="Add client" />

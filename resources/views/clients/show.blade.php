@@ -67,7 +67,7 @@
                     <div><dt class="text-gray-400 text-xs">Address</dt><dd class="text-gray-800">{{ $client->address ?: '—' }}@if ($client->city || $client->pincode)<div class="text-xs">{{ $client->city }}{{ $client->state ? ', '.$client->state : '' }}{{ $client->pincode ? ' - '.$client->pincode : '' }}</div>@endif</dd></div>
                     <div><dt class="text-gray-400 text-xs">Account manager</dt><dd class="text-gray-800">{{ $client->accountManager?->name ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Contract</dt><dd class="text-gray-800">{{ $client->contract_start_date?->format('d M Y') }} → {{ $client->contract_end_date?->format('d M Y') ?? 'open' }}</dd></div>
-                    <div><dt class="text-gray-400 text-xs">Monthly retainer</dt><dd class="text-gray-800 font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</dd></div>
+                    <div><dt class="text-gray-400 text-xs">Monthly retainer</dt><dd class="text-gray-800 font-medium"><x-money :value="$client->monthly_retainer ?? 0" /></dd></div>
                 </dl>
                 @if ($client->notes)<div class="mt-4 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">{{ $client->notes }}</div>@endif
             </x-card>
@@ -77,7 +77,7 @@
                     @forelse ($client->services as $service)
                         <span class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 rounded-full px-3 py-1 text-sm">
                             {{ $service->type_label }}
-                            @if ($service->monthly_price)<span class="text-xs">₹{{ number_format($service->monthly_price) }}/mo</span>@endif
+                            @if ($service->monthly_price)<span class="text-xs"><x-money :value="$service->monthly_price" />/mo</span>@endif
                         </span>
                     @empty
                         <span class="text-sm text-gray-400">No services selected</span>
@@ -130,7 +130,7 @@
                 <div class="grid grid-cols-3 gap-4 text-center">
                     <div><div class="text-xl font-bold text-gray-900">{{ $client->projects()->count() }}</div><div class="text-xs text-gray-400">Projects</div></div>
                     <div><div class="text-xl font-bold text-gray-900">{{ $client->tasks()->whereNotIn('status', ['done', 'cancelled'])->count() }}</div><div class="text-xs text-gray-400">Open tasks</div></div>
-                    <div><div class="text-xl font-bold text-gray-900">₹{{ number_format($client->outstandingBalance()) }}</div><div class="text-xs text-gray-400">Outstanding</div></div>
+                    <div><div class="text-xl font-bold text-gray-900"><x-money :value="$client->outstandingBalance()" /></div><div class="text-xs text-gray-400">Outstanding</div></div>
                 </div>
             </x-card>
             <x-card title="Contacts" icon="identification">
@@ -257,7 +257,7 @@
                         <td class="px-4 py-3"><a href="{{ route('finance.invoices.show', $invoice) }}" class="font-medium text-indigo-600">{{ $invoice->invoice_number }}</a></td>
                         <td class="px-4 py-3"><x-status-badge :status="$invoice->status" type="invoice" /></td>
                         <td class="px-4 py-3"><x-bb-status :invoice="$invoice" /></td>
-                        <td class="px-4 py-3 text-right font-medium">₹{{ number_format($invoice->total_amount) }}</td>
+                        <td class="px-4 py-3 text-right font-medium"><x-money :value="$invoice->total_amount" /></td>
                         <td class="px-4 py-3 text-right text-gray-500">{{ $invoice->due_date->format('d M Y') }}</td>
                     </tr>
                 @empty
