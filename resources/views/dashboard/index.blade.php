@@ -80,6 +80,29 @@
             @endforelse
         </x-card>
 
+        @if ($calendarConnected)
+            <x-card title="Upcoming Google Calendar" icon="calendar">
+                @forelse ($upcomingEvents as $event)
+                    <div class="py-2 border-b border-gray-50 last:border-0">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs bg-blue-50 text-blue-700 rounded px-1.5 py-0.5 shrink-0">{{ $event['start'] ? $event['start']->format('d M H:i') : 'All day' }}</span>
+                            <span class="text-sm text-gray-800 truncate flex-1">{{ $event['summary'] }}</span>
+                        </div>
+                        <div class="flex items-center gap-3 mt-0.5">
+                            @if ($event['hangout'])
+                                <a href="{{ $event['hangout'] }}" target="_blank" class="text-xs text-green-600 hover:underline">Join Meet</a>
+                            @endif
+                            @if ($event['html_link'])
+                                <a href="{{ $event['html_link'] }}" target="_blank" class="text-xs text-indigo-600 hover:underline">Calendar</a>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-sm text-gray-400 text-center py-3">No upcoming events.</p>
+                @endforelse
+            </x-card>
+        @endif
+
         <x-card title="Lead Pipeline" icon="target">
             @foreach ($pipeline as $stage)
                 <div class="flex justify-between text-sm py-1.5">

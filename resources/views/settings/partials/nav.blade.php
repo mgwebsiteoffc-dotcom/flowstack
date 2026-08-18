@@ -5,6 +5,8 @@
         ['route' => 'settings.master.index', 'label' => 'Master data', 'icon' => 'archive-box', 'key' => 'master'],
         ['route' => 'settings.integrations.lead365', 'label' => 'Lead365', 'icon' => 'link', 'key' => 'lead365'],
         ['route' => 'settings.integrations.bikribook', 'label' => 'BikriBook', 'icon' => 'receipt', 'key' => 'bikribook'],
+        ['route' => 'settings.integrations.channels', 'label' => 'Slack & Teams', 'icon' => 'chat-bubble-left-right', 'key' => 'channels'],
+        ['route' => 'settings.integrations.google-calendar', 'label' => 'Google Calendar', 'icon' => 'calendar', 'key' => 'google-calendar'],
         ['route' => 'settings.notifications', 'label' => 'Notifications', 'icon' => 'bell', 'key' => 'notifications'],
         ['route' => 'announcements.index', 'label' => 'Announcements', 'icon' => 'megaphone', 'key' => 'announcements'],
         ['route' => 'settings.audit', 'label' => 'Audit log', 'icon' => 'document-text', 'key' => 'audit'],

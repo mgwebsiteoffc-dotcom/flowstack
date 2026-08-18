@@ -9,6 +9,7 @@ use App\Models\Client;
 use App\Models\ClientPortalUser;
 use App\Models\Report;
 use App\Models\Setting;
+use App\Services\ChannelNotificationService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;

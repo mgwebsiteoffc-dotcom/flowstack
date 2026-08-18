@@ -15,6 +15,7 @@ use App\Models\TaskWatcher;
 use App\Models\TimeEntry;
 use App\Models\User;
 use App\Services\AutomationService;
+use App\Services\ChannelNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -206,6 +207,11 @@ class TaskController extends Controller
  app(AutomationService::class)->processEvent('task.status_changed', $task, \App\Support\CurrentTenant::get());
  }
 
+ // Keep the Google Calendar event (and Meet link) in sync.
+ if ($task->due_date) {
+ \App\Jobs\Tasks\SyncTaskToCalendar::dispatch($task->id);
+ }
+
  if (($old['assigned_to'] ?? null) !== $task->assigned_to && $task->assigned_to) {
  app(AutomationService::class)->processEvent('task.assigned', $task, \App\Support\CurrentTenant::get());
 
@@ -222,10 +228,24 @@ class TaskController extends Controller
 
  public function destroy(Task $task)
  {
+ \App\Jobs\Tasks\DeleteTaskCalendarEvent::dispatch($task->id);
+
  $task->delete();
  ActivityLog::record('task.deleted', $task);
 
  return redirect()->route('tasks.index')->with('success', 'Task deleted.');
+ }
+
+ /**
+  * Generate (or regenerate) the Google Meet link for a task.
+  */
+ public function generateMeet(Task $task)
+ {
+ $this->authorize('update', $task);
+
+ \App\Jobs\Tasks\SyncTaskToCalendar::dispatch($task->id);
+
+ return back()->with('success', 'Google Meet link is being generated. Refresh in a few seconds.');
  }
 
  public function updateStatus(Request $request, Task $task)

@@ -7,6 +7,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Scopes\TenantScope;
 use App\Services\AutomationService;
+use App\Services\ChannelNotificationService;
 use App\Services\NotificationService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

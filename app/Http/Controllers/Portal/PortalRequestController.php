@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientRequest;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\ChannelNotificationService;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
 

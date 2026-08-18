@@ -133,6 +133,30 @@ Client" via BB → every 6h `SyncAllTenantsInvoices` checks payment status
 first, DomPDF fallback. Settings: `/settings/integrations/bikribook` with
 encrypted key fields, test connection, toggles and sync log.
 
+### Slack & Microsoft Teams (channel notifications)
+
+Settings → Integrations → Slack & Teams: paste an **incoming webhook URL** for
+Slack (Incoming Webhooks) and/or Teams (Workflows → Incoming webhook), choose
+which events notify, and hit "Send test". Events pushed (queued, never block):
+new lead, lead won/lost, task assigned, task overdue, invoice paid/overdue,
+contract expiring, new client request, report shared. Slack gets a text
+message; Teams gets an Adaptive Card.
+
+### Google Calendar sync + Google Meet generation
+
+Settings → Integrations → Google Calendar: **OAuth 2.0 connect** (offline
+access; tokens stored encrypted in `integration_tokens`). When "Sync tasks"
+is enabled:
+- Tasks with a due date create a 10:00 AM calendar event **with an automatic
+  Google Meet conference link** (conferenceData → hangoutsMeet).
+- The Meet link appears on the task page ("Join Google Meet") with a manual
+  "Generate Google Meet link" button.
+- Updating a task updates the event; deleting removes it.
+- Upcoming events (with Meet/Calendar links) appear on the dashboard.
+
+Requires `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`
+(scopes: `https://www.googleapis.com/auth/calendar.events`) in `.env`.
+
 ### Razorpay (subscriptions)
 
 `/upgrade` → order creation via the Razorpay SDK → checkout.js → signature
