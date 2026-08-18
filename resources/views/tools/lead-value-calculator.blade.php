@@ -17,7 +17,7 @@
 @endphp
 
 @extends('tools._tool-layout')
-@section('content')
+@section('widget')
 
 <div x-data="leadValueCalc()">
     <div class="grid sm:grid-cols-2 gap-5">
@@ -31,21 +31,21 @@
             <input type="number" x-model.number="cpl" min="0" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500"></div>
     </div>
     <div class="mt-8 grid sm:grid-cols-2 gap-4">
-        <div class="rounded-2xl bg-indigo-50 p-5 text-center">
+        <div class="rounded-xl bg-indigo-50 px-3 py-4 text-center">
             <div class="text-xs text-gray-500 uppercase">Value per lead</div>
-            <div class="text-3xl font-black text-indigo-600 mt-1" x-text="'₹' + valuePerLead.toLocaleString('en-IN')"></div>
+            <div class="text-2xl font-black text-indigo-600 mt-1" x-text="'₹' + valuePerLead.toLocaleString('en-IN')"></div>
         </div>
-        <div class="rounded-2xl bg-green-50 p-5 text-center">
+        <div class="rounded-xl bg-green-50 px-3 py-4 text-center">
             <div class="text-xs text-gray-500 uppercase">ROI per lead</div>
-            <div class="text-3xl font-black text-green-600 mt-1" x-text="roi + 'x'"></div>
+            <div class="text-2xl font-black text-green-600 mt-1" x-text="roi + 'x'"></div>
         </div>
-        <div class="rounded-2xl bg-purple-50 p-5 text-center">
+        <div class="rounded-xl bg-purple-50 px-3 py-4 text-center">
             <div class="text-xs text-gray-500 uppercase">Clients per month</div>
-            <div class="text-3xl font-black text-purple-600 mt-1" x-text="clients"></div>
+            <div class="text-2xl font-black text-purple-600 mt-1" x-text="clients"></div>
         </div>
-        <div class="rounded-2xl bg-amber-50 p-5 text-center">
+        <div class="rounded-xl bg-amber-50 px-3 py-4 text-center">
             <div class="text-xs text-gray-500 uppercase">Max you should pay per lead</div>
-            <div class="text-3xl font-black text-amber-600 mt-1" x-text="'₹' + maxCpl.toLocaleString('en-IN')"></div>
+            <div class="text-2xl font-black text-amber-600 mt-1" x-text="'₹' + maxCpl.toLocaleString('en-IN')"></div>
         </div>
     </div>
 </div>

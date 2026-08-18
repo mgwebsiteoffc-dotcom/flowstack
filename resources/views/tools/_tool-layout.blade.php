@@ -32,7 +32,7 @@
 <!-- Tool -->
 <section class="max-w-3xl mx-auto px-6 pb-12">
     <div class="bg-white rounded-2xl border border-gray-100 shadow-lg shadow-gray-100 p-8">
-        @yield('content')
+        @yield('widget')
     </div>
 </section>
 

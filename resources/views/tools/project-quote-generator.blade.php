@@ -17,7 +17,7 @@
 @endphp
 
 @extends('tools._tool-layout')
-@section('content')
+@section('widget')
 
 <div x-data="quoteGen()">
     <div class="space-y-3">
@@ -36,9 +36,9 @@
         <input type="number" x-model.number="markup" min="0" max="200" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500">
     </div>
     <div class="mt-8 grid sm:grid-cols-3 gap-4">
-        <div class="rounded-2xl bg-gray-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Cost</div><div class="text-2xl font-black text-gray-700 mt-1" x-text="'₹' + cost.toLocaleString('en-IN')"></div></div>
-        <div class="rounded-2xl bg-green-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Profit</div><div class="text-2xl font-black text-green-600 mt-1" x-text="'₹' + profit.toLocaleString('en-IN')"></div></div>
-        <div class="rounded-2xl bg-indigo-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Quote total</div><div class="text-2xl font-black text-indigo-600 mt-1" x-text="'₹' + total.toLocaleString('en-IN')"></div></div>
+        <div class="rounded-xl bg-gray-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Cost</div><div class="text-2xl font-black text-gray-700 mt-1" x-text="'₹' + cost.toLocaleString('en-IN')"></div></div>
+        <div class="rounded-xl bg-green-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Profit</div><div class="text-2xl font-black text-green-600 mt-1" x-text="'₹' + profit.toLocaleString('en-IN')"></div></div>
+        <div class="rounded-xl bg-indigo-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Quote total</div><div class="text-2xl font-black text-indigo-600 mt-1" x-text="'₹' + total.toLocaleString('en-IN')"></div></div>
     </div>
 </div>
 

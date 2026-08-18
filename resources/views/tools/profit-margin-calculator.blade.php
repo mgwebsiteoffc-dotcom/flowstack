@@ -17,7 +17,7 @@
 @endphp
 
 @extends('tools._tool-layout')
-@section('content')
+@section('widget')
 
 <div x-data="profitCalc()">
     <div class="grid sm:grid-cols-2 gap-5">
@@ -27,9 +27,9 @@
             <input type="number" x-model.number="price" min="0" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500"></div>
     </div>
     <div class="mt-8 grid sm:grid-cols-3 gap-4">
-        <div class="rounded-2xl bg-gray-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Profit</div><div class="text-2xl font-black text-gray-700 mt-1" x-text="'₹' + profit.toLocaleString('en-IN')"></div></div>
-        <div class="rounded-2xl bg-indigo-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Margin %</div><div class="text-2xl font-black text-indigo-600 mt-1" x-text="margin + '%'"></div></div>
-        <div class="rounded-2xl bg-green-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Markup %</div><div class="text-2xl font-black text-green-600 mt-1" x-text="markup + '%'"></div></div>
+        <div class="rounded-xl bg-gray-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Profit</div><div class="text-2xl font-black text-gray-700 mt-1" x-text="'₹' + profit.toLocaleString('en-IN')"></div></div>
+        <div class="rounded-xl bg-indigo-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Margin %</div><div class="text-2xl font-black text-indigo-600 mt-1" x-text="margin + '%'"></div></div>
+        <div class="rounded-xl bg-green-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Markup %</div><div class="text-2xl font-black text-green-600 mt-1" x-text="markup + '%'"></div></div>
     </div>
 </div>
 

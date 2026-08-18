@@ -17,7 +17,7 @@
 @endphp
 
 @extends('tools._tool-layout')
-@section('content')
+@section('widget')
 
 
 <div x-data="proposalCalc()">

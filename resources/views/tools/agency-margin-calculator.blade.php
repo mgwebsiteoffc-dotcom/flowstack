@@ -17,7 +17,7 @@
 @endphp
 
 @extends('tools._tool-layout')
-@section('content')
+@section('widget')
 
 <div x-data="marginCalc()">
     <div class="grid sm:grid-cols-2 gap-5">
@@ -31,9 +31,9 @@
             <input type="number" x-model.number="overhead" min="0" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500"></div>
     </div>
     <div class="mt-8 grid sm:grid-cols-2 gap-4">
-        <div class="rounded-2xl bg-indigo-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Gross margin</div><div class="text-3xl font-black text-indigo-600 mt-1" x-text="grossMargin + '%'"></div></div>
-        <div class="rounded-2xl bg-green-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Net margin</div><div class="text-3xl font-black text-green-600 mt-1" x-text="netMargin + '%'"></div></div>
-        <div class="rounded-2xl bg-purple-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Net profit</div><div class="text-3xl font-black text-purple-600 mt-1" x-text="'₹' + profit.toLocaleString('en-IN')"></div></div>
+        <div class="rounded-xl bg-indigo-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Gross margin</div><div class="text-2xl font-black text-indigo-600 mt-1" x-text="grossMargin + '%'"></div></div>
+        <div class="rounded-xl bg-green-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Net margin</div><div class="text-2xl font-black text-green-600 mt-1" x-text="netMargin + '%'"></div></div>
+        <div class="rounded-xl bg-purple-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Net profit</div><div class="text-2xl font-black text-purple-600 mt-1" x-text="'₹' + profit.toLocaleString('en-IN')"></div></div>
         <div class="rounded-2xl p-5 text-center" :class="netMargin >= 15 ? 'bg-green-50' : (netMargin >= 5 ? 'bg-amber-50' : 'bg-red-50')">
             <div class="text-xs text-gray-500 uppercase">Health</div>
             <div class="text-3xl font-black mt-1" :class="netMargin >= 15 ? 'text-green-600' : (netMargin >= 5 ? 'text-amber-600' : 'text-red-600')" x-text="health"></div>

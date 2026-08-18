@@ -18,7 +18,7 @@
 @endphp
 
 @extends('tools._tool-layout')
-@section('content')
+@section('widget')
 
 
 <div x-data="invoiceCalc()">
@@ -35,10 +35,10 @@
             <input type="number" x-model.number="terms" min="0" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500"></div>
     </div>
     <div class="mt-8 grid sm:grid-cols-2 gap-4">
-        <div class="rounded-2xl bg-green-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">GST amount</div><div class="text-2xl font-black text-green-600 mt-1" x-text="'₹' + gstAmount.toLocaleString('en-IN')"></div></div>
-        <div class="rounded-2xl bg-indigo-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Total (incl. GST)</div><div class="text-2xl font-black text-indigo-600 mt-1" x-text="'₹' + total.toLocaleString('en-IN')"></div></div>
-        <div class="rounded-2xl bg-blue-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Due date</div><div class="text-2xl font-black text-blue-600 mt-1" x-text="dueDate"></div></div>
-        <div class="rounded-2xl bg-amber-50 p-5 text-center"><div class="text-xs text-gray-500 uppercase">Status today</div><div class="text-2xl font-black text-amber-600 mt-1" x-text="status"></div></div>
+        <div class="rounded-xl bg-green-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">GST amount</div><div class="text-2xl font-black text-green-600 mt-1" x-text="'₹' + gstAmount.toLocaleString('en-IN')"></div></div>
+        <div class="rounded-xl bg-indigo-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Total (incl. GST)</div><div class="text-2xl font-black text-indigo-600 mt-1" x-text="'₹' + total.toLocaleString('en-IN')"></div></div>
+        <div class="rounded-xl bg-blue-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Due date</div><div class="text-2xl font-black text-blue-600 mt-1" x-text="dueDate"></div></div>
+        <div class="rounded-xl bg-amber-50 px-3 py-4 text-center"><div class="text-xs text-gray-500 uppercase">Status today</div><div class="text-2xl font-black text-amber-600 mt-1" x-text="status"></div></div>
     </div>
 </div>
 @endsection
