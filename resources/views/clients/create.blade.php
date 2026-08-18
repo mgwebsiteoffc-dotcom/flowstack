@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('title', 'Add client')
 @section('content')
-<form method="POST" action="{{ route('clients.store') }}" enctype="multipart/form-data" class="max-w-3xl space-y-6">
+<form method="POST" action="{{ route('clients.store') }}" enctype="multipart/form-data" class="max-w-6xl space-y-6">
     @csrf
+    <div class="grid lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 space-y-6">
     <x-card title="Company details" icon="building-office">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
@@ -48,9 +50,10 @@
                 <input type="number" step="0.01" name="monthly_retainer" value="{{ old('monthly_retainer') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
         </div>
     </x-card>
-
+    </div>
+    <div class="space-y-6">
     <x-card title="Contract & account manager" icon="document">
-        <div class="grid sm:grid-cols-2 gap-4">
+        <div class="space-y-4">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Contract start</label>
                 <input type="date" name="contract_start_date" value="{{ old('contract_start_date') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Contract end</label>
@@ -78,6 +81,8 @@
                 </select></div>
         </div>
     </x-card>
+    </div>
+    </div>
 
     <x-card title="Services" icon="wrench">
         <div class="grid sm:grid-cols-2 gap-3">

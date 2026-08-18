@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Edit '.$client->company_name)
 @section('content')
-<form method="POST" action="{{ route('clients.update', $client) }}" enctype="multipart/form-data" class="max-w-3xl space-y-6">
+<form method="POST" action="{{ route('clients.update', $client) }}" enctype="multipart/form-data" class="max-w-6xl space-y-6">
     @csrf
     @method('PATCH')
+    <div class="grid lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 space-y-6">
     <x-card title="Company details" icon="building-office">
         <div class="grid sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
@@ -47,6 +49,13 @@
                 <input type="text" name="pincode" value="{{ old('pincode', $client->pincode) }}" maxlength="10" placeholder="e.g. 400001" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Monthly retainer (₹)</label>
                 <input type="number" step="0.01" name="monthly_retainer" value="{{ old('monthly_retainer', $client->monthly_retainer) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
+
+        </div>
+    </x-card>
+    </div>
+    <div class="space-y-6">
+        <x-card title="Contract & account manager" icon="document">
+            <div class="space-y-4">
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Contract start</label>
                 <input type="date" name="contract_start_date" value="{{ old('contract_start_date', $client->contract_start_date?->toDateString()) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Contract end</label>
@@ -72,8 +81,10 @@
                 </select></div>
             <div class="sm:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Health reason</label>
                 <input type="text" name="health_score_reason" value="{{ old('health_score_reason', $client->health_score_reason) }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
-        </div>
-    </x-card>
+            </div>
+        </x-card>
+    </div>
+    </div>
 
     <x-card title="Services" icon="wrench">
         <div class="grid sm:grid-cols-2 gap-3">

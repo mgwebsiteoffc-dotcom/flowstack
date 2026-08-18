@@ -8,13 +8,15 @@
         ['route' => 'settings.integrations.bikribook', 'label' => 'BikriBook', 'icon' => 'receipt', 'key' => 'bikribook'],
         ['route' => 'settings.integrations.channels', 'label' => 'Slack & Teams', 'icon' => 'chat-bubble-left-right', 'key' => 'channels'],
         ['route' => 'settings.integrations.google-calendar', 'label' => 'Google Calendar', 'icon' => 'calendar', 'key' => 'google-calendar'],
- ['route' => 'settings.mail', 'label' => 'Email (Gmail)', 'icon' => 'envelope', 'key' => 'mail'],
         ['route' => 'settings.notifications', 'label' => 'Notifications', 'icon' => 'bell', 'key' => 'notifications'],
         ['route' => 'announcements.index', 'label' => 'Announcements', 'icon' => 'megaphone', 'key' => 'announcements'],
         ['route' => 'settings.audit', 'label' => 'Audit log', 'icon' => 'document-text', 'key' => 'audit'],
         ['route' => 'settings.subscription', 'label' => 'Subscription', 'icon' => 'credit-card', 'key' => 'subscription'],
         ['route' => 'profile.edit', 'label' => 'My profile', 'icon' => 'user', 'key' => 'profile'],
     ];
+    if (Route::has('settings.mail')) {
+        $links[] = ['route' => 'settings.mail', 'label' => 'Email (Gmail)', 'icon' => 'envelope', 'key' => 'mail'];
+    }
 @endphp
 <div class="bg-white rounded-xl border border-gray-100 p-3 space-y-1">
     @foreach ($links as $link)

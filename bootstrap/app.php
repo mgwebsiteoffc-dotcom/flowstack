@@ -77,23 +77,46 @@ return Application::configure(basePath: dirname(__DIR__))
             return back()->with('error', $e->getMessage());
         });
 
-        // Production: NEVER show code/stack traces - show the friendly 500 page.
-        // Errors are still logged to storage/logs/laravel.log for the team.
-        // (404/403/419/429 keep Laravel's own branded pages - this only
-        // catches unhandled 500-class exceptions.)
+        // Never show code/stack traces outside local dev - render branded pages.
+        // Validation errors, auth redirects and 419/429 keep the framework's
+        // default behaviour (messages still reach the user); everything else
+        // (404/403/500+) gets a clean branded page. Errors are always logged.
         $exceptions->render(function (\Throwable $e, Request $request) {
-            if (app()->environment('production') && ! $request->expectsJson()) {
-                $status = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
-                if ($status >= 500) {
-                    Log::error('Unhandled error', ['exception' => $e->getMessage(), 'url' => $request->fullUrl()]);
-
-                    return response()->view('errors.500', [], 500);
-                }
+            if ($e instanceof \Illuminate\Validation\ValidationException
+                || $e instanceof \Illuminate\Auth\AuthenticationException
+                || $e instanceof \Illuminate\Auth\Access\AuthorizationException) {
+                return null;
             }
+
+            $hideCode = app()->environment('production') || ! app()->hasDebugModeEnabled();
+            if (! $hideCode) {
+                return null;
+            }
+
+            $status = $e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface
+                ? $e->getStatusCode()
+                : 500;
 
             if ($request->expectsJson()) {
-                return response()->json(['message' => 'Something went wrong. Our team has been notified.'], 500);
+                return response()->json([
+                    'message' => $status >= 500
+                        ? 'Something went wrong. Our team has been notified.'
+                        : ($status === 404 ? 'Not found.' : 'Request failed.'),
+                ], $status);
             }
+
+            if ($status === 419 || $status === 429) {
+                return null; // session expired / rate limited - keep Laravel's own pages
+            }
+
+            Log::error('Unhandled error', [
+                'exception' => get_class($e).': '.$e->getMessage(),
+                'url' => $request->fullUrl(),
+            ]);
+
+            $view = $status === 404 ? 'errors.404' : ($status === 403 ? 'errors.403' : 'errors.500');
+
+            return response()->view($view, [], in_array($status, [404, 403], true) ? $status : 500);
         });
     })
     ->withSchedule(function (Schedule $schedule) {
