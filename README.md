@@ -218,8 +218,12 @@ own GitHub account (the bot token used during development lacks the
 
 ## Public website & blog
 
-- **Website:** landing page (`/`), `/pricing`, and a **blog** at `/blog` with
-  category pages (`/blog/category/{slug}`) and article pages (`/blog/{slug}`).
+- **Website (multi-page, SEO/AEO-rich):** landing `/`, `/pricing` (plans +
+  comparison table + FAQ + testimonials), `/features` + 6 feature deep-dives
+  (bullets + stats + FAQ), `/use-cases` + 6 use-case pages (challenges vs
+  solutions + features + FAQ), `/integrations`, `/resources`, `/faq`
+  (FAQPage schema), `/company`, `/contact`, and a **blog** at `/blog` with
+  category pages and article pages.
 - **Blog management (admin end):** Super Admin → Blog - create/edit/delete posts,
   categories, featured flag, cover images, publish scheduling.
 - **SEO-ready:** per-page meta title/description, canonical URLs, Open Graph +

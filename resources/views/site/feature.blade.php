@@ -34,6 +34,34 @@
     </div>
 </section>
 
+@if (! empty($feature['stats']))
+<section class="bg-gray-50/70 py-12">
+    <div class="max-w-4xl mx-auto px-6 grid sm:grid-cols-3 gap-6">
+        @foreach ($feature['stats'] as $stat)
+            <div class="text-center">
+                <div class="text-2xl font-black text-indigo-600">{{ $stat }}</div>
+            </div>
+        @endforeach
+    </div>
+</section>
+@endif
+
+<section class="max-w-3xl mx-auto px-6 py-16">
+    <h2 class="text-3xl font-black text-center mb-10">Frequently asked questions</h2>
+    <div x-data="{ open: 0 }" class="space-y-3">
+        @foreach ($feature['faq'] as $faqItem)
+            <div class="rounded-xl border border-gray-100 overflow-hidden">
+                <button @click="open = open === {{ $loop->index + 1 }} ? 0 : {{ $loop->index + 1 }}" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-sm">
+                    {{ $faqItem[0] }}
+                    <span x-show="open !== {{ $loop->index + 1 }}">+</span>
+                    <span x-show="open === {{ $loop->index + 1 }}" x-cloak>−</span>
+                </button>
+                <div x-show="open === {{ $loop->index + 1 }}" x-cloak class="px-5 pb-4 text-sm text-gray-500">{{ $faqItem[1] }}</div>
+            </div>
+        @endforeach
+    </div>
+</section>
+
 <section class="max-w-5xl mx-auto px-6 pb-20">
     <div class="grid sm:grid-cols-3 gap-4">
         @foreach ($all as $slug => $other)

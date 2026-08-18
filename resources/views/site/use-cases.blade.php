@@ -21,6 +21,9 @@
             </div>
             <h2 class="font-bold">{{ $case['title'] }}</h2>
             <p class="text-sm text-gray-500 mt-1.5">{{ $case['blurb'] }}</p>
+            <span class="inline-flex items-center gap-1 text-sm text-indigo-600 mt-4 font-medium">Learn more
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 4.5L21 12l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
         </a>
     @endforeach
 </section>
