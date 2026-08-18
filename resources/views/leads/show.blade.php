@@ -111,6 +111,20 @@
                 </dl>
             </x-card>
 
+        </div>
+
+        <div class="space-y-6">
+            <x-card title="Recent activity" icon="clock">
+                @forelse ($lead->activities->take(6) as $activity)
+                    <div class="py-2 border-b border-gray-50 last:border-0">
+                        <div class="text-sm text-gray-800">{{ $activity->title }}</div>
+                        <div class="text-xs text-gray-400">{{ $activity->created_at->diffForHumans() }}</div>
+                    </div>
+                @empty
+                    <p class="text-sm text-gray-400 text-center py-2">No activity yet</p>
+                @endforelse
+                <a href="?tab=activities" class="text-xs text-indigo-600 mt-2 inline-block">View all →</a>
+            </x-card>
             <x-card title="Campaign data" icon="megaphone">
                 <dl class="grid sm:grid-cols-2 gap-y-3 text-sm">
                     <div><dt class="text-gray-400 text-xs">Lead source</dt><dd class="text-gray-800">{{ $lead->lead_source ?? '—' }}</dd></div>
@@ -126,20 +140,6 @@
                     </div>
                 @endif
                 @if ($lead->notes)<p class="mt-4 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">{{ $lead->notes }}</p>@endif
-            </x-card>
-        </div>
-
-        <div class="space-y-6">
-            <x-card title="Recent activity" icon="clock">
-                @forelse ($lead->activities->take(6) as $activity)
-                    <div class="py-2 border-b border-gray-50 last:border-0">
-                        <div class="text-sm text-gray-800">{{ $activity->title }}</div>
-                        <div class="text-xs text-gray-400">{{ $activity->created_at->diffForHumans() }}</div>
-                    </div>
-                @empty
-                    <p class="text-sm text-gray-400 text-center py-2">No activity yet</p>
-                @endforelse
-                <a href="?tab=activities" class="text-xs text-indigo-600 mt-2 inline-block">View all →</a>
             </x-card>
         </div>
     </div>

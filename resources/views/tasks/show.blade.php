@@ -118,6 +118,43 @@
             </form>
         </x-card>
 
+
+    </div>
+
+    <div class="space-y-6">
+        <!-- Comments -->
+        <x-card title="Comments ({{ $task->comments->count() }})" icon="chat-bubble-left-right">
+            <div class="space-y-3 mb-4 max-h-96 overflow-y-auto">
+                @forelse ($task->comments as $comment)
+                    <div class="flex gap-2.5">
+                        <x-user-avatar :user="$comment->user" size="sm" />
+                        <div class="bg-gray-50 rounded-xl rounded-tl-none px-3 py-2 flex-1">
+                            <div class="text-xs text-gray-500"><span class="font-medium text-gray-800">{{ $comment->user?->name }}</span> · {{ $comment->created_at->diffForHumans() }}</div>
+                            <div class="text-sm text-gray-700 mt-0.5 whitespace-pre-line">{{ $comment->comment }}</div>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-sm text-gray-400 text-center py-2">No comments yet</p>
+                @endforelse
+            </div>
+            <form method="POST" action="{{ route('tasks.comments.store', $task) }}">
+                @csrf
+                <textarea name="comment" rows="2" placeholder="Write a comment…" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></textarea>
+                <button class="mt-2 bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm">Comment</button>
+            </form>
+        </x-card>
+
+        <!-- Meta -->
+        <x-card title="Details" icon="ℹ">
+            <dl class="space-y-2 text-sm">
+                <div class="flex justify-between"><dt class="text-gray-400">Status</dt><dd><x-status-badge :status="$task->status" /></dd></div>
+                <div class="flex justify-between"><dt class="text-gray-400">Priority</dt><dd><x-priority-badge :priority="$task->priority" /></dd></div>
+                <div class="flex justify-between"><dt class="text-gray-400">Assignee</dt><dd class="text-gray-800">{{ $task->assignee?->name ?? '—' }}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-400">Due date</dt><dd class="{{ $task->isOverdue() ? 'text-red-600 font-medium' : '' }}">{{ $task->due_date?->format('d M Y') ?? '—' }}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-400">Created</dt><dd>{{ $task->created_at->format('d M Y') }}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-400">Updated</dt><dd>{{ $task->updated_at->diffForHumans() }}</dd></div>
+            </dl>
+        </x-card>
         <!-- Attachments -->
         <x-card title="Attachments" icon="paper-clip">
             @forelse ($task->attachments as $attachment)
@@ -156,42 +193,6 @@
                 <p class="text-sm text-gray-400 text-center py-2">No time logged</p>
             @endforelse
             <div class="text-xs text-gray-400 mt-2">Total: {{ round($task->loggedMinutes() / 60, 2) }}h</div>
-        </x-card>
-    </div>
-
-    <div class="space-y-6">
-        <!-- Comments -->
-        <x-card title="Comments ({{ $task->comments->count() }})" icon="chat-bubble-left-right">
-            <div class="space-y-3 mb-4 max-h-96 overflow-y-auto">
-                @forelse ($task->comments as $comment)
-                    <div class="flex gap-2.5">
-                        <x-user-avatar :user="$comment->user" size="sm" />
-                        <div class="bg-gray-50 rounded-xl rounded-tl-none px-3 py-2 flex-1">
-                            <div class="text-xs text-gray-500"><span class="font-medium text-gray-800">{{ $comment->user?->name }}</span> · {{ $comment->created_at->diffForHumans() }}</div>
-                            <div class="text-sm text-gray-700 mt-0.5 whitespace-pre-line">{{ $comment->comment }}</div>
-                        </div>
-                    </div>
-                @empty
-                    <p class="text-sm text-gray-400 text-center py-2">No comments yet</p>
-                @endforelse
-            </div>
-            <form method="POST" action="{{ route('tasks.comments.store', $task) }}">
-                @csrf
-                <textarea name="comment" rows="2" placeholder="Write a comment…" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></textarea>
-                <button class="mt-2 bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm">Comment</button>
-            </form>
-        </x-card>
-
-        <!-- Meta -->
-        <x-card title="Details" icon="ℹ">
-            <dl class="space-y-2 text-sm">
-                <div class="flex justify-between"><dt class="text-gray-400">Status</dt><dd><x-status-badge :status="$task->status" /></dd></div>
-                <div class="flex justify-between"><dt class="text-gray-400">Priority</dt><dd><x-priority-badge :priority="$task->priority" /></dd></div>
-                <div class="flex justify-between"><dt class="text-gray-400">Assignee</dt><dd class="text-gray-800">{{ $task->assignee?->name ?? '—' }}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-400">Due date</dt><dd class="{{ $task->isOverdue() ? 'text-red-600 font-medium' : '' }}">{{ $task->due_date?->format('d M Y') ?? '—' }}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-400">Created</dt><dd>{{ $task->created_at->format('d M Y') }}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-400">Updated</dt><dd>{{ $task->updated_at->diffForHumans() }}</dd></div>
-            </dl>
         </x-card>
     </div>
 </div>

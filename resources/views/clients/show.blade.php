@@ -85,13 +85,6 @@
                 </div>
             </x-card>
 
-            <x-card title="Quick stats" icon="chart-bar">
-                <div class="grid grid-cols-3 gap-4 text-center">
-                    <div><div class="text-xl font-bold text-gray-900">{{ $client->projects()->count() }}</div><div class="text-xs text-gray-400">Projects</div></div>
-                    <div><div class="text-xl font-bold text-gray-900">{{ $client->tasks()->whereNotIn('status', ['done', 'cancelled'])->count() }}</div><div class="text-xs text-gray-400">Open tasks</div></div>
-                    <div><div class="text-xl font-bold text-gray-900">₹{{ number_format($client->outstandingBalance()) }}</div><div class="text-xs text-gray-400">Outstanding</div></div>
-                </div>
-            </x-card>
 
             <x-card title="Onboarding checklist" icon="clipboard" x-data="onboardingChecklist({{ $client->onboardingProgress() }}, {{ $client->onboardingItems()->count() }}, {{ $client->onboardingItems()->where('is_completed', true)->count() }})">
                 @foreach ($client->onboardingItems as $item)
@@ -133,6 +126,13 @@
         </div>
 
         <div class="space-y-6">
+            <x-card title="Quick stats" icon="chart-bar">
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div><div class="text-xl font-bold text-gray-900">{{ $client->projects()->count() }}</div><div class="text-xs text-gray-400">Projects</div></div>
+                    <div><div class="text-xl font-bold text-gray-900">{{ $client->tasks()->whereNotIn('status', ['done', 'cancelled'])->count() }}</div><div class="text-xs text-gray-400">Open tasks</div></div>
+                    <div><div class="text-xl font-bold text-gray-900">₹{{ number_format($client->outstandingBalance()) }}</div><div class="text-xs text-gray-400">Outstanding</div></div>
+                </div>
+            </x-card>
             <x-card title="Contacts" icon="identification">
                 @forelse ($client->contacts as $contact)
                     <div class="py-2 border-b border-gray-50 last:border-0">

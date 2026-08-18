@@ -83,17 +83,6 @@
             </div>
         </x-card>
 
-        <x-card title="BikriBook sync history" icon="link">
-            @forelse ($invoice->bikribookSyncLogs as $log)
-                <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0 text-sm">
-                    <span class="w-6 text-center">@if ($log->status === 'success')<x-icon name="check-circle" class="w-4 h-4 text-green-600" />@else<x-icon name="x-circle" class="w-4 h-4 text-red-600" />@endif</span>
-                    <span class="text-gray-800 flex-1 capitalize">{{ str_replace('_', ' ', $log->action) }}</span>
-                    <span class="text-xs text-gray-400">{{ $log->created_at->diffForHumans() }}</span>
-                </div>
-            @empty
-                <p class="text-sm text-gray-400 text-center py-3">Not synced to BikriBook yet.</p>
-            @endforelse
-        </x-card>
     </div>
 
     <div class="space-y-6">
@@ -116,6 +105,17 @@
             @if ($billing)
                 <div class="text-xs text-gray-500 mt-1">{{ $billing->name }} · {{ $billing->email }}</div>
             @endif
+        </x-card>
+        <x-card title="BikriBook sync history" icon="link">
+            @forelse ($invoice->bikribookSyncLogs as $log)
+                <div class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0 text-sm">
+                    <span class="w-6 text-center">@if ($log->status === 'success')<x-icon name="check-circle" class="w-4 h-4 text-green-600" />@else<x-icon name="x-circle" class="w-4 h-4 text-red-600" />@endif</span>
+                    <span class="text-gray-800 flex-1 capitalize">{{ str_replace('_', ' ', $log->action) }}</span>
+                    <span class="text-xs text-gray-400">{{ $log->created_at->diffForHumans() }}</span>
+                </div>
+            @empty
+                <p class="text-sm text-gray-400 text-center py-3">Not synced to BikriBook yet.</p>
+            @endforelse
         </x-card>
     </div>
 </div>
