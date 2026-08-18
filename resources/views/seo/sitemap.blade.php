@@ -21,6 +21,10 @@
     <url><loc>{{ url('/tools/retainer-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>{{ url('/tools/invoice-due-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
     <url><loc>{{ url('/tools/proposal-value-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    <url><loc>{{ url('/tools/lead-value-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    <url><loc>{{ url('/tools/agency-margin-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    <url><loc>{{ url('/tools/project-quote-generator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    <url><loc>{{ url('/tools/profit-margin-calculator') }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
     @foreach ($categories as $category)
         <url><loc>{{ url('/blog/category/'.$category->slug) }}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
     @endforeach

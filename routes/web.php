@@ -158,6 +158,10 @@ Route::get('/tools', [ToolsController::class, 'index'])->name('tools.index');
 Route::get('/tools/retainer-calculator', [ToolsController::class, 'retainerCalculator'])->name('tools.retainer');
 Route::get('/tools/invoice-due-calculator', [ToolsController::class, 'invoiceDueCalculator'])->name('tools.invoice-due');
 Route::get('/tools/proposal-value-calculator', [ToolsController::class, 'proposalValueCalculator'])->name('tools.proposal-value');
+Route::get('/tools/lead-value-calculator', [ToolsController::class, 'leadValueCalculator'])->name('tools.lead-value');
+Route::get('/tools/agency-margin-calculator', [ToolsController::class, 'agencyMarginCalculator'])->name('tools.agency-margin');
+Route::get('/tools/project-quote-generator', [ToolsController::class, 'projectQuoteGenerator'])->name('tools.project-quote');
+Route::get('/tools/profit-margin-calculator', [ToolsController::class, 'profitMarginCalculator'])->name('tools.profit-margin');
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:login')->name('contact.store');
 Route::get('/sitemap.xml', function () {
     $posts = \App\Models\BlogPost::published()->get(['slug', 'updated_at']);

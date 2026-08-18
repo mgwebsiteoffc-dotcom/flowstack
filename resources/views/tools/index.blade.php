@@ -18,8 +18,12 @@
 <section class="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-6">
     @foreach ([
         ['banknotes','Retainer Calculator','Work out the right monthly retainer for a client based on team hours and margin target.','tools.retainer'],
-        ['calendar','Invoice Due-Date Calculator','Calculate due dates, overdue days and GST totals for any invoice instantly.','tools.invoice-due'],
+        ['calendar','Invoice Due-Date & GST Calculator','Calculate due dates, overdue days and GST totals for any invoice instantly.','tools.invoice-due'],
         ['gem','Proposal Value Calculator','Price a proposal from services, hours and markup — before you send it.','tools.proposal-value'],
+        ['target','Lead Value Calculator','Find out what each lead is worth and how much you can spend acquiring it.','tools.lead-value'],
+        ['chart-bar','Agency Margin Calculator','Work out your gross and net margin — are you actually profitable?','tools.agency-margin'],
+        ['document-text','Project Quote Generator','Create a professional client quote with line items and markup in seconds.','tools.project-quote'],
+        ['banknotes','Profit Margin Calculator','Calculate profit, margin % and markup % from cost and price.','tools.profit-margin'],
     ] as [$icon,$title,$desc,$route])
         <a href="{{ route($route) }}" class="group rounded-2xl border border-gray-100 p-7 hover:shadow-xl hover:border-indigo-100 hover:-translate-y-1 transition-all duration-300">
             <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5 group-hover:bg-indigo-600 group-hover:text-white transition"><x-icon :name="$icon" class="w-6 h-6" /></div>

@@ -27,4 +27,24 @@ class ToolsController extends Controller
     {
         return view('tools.proposal-value-calculator');
     }
+
+    public function leadValueCalculator()
+    {
+        return view('tools.lead-value-calculator');
+    }
+
+    public function agencyMarginCalculator()
+    {
+        return view('tools.agency-margin-calculator');
+    }
+
+    public function projectQuoteGenerator()
+    {
+        return view('tools.project-quote-generator');
+    }
+
+    public function profitMarginCalculator()
+    {
+        return view('tools.profit-margin-calculator');
+    }
 }
