@@ -6,6 +6,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <title>@yield('title', 'Agency OS')</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <x-brand-head />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>[x-cloak]{display:none!important}</style>
     <x-tracking placement="head" />

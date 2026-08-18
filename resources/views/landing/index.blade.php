@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
+    <x-brand-head />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <x-seo
         title="Agency OS — Client, Project & Lead Management for Agencies"
@@ -72,12 +73,11 @@
                     <span class="text-xs text-gray-400 font-medium">+100 Agencies</span>
                 </div>
                 <h1 class="text-4xl sm:text-5xl xl:text-6xl font-black tracking-tight leading-[1.05]">
-                    Agency Management<br>
-                    <span class="text-indigo-600">for Modern Agencies</span>
+                    {{ config('brand.hero_headline_1') }}<br>
+                    <span class="text-indigo-600">{{ config('brand.hero_headline_2') }}</span>
                 </h1>
                 <p class="text-lg text-gray-500 mt-5 max-w-lg leading-relaxed">
-                    Replace guesswork and scattered spreadsheets with real-time agency intelligence.
-                    One platform for Clients, Projects, Tasks, Leads, Invoices and Reporting. Built for agencies of any size.
+                    {{ config('brand.hero_sub') }}
                 </p>
                 <div class="mt-8 flex items-center gap-4 flex-wrap">
                     <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-indigo-700 shadow-lg shadow-indigo-200">Start Free Trial</a>
@@ -90,6 +90,12 @@
                 </div>
             </div>
 
+            @php $dash = \App\Support\Brand::screenshot('dashboard'); @endphp
+            <!-- Big product screenshot: real screenshot when uploaded, else CSS mockup -->
+            <div class="relative">
+            @if ($dash)
+                <img src="{{ $dash }}" alt="Agency OS dashboard" class="rounded-2xl shadow-2xl shadow-indigo-200/50 border border-gray-100 w-full">
+            @else
             <!-- Big product screenshot (We360 hero image) -->
             <div class="relative">
                 <div class="bg-white rounded-2xl shadow-2xl shadow-indigo-200/50 border border-gray-100 overflow-hidden">
@@ -151,7 +157,9 @@
                     <div><div class="text-xs font-semibold">Proposal accepted</div><div class="text-[10px] text-gray-400">Just now</div></div>
                 </div>
             </div>
-        </div>
+
+            @endif
+            </div>        </div>
     </header>
 
     <!-- LOGO BAR (We360: "Trusted by leading workforce teams across the globe") -->
@@ -202,6 +210,19 @@
                         </a>
                     </div>
                     <div class="{{ $i % 2 === 1 ? 'lg:order-1' : '' }}">
+                        @php
+                            $shotKey = match ($slug) {
+                                'client-management' => 'clients',
+                                'project-tasks' => 'tasks',
+                                'leads-crm' => 'leads',
+                                'finance-invoicing' => 'finance',
+                                default => 'dashboard',
+                            };
+                            $shot = \App\Support\Brand::screenshot($shotKey);
+                        @endphp
+                        @if ($shot)
+                            <img src="{{ $shot }}" alt="{{ $title }} screenshot" class="rounded-2xl border border-gray-100 shadow-lg shadow-gray-100 w-full">
+                        @else
                         <div class="rounded-2xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white p-6 shadow-lg shadow-gray-100">
                             <div class="flex items-center gap-2 mb-4">
                                 <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
@@ -231,6 +252,7 @@
                                     <span class="text-[10px] text-green-600 font-semibold">Live</span>
                                 </div>
                             </div>
+                        @endif
                         </div>
                     </div>
                 </div>

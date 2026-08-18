@@ -181,6 +181,20 @@ verified server-side → subscription + payment recorded, tenant plan activated.
 `app/Console/Kernel.php` mirrors the same schedule for Laravel-10-style setups
 (the file is ignored by L11+ to avoid double execution).
 
+## Branding the public website (color, hero copy, screenshots)
+
+All in one place - `config/brand.php` or `.env`:
+
+- `BRAND_COLOR` - accent hex; the Tailwind indigo/purple palettes are
+  re-derived from it on every public page (`<x-brand-head />`), so the whole
+  site recolors from one value.
+- `BRAND_COLOR_SECONDARY` - optional gradient partner (defaults to a purple mix).
+- `BRAND_HERO_1` / `BRAND_HERO_2` / `BRAND_HERO_SUB` - homepage hero copy.
+- Screenshots: drop real dashboard images into `public/screenshots/` and set
+  `BRAND_DASHBOARD_SCREENSHOT`, `BRAND_SCREENSHOT_CLIENTS`, `BRAND_SCREENSHOT_TASKS`,
+  `BRAND_SCREENSHOT_LEADS`, `BRAND_SCREENSHOT_FINANCE`. When the file exists it
+  replaces the CSS mockup on the homepage; otherwise the mockup is shown.
+
 ## Local development notes (Windows / Laragon included)
 
 - Use `APP_ENV=local` and `APP_DEBUG=true` while developing - with

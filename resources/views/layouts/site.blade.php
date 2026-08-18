@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
+    <x-brand-head />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <x-seo :title="$seo['title'] ?? null" :description="$seo['description'] ?? null" :jsonLd="$seo['jsonLd'] ?? null" />
     <x-tracking placement="head" />
