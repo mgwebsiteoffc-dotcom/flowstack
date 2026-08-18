@@ -2,6 +2,7 @@
     $links = [
         ['route' => 'settings.index', 'label' => 'Agency settings', 'icon' => 'building-office', 'key' => 'general'],
         ['route' => 'settings.users', 'label' => 'Users', 'icon' => 'users', 'key' => 'users'],
+        ['route' => 'settings.admin-users.index', 'label' => 'Users & roles (admin)', 'icon' => 'shield-check', 'key' => 'admin-users'],
         ['route' => 'settings.master.index', 'label' => 'Master data', 'icon' => 'archive-box', 'key' => 'master'],
         ['route' => 'settings.integrations.lead365', 'label' => 'Lead365', 'icon' => 'link', 'key' => 'lead365'],
         ['route' => 'settings.integrations.bikribook', 'label' => 'BikriBook', 'icon' => 'receipt', 'key' => 'bikribook'],

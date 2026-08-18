@@ -41,8 +41,12 @@
     </div>
 
     <nav class="flex-1 overflow-y-auto py-2 px-2.5 space-y-0.5 text-[13px]">
+        @php
+            $menuMap = \App\Http\Controllers\AdminUserController::resolveMap();
+            $roleMenus = $menuMap[$user->role] ?? \App\Support\MenuPermissions::MENUS;
+        @endphp
         @foreach ($navGroups as $groupName => $items)
-            @php $visible = collect($items)->filter(fn ($i) => ! isset($i['key']) || \App\Support\MenuPermissions::can($user->role, $i['key']))->filter(fn ($i) => ! ($i['route'] === 'finance.index' && ! $user->canAccessFinance())); @endphp
+            @php $visible = collect($items)->filter(fn ($i) => ! isset($i['key']) || in_array($i['key'], $roleMenus, true))->filter(fn ($i) => ! ($i['route'] === 'finance.index' && ! $user->canAccessFinance())); @endphp
             @if ($visible->isEmpty()) @continue @endif
             <div class="px-2.5 pt-2.5 pb-0.5 text-[9px] font-semibold uppercase tracking-wider text-gray-500">{{ $groupName }}</div>
             @foreach ($visible as $item)

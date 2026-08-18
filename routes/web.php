@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AutomationController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
@@ -469,6 +470,10 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
  Route::delete('/settings/master/services/{item}', [MasterDataController::class, 'destroyService'])->name('settings.master.service.destroy');
  Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
  Route::get('/settings/users', [SettingController::class, 'users'])->name('settings.users');
+ Route::get('/settings/admin-users', [AdminUserController::class, 'index'])->name('settings.admin-users.index');
+ Route::post('/settings/admin-users/{user}/password', [AdminUserController::class, 'changePassword'])->name('settings.admin-users.password');
+ Route::post('/settings/admin-users/{user}/toggle', [AdminUserController::class, 'toggleActive'])->name('settings.admin-users.toggle');
+ Route::post('/settings/admin-users/role-menus', [AdminUserController::class, 'saveRoleMenus'])->name('settings.admin-users.role-menus');
  Route::get('/settings/integrations/lead365', [SettingController::class, 'lead365'])->name('settings.integrations.lead365');
  Route::post('/settings/integrations/lead365', [SettingController::class, 'saveLead365'])->name('settings.integrations.lead365.save');
  Route::post('/settings/integrations/lead365/test', [SettingController::class, 'testLead365'])->name('settings.integrations.lead365.test');
