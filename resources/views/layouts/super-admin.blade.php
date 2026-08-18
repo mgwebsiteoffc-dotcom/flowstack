@@ -22,6 +22,7 @@
                 <a href="{{ route('super-admin.payments') }}" class="block px-3 py-2 rounded hover:bg-gray-800 {{ request()->routeIs('super-admin.payments') ? 'bg-gray-800 text-white' : '' }}">Payments</a>
                 <a href="{{ route('super-admin.roles.index') }}" class="block px-3 py-2 rounded hover:bg-gray-800 {{ request()->routeIs('super-admin.roles*') ? 'bg-gray-800 text-white' : '' }}">Role menus</a>
                 <a href="{{ route('super-admin.blog.index') }}" class="block px-3 py-2 rounded hover:bg-gray-800 {{ request()->routeIs('super-admin.blog*') ? 'bg-gray-800 text-white' : '' }}">Blog</a>
+                <a href="{{ route('super-admin.tracking.index') }}" class="block px-3 py-2 rounded hover:bg-gray-800 {{ request()->routeIs('super-admin.tracking*') ? 'bg-gray-800 text-white' : '' }}">Tracking & pixels</a>
             </nav>
             <form method="POST" action="{{ route('super-admin.logout') }}" class="mt-8">@csrf
                 <button class="text-xs text-gray-500 hover:text-gray-300">Logout</button>

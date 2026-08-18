@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AutomationController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
@@ -46,6 +47,7 @@ use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\SuperAdminBlogController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
 use App\Http\Controllers\SuperAdmin\SuperAdminPlanController;
+use App\Http\Controllers\SuperAdmin\SuperAdminTrackingController;
 use App\Http\Controllers\SuperAdmin\SuperAdminRoleController;
 use App\Http\Controllers\SuperAdmin\SuperAdminTenantController;
 use Illuminate\Support\Facades\Route;
@@ -138,6 +140,8 @@ Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:login')->name('contact.store');
 Route::get('/sitemap.xml', function () {
     $posts = \App\Models\BlogPost::published()->get(['slug', 'updated_at']);
     $categories = \App\Models\BlogCategory::get(['slug']);
@@ -248,6 +252,12 @@ Route::prefix('super-admin')->name('super-admin.')->group(function () {
  Route::delete('/blog/{post}', [SuperAdminBlogController::class, 'destroy'])->name('blog.destroy');
  Route::post('/blog/categories', [SuperAdminBlogController::class, 'storeCategory'])->name('blog.categories.store');
  Route::delete('/blog/categories/{category}', [SuperAdminBlogController::class, 'destroyCategory'])->name('blog.categories.destroy');
+ Route::get('/tracking', [SuperAdminTrackingController::class, 'index'])->name('tracking.index');
+ Route::post('/tracking/pixels', [SuperAdminTrackingController::class, 'storePixel'])->name('tracking.pixels.store');
+ Route::post('/tracking/pixels/{pixel}/toggle', [SuperAdminTrackingController::class, 'togglePixel'])->name('tracking.pixels.toggle');
+ Route::delete('/tracking/pixels/{pixel}', [SuperAdminTrackingController::class, 'destroyPixel'])->name('tracking.pixels.destroy');
+ Route::post('/tracking/links', [SuperAdminTrackingController::class, 'storeLink'])->name('tracking.links.store');
+ Route::delete('/tracking/links/{link}', [SuperAdminTrackingController::class, 'destroyLink'])->name('tracking.links.destroy');
  });
 });
 

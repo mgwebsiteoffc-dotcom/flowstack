@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
+    <x-tracking placement="head" />
     <x-seo
         title="{{ $category->name ?? 'Blog' }}"
         description="Agency growth insights, marketing playbooks and operations tips from the Agency OS team."
@@ -18,11 +19,13 @@
     />
 </head>
 <body class="bg-white text-gray-900">
+    <x-tracking placement="body" />
     <nav class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
         <a href="{{ route('home') }}" class="text-2xl font-black tracking-tight">Agency<span class="text-indigo-600">OS</span></a>
         <div class="flex items-center gap-6 text-sm">
             <a href="{{ route('pricing') }}" class="text-gray-600 hover:text-gray-900">Pricing</a>
             <a href="{{ route('blog.index') }}" class="text-gray-600 hover:text-gray-900">Blog</a>
+            <a href="{{ route('contact') }}" class="text-gray-600 hover:text-gray-900">Contact</a>
             <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900">Sign in</a>
             <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">Start free trial</a>
         </div>

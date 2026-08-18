@@ -18,6 +18,8 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
+    'super_admin_email' => env('SUPER_ADMIN_EMAIL', 'superadmin@agencyos.test'),
+
     'cipher' => 'AES-256-CBC',
 
     'key' => env('APP_KEY'),
