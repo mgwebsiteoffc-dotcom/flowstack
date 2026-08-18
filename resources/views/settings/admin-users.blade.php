@@ -83,7 +83,7 @@
                                     <td class="px-4 py-2.5 font-medium text-gray-700">{{ $labels[$menu] ?? $menu }}</td>
                                     @foreach ($roles as $role)
                                         @php
-                                            $checked = in_array($menu, $menuMap[$role] ?? MenuPermissions::MENUS, true);
+                                            $checked = in_array($menu, $menuMap[$role] ?? \App\Support\MenuPermissions::MENUS, true);
                                         @endphp
                                         <td class="px-4 py-2.5 text-center">
                                             <input type="checkbox" name="menus[{{ $role }}][{{ $menu }}]" value="1" class="rounded" {{ $checked ? 'checked' : '' }}>
