@@ -7,8 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <x-seo
-        title="Agency OS"
-        description="Agency OS is the all-in-one agency management platform: clients, projects, tasks, leads, proposals, invoicing, reporting and a client portal. Start your 14-day free trial."
+        title="Agency OS — Client, Project & Lead Management for Agencies"
+        description="Run your agency on one operating system: clients, projects, tasks, leads, proposals, invoicing, reporting and a client portal. Start your 14-day free trial."
         :jsonLd="[
             ['@context' => 'https://schema.org', '@type' => 'Organization', 'name' => 'Agency OS', 'url' => url('/'), 'logo' => url('/favicon.svg')],
             ['@context' => 'https://schema.org', '@type' => 'WebSite', 'name' => 'Agency OS', 'url' => url('/'), 'potentialAction' => ['@type' => 'SearchAction', 'target' => url('/blog?q={search_term_string}'), 'query-input' => 'required name=search_term_string']],
@@ -20,60 +20,66 @@
     <x-tracking placement="body" />
 
     <!-- Nav -->
-    <nav class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-gray-100">
+    <nav class="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="{{ route('home') }}" class="text-2xl font-black tracking-tight">Agency<span class="text-indigo-600">OS</span></a>
-            <div class="hidden md:flex items-center gap-7 text-sm text-gray-600">
-                <a href="{{ route('site.features') }}" class="hover:text-gray-900">Features</a>
-                <a href="{{ route('site.use-cases') }}" class="hover:text-gray-900">Use cases</a>
+            <div class="hidden lg:flex items-center gap-6 text-sm text-gray-600">
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open" class="hover:text-gray-900 flex items-center gap-1">Product
+                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <div x-show="open" x-cloak @click.outside="open = false" class="absolute left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2">
+                        <a href="{{ route('site.features') }}" class="block px-4 py-2 text-sm hover:bg-gray-50 font-medium">All features</a>
+                        @foreach (['client-management','project-tasks','leads-crm','finance-invoicing','reporting','automation'] as $slug)
+                            <a href="{{ route('site.feature', $slug) }}" class="block px-4 py-2 text-sm hover:bg-gray-50">{{ ucwords(str_replace('-', ' ', $slug)) }}</a>
+                        @endforeach
+                    </div>
+                </div>
+                <a href="{{ route('site.use-cases') }}" class="hover:text-gray-900">Industries</a>
                 <a href="{{ route('site.integrations') }}" class="hover:text-gray-900">Integrations</a>
-                <a href="#pricing" class="hover:text-gray-900">Pricing</a>
+                <a href="{{ route('pricing') }}" class="hover:text-gray-900">Pricing</a>
                 <a href="{{ route('site.resources') }}" class="hover:text-gray-900">Resources</a>
                 <a href="{{ route('blog.index') }}" class="hover:text-gray-900">Blog</a>
             </div>
             <div class="flex items-center gap-3 text-sm">
-                <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 font-medium">Sign in</a>
-                <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">Start free trial</a>
+                <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 font-medium hidden sm:block">Log in</a>
+                <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">Start for free</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <header class="relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-indigo-50/80 via-white to-white pointer-events-none"></div>
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-200/40 rounded-full blur-3xl"></div>
-        <div class="absolute top-40 -left-24 w-80 h-80 bg-purple-200/40 rounded-full blur-3xl"></div>
-        <div class="relative max-w-7xl mx-auto px-6 pt-16 pb-20 grid lg:grid-cols-2 gap-14 items-center">
+    <!-- Hero (We360/5day style: trust badge, short headline, dual CTA, product shot) -->
+    <header class="relative overflow-hidden bg-gradient-to-b from-indigo-50/60 via-white to-white">
+        <div class="max-w-7xl mx-auto px-6 pt-14 pb-12 grid lg:grid-cols-2 gap-12 items-center">
             <div>
-                <div class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 text-xs font-medium px-3 py-1 rounded-full mb-6">
-                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span> Built for agencies with 5-50 people
+                <div class="inline-flex items-center gap-2 bg-white border border-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm mb-6">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span> Trusted by 100+ growing agencies
                 </div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
+                <h1 class="text-4xl sm:text-5xl xl:text-6xl font-black tracking-tight leading-[1.08]">
                     Run your agency on<br>
                     <span class="text-indigo-600">one operating system</span>
                 </h1>
-                <p class="text-lg text-gray-500 mt-6 max-w-lg leading-relaxed">
-                    Clients, projects, tasks, leads, proposals, invoices, reports and a client portal — all in one place.
-                    Say goodbye to Excel sheets and WhatsApp pings.
+                <p class="text-lg text-gray-500 mt-5 max-w-lg leading-relaxed">
+                    Clients, projects, tasks, leads, proposals, invoices and reporting — all in one place.
+                    Built for marketing, creative and web agencies.
                 </p>
                 <div class="mt-8 flex items-center gap-4 flex-wrap">
-                    <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-indigo-700 shadow-lg shadow-indigo-200">Start 14-day free trial</a>
-                    <a href="{{ route('pricing') }}" class="px-7 py-3.5 rounded-xl border border-gray-300 font-semibold hover:bg-gray-50">View pricing</a>
+                    <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-indigo-700 shadow-lg shadow-indigo-200">Start free trial</a>
+                    <a href="{{ route('contact') }}" class="px-7 py-3.5 rounded-xl border border-gray-300 font-semibold hover:bg-gray-50">Book a demo</a>
                 </div>
-                <div class="mt-5 flex items-center gap-2 text-xs text-gray-400">
-                    <svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    No credit card required · Free 14-day trial · Cancel anytime
+                <div class="mt-6 flex items-center gap-5 text-xs text-gray-400 flex-wrap">
+                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> Free 14-day trial</span>
+                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> 15-min setup</span>
+                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg> No credit card</span>
                 </div>
             </div>
-
-            <!-- Product mockup -->
             <div class="relative">
                 <div class="bg-white rounded-2xl shadow-2xl shadow-indigo-100 border border-gray-100 overflow-hidden">
                     <div class="bg-gray-50 px-4 py-2.5 flex items-center gap-1.5 border-b">
                         <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
                         <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
                         <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
-                        <span class="ml-3 text-[10px] text-gray-400">app.agencyos.com/dashboard</span>
+                        <span class="ml-3 text-[10px] text-gray-400">app.your-agency.yoursaas.com/dashboard</span>
                     </div>
                     <div class="p-5 space-y-4">
                         <div class="grid grid-cols-4 gap-3">
@@ -114,7 +120,7 @@
         </div>
     </header>
 
-    <!-- Logo strip -->
+    <!-- Trust bar -->
     <section class="border-y border-gray-100 bg-gray-50/60">
         <div class="max-w-7xl mx-auto px-6 py-8">
             <p class="text-center text-xs text-gray-400 uppercase tracking-widest mb-5">Trusted by growing agencies</p>
@@ -126,125 +132,175 @@
         </div>
     </section>
 
-    <!-- Features -->
-    <section id="features" class="max-w-7xl mx-auto px-6 py-20">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <h2 class="text-3xl sm:text-4xl font-black">Everything your agency needs to grow</h2>
-            <p class="text-gray-500 mt-3">One platform replaces your Excel sheets, WhatsApp groups, and scattered tools.</p>
-        </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            @foreach ([
-                ['users','Client Hub','Retainers, onboarding checklists, health scores, contracts and a branded client portal.'],
-                ['check-circle','Task Engine','Kanban boards, recurring tasks, approvals, time tracking and workload views.'],
-                ['target','Lead Pipeline','Native Lead365 sync, Meta Ads & form capture, proposals and win/loss tracking.'],
-                ['banknotes','Finance & Invoicing','Invoicing via BikriBook, GST-ready PDFs, expenses and profitability margins.'],
-                ['chart-bar','Reporting','Weekly/monthly client reports with auto-calculated metrics and one-click PDFs.'],
-                ['bolt','Automation','Notify, create tasks and follow up automatically with a no-code rules engine.'],
-            ] as [$icon,$title,$desc])
-                <div class="rounded-2xl border border-gray-100 p-6 hover:shadow-lg hover:border-indigo-100 transition group">
-                    <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition">
-                        <x-icon :name="$icon" class="w-5 h-5" />
+    <!-- Alternate feature blocks (5day style: big screenshot + 3 bullets, alternating) -->
+    <section class="max-w-7xl mx-auto px-6 py-20 space-y-24">
+        @foreach ([
+            ['client-management','users','Client Hub — from kickoff to retention',
+             'Onboard new clients in minutes, keep health scores visible and let clients self-serve in their own portal.',
+             ['20-step onboarding checklists','Health scores with reasons','Branded client portal with approvals & requests'],
+             'bg-indigo-50'],
+            ['project-tasks','check-circle','Task Engine — ship work, not status meetings',
+             'Drag-and-drop kanban boards, recurring tasks that create themselves, and workload views so nothing slips.',
+             ['Kanban + calendar + my-tasks','Recurring tasks with auto-instances','Team workload & capacity grid'],
+             'bg-purple-50'],
+            ['leads-crm','target','Pipeline — win more, faster',
+             'Leads land from Lead365 and Meta Ads, flow through your pipeline, and convert to clients with one click.',
+             ['Lead365 + Meta Ads capture','Proposals with PDF & email','Won-lead → client in 1 click'],
+             'bg-green-50'],
+            ['finance-invoicing','banknotes','Finance — get paid on time',
+             'GST invoices, BikriBook sync, expenses and per-client profitability with clear margin colours.',
+             ['GST invoices with auto-numbering','BikriBook sync + 6-hour payment check','Profitability with margin colours'],
+             'bg-amber-50'],
+        ] as [$slug,$icon,$title,$desc,$bullets,$tint])
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="{{ $loop->even ? 'lg:order-2' : '' }}">
+                    <div class="w-12 h-12 rounded-xl {{ $tint }} text-indigo-600 flex items-center justify-center mb-5"><x-icon :name="$icon" class="w-6 h-6" /></div>
+                    <h2 class="text-3xl font-black tracking-tight">{{ $title }}</h2>
+                    <p class="text-gray-500 mt-3 text-lg">{{ $desc }}</p>
+                    <ul class="mt-6 space-y-3">
+                        @foreach ($bullets as $b)
+                            <li class="flex items-center gap-3">
+                                <span class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                <span class="text-gray-700 font-medium">{{ $b }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('site.feature', $slug) }}" class="inline-flex items-center gap-1.5 text-indigo-600 font-semibold mt-6 hover:underline">Learn more
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.5 4.5L21 12l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                </div>
+                <div class="{{ $loop->even ? 'lg:order-1' : '' }}">
+                    <div class="rounded-2xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white p-6 shadow-lg shadow-gray-100">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+                            <span class="ml-2 text-[10px] text-gray-400">{{ ucwords(str_replace('-', ' ', $slug)) }}</span>
+                        </div>
+                        <div class="space-y-2.5">
+                            @foreach (array_slice($bullets, 0, 3) as $i => $b)
+                                <div class="flex items-center gap-2 rounded-lg border border-gray-100 px-3 py-2.5 bg-white">
+                                    <span class="w-2 h-2 rounded-full {{ $i === 0 ? 'bg-indigo-500' : ($i === 1 ? 'bg-green-500' : 'bg-amber-400') }}"></span>
+                                    <span class="text-xs text-gray-700">{{ $b }}</span>
+                                </div>
+                            @endforeach
+                            <div class="rounded-lg border border-gray-100 px-3 py-2.5 bg-white flex items-center gap-2">
+                                <div class="flex-1 space-y-1.5">
+                                    <div class="h-1.5 bg-gray-100 rounded-full w-full"></div>
+                                    <div class="h-1.5 bg-gray-100 rounded-full w-4/5"></div>
+                                </div>
+                                <span class="text-[10px] text-indigo-600 font-semibold">+{{ $loop->index + 2 }} items</span>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="font-bold">{{ $title }}</h3>
-                    <p class="text-sm text-gray-500 mt-1.5 leading-relaxed">{{ $desc }}</p>
+                </div>
+            </div>
+        @endforeach
+    </section>
+
+    <!-- Stats band (We360 style) -->
+    <section class="bg-indigo-600 py-14">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+            @foreach ([['100+','Agencies running'],['120,000+','Tasks delivered'],['21+','Integrations & tools'],['98%','Client retention']] as [$num,$label])
+                <div>
+                    <div class="text-4xl font-black">{{ $num }}</div>
+                    <div class="text-indigo-200 mt-1 text-sm">{{ $label }}</div>
                 </div>
             @endforeach
         </div>
     </section>
 
-    <!-- How it works -->
-    <section id="how" class="bg-gray-50/70 py-20">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <h2 class="text-3xl sm:text-4xl font-black">Set up in under 10 minutes</h2>
-                <p class="text-gray-500 mt-3">From signup to your first client invoice — no IT team required.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-                @foreach ([
-                    ['1','Create your workspace','Sign up, pick a subdomain and choose your plan or start with the free 14-day trial.'],
-                    ['2','Invite your team','Add your ops manager, account managers and specialists with role-based access.'],
-                    ['3','Win & deliver','Import leads from Lead365, send proposals, deliver projects and invoice via BikriBook.'],
-                ] as [$num,$title,$desc])
-                    <div class="relative bg-white rounded-2xl border border-gray-100 p-7">
-                        <div class="w-9 h-9 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-sm mb-4">{{ $num }}</div>
-                        <h3 class="font-bold">{{ $title }}</h3>
-                        <p class="text-sm text-gray-500 mt-1.5">{{ $desc }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
+    <!-- How it works (3 steps) -->
     <section class="max-w-7xl mx-auto px-6 py-20">
         <div class="text-center max-w-2xl mx-auto mb-12">
-            <h2 class="text-3xl sm:text-4xl font-black">Loved by agency owners</h2>
+            <h2 class="text-3xl sm:text-4xl font-black">How it works</h2>
+            <p class="text-gray-500 mt-3">From signup to your first client invoice — in about 15 minutes.</p>
         </div>
-        <div class="grid md:grid-cols-3 gap-5">
+        <div class="grid md:grid-cols-3 gap-6">
             @foreach ([
-                ['Aarav S.','Founder, UrbanKart Agency','We replaced 4 tools and a dozen Excel sheets. Onboarding checklists alone saved us hours per client.'],
-                ['Priya N.','Ops Manager, Bloom Digital','The client portal is a game-changer. Approvals that used to take days now happen in hours.'],
-                ['Rohan M.','Account Manager, Northstar','Profitability per client finally makes sense. I know our margins before every renewal call.'],
-            ] as [$name,$role,$quote])
-                <div class="rounded-2xl border border-gray-100 p-6">
-                    <div class="flex gap-0.5 text-amber-400 mb-3">
-                        @for ($i = 0; $i < 5; $i++)
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.48 3.5a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>
-                        @endfor
-                    </div>
-                    <p class="text-sm text-gray-600 leading-relaxed">"{{ $quote }}"</p>
-                    <div class="mt-4 flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 font-bold flex items-center justify-center text-xs">{{ strtoupper(substr($name, 0, 1)) }}</div>
-                        <div><div class="text-sm font-semibold">{{ $name }}</div><div class="text-xs text-gray-400">{{ $role }}</div></div>
-                    </div>
+                ['1','Create your workspace','Sign up, pick your subdomain and choose a plan — or start with the free 14-day trial.'],
+                ['2','Invite your team','Add ops managers, account managers and specialists with role-based access.'],
+                ['3','Win & deliver','Import leads from Lead365, send proposals, deliver projects and invoice via BikriBook.'],
+            ] as [$num,$title,$desc])
+                <div class="relative bg-white rounded-2xl border border-gray-100 p-7">
+                    <div class="w-9 h-9 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-sm mb-4">{{ $num }}</div>
+                    <h3 class="font-bold">{{ $title }}</h3>
+                    <p class="text-sm text-gray-500 mt-1.5">{{ $desc }}</p>
                 </div>
             @endforeach
         </div>
     </section>
 
-    <!-- Pricing -->
-    <section id="pricing" class="bg-gray-50/70 py-20">
-        <div class="max-w-6xl mx-auto px-6">
+    <!-- Testimonials (5day style: real quotes) -->
+    <section class="bg-gray-50/70 py-20">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-2xl mx-auto mb-12">
-                <h2 class="text-3xl sm:text-4xl font-black">Simple, honest pricing</h2>
-                <p class="text-gray-500 mt-3">Start free for 14 days. Upgrade when you're ready. Cancel anytime.</p>
+                <h2 class="text-3xl sm:text-4xl font-black">Loved by agency owners</h2>
             </div>
-            <div x-data="{ yearly: false }" class="flex justify-center mb-10">
-                <div class="bg-white rounded-full border border-gray-200 p-1 flex text-sm">
-                    <button @click="yearly = false" :class="!yearly ? 'bg-indigo-600 text-white' : 'text-gray-500'" class="px-4 py-1.5 rounded-full font-medium">Monthly</button>
-                    <button @click="yearly = true" :class="yearly ? 'bg-indigo-600 text-white' : 'text-gray-500'" class="px-4 py-1.5 rounded-full font-medium">Yearly <span class="text-xs opacity-80">-2 months free</span></button>
-                </div>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-                @foreach ($plans as $plan)
-                    <div class="rounded-2xl border p-7 bg-white {{ $plan->slug === 'professional' ? 'border-indigo-600 ring-2 ring-indigo-600 relative' : 'border-gray-200' }}">
-                        @if ($plan->slug === 'professional')
-                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Most popular</span>
-                        @endif
-                        <h3 class="font-bold text-gray-900">{{ $plan->name }}</h3>
-                        <div class="mt-3 flex items-baseline gap-1">
-                            <span class="text-4xl font-black" x-text="'₹' + (yearly ? {{ $plan->price_yearly }} : {{ $plan->price_monthly }}).toLocaleString('en-IN')"></span>
-                            <span class="text-sm text-gray-400" x-text="yearly ? '/year' : '/month'"></span>
+            <div class="grid md:grid-cols-3 gap-5">
+                @foreach ([
+                    ['Aarav S.','Founder, UrbanKart Agency','We replaced 4 tools and a dozen Excel sheets. Onboarding checklists alone saved us hours per client.'],
+                    ['Priya N.','Ops Manager, Bloom Digital','The client portal is a game-changer. Approvals that used to take days now happen in hours.'],
+                    ['Rohan M.','Account Manager, Northstar','Profitability per client finally makes sense. I know our margins before every renewal call.'],
+                    ['Sneha K.','Performance Marketer, Peak & Co','I stopped asking my account managers for status. It is all just there on the board.'],
+                    ['Kavita J.','Founder, UrbanKart India','Now I am not flying blind in any client conversation. Never going back to spreadsheets.'],
+                    ['Jay R.','Operations, Koffeetech','I got my time back. Clients see progress themselves in the portal - that matters more than people think.'],
+                ] as [$name,$role,$quote])
+                    <div class="bg-white rounded-2xl border border-gray-100 p-6">
+                        <div class="flex gap-0.5 text-amber-400 mb-3">
+                            @for ($i = 0; $i < 5; $i++)
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.48 3.5a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>
+                            @endfor
                         </div>
-                        <ul class="mt-5 space-y-2.5 text-sm text-gray-600">
-                            @foreach (($plan->features ?? []) as $feature)
-                                <li class="flex gap-2.5">
-                                    <svg class="w-4 h-4 text-green-500 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                    {{ $feature }}
-                                </li>
-                            @endforeach
-                        </ul>
-                        <a href="{{ route('register') }}" class="mt-6 block text-center rounded-xl py-2.5 text-sm font-semibold {{ $plan->slug === 'professional' ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' }}">
-                            Start free trial
-                        </a>
+                        <p class="text-sm text-gray-600 leading-relaxed">"{{ $quote }}"</p>
+                        <div class="mt-4 flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 font-bold flex items-center justify-center text-xs">{{ strtoupper(substr($name, 0, 1)) }}</div>
+                            <div><div class="text-sm font-semibold">{{ $name }}</div><div class="text-xs text-gray-400">{{ $role }}</div></div>
+                        </div>
                     </div>
                 @endforeach
             </div>
+        </div>
+    </section>
+
+    <!-- Pricing (mini, links to full page) -->
+    <section id="pricing" class="max-w-6xl mx-auto px-6 py-20">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <h2 class="text-3xl sm:text-4xl font-black">Simple, honest pricing</h2>
+            <p class="text-gray-500 mt-3">Start free for 14 days. Upgrade when you're ready. Cancel anytime.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            @foreach ($plans as $plan)
+                <div class="rounded-2xl border p-7 bg-white {{ $plan->slug === 'professional' ? 'border-indigo-600 ring-2 ring-indigo-600 relative' : 'border-gray-200' }}">
+                    @if ($plan->slug === 'professional')
+                        <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Most popular</span>
+                    @endif
+                    <h3 class="font-bold">{{ $plan->name }}</h3>
+                    <div class="mt-3 flex items-baseline gap-1">
+                        <span class="text-4xl font-black">₹{{ number_format($plan->price_monthly) }}</span>
+                        <span class="text-sm text-gray-400">/month</span>
+                    </div>
+                    <ul class="mt-5 space-y-2.5 text-sm text-gray-600">
+                        @foreach (array_slice($plan->features ?? [], 0, 5) as $feature)
+                            <li class="flex gap-2.5">
+                                <svg class="w-4 h-4 text-green-500 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                {{ $feature }}
+                            </li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('pricing') }}" class="mt-6 block text-center rounded-xl py-2.5 text-sm font-semibold {{ $plan->slug === 'professional' ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' }}">
+                        View plan
+                    </a>
+                </div>
+            @endforeach
+        </div>
+        <div class="text-center mt-8">
+            <a href="{{ route('pricing') }}" class="text-indigo-600 font-semibold hover:underline">See full pricing, comparison & FAQ →</a>
         </div>
     </section>
 
     <!-- FAQ -->
-    <section class="max-w-3xl mx-auto px-6 py-20">
+    <section class="max-w-3xl mx-auto px-6 pb-20">
         <h2 class="text-3xl font-black text-center mb-10">Frequently asked questions</h2>
         <div x-data="{ open: 0 }" class="space-y-3">
             @foreach ([
@@ -258,7 +314,7 @@
                     <button @click="open = open === {{ $loop->index + 1 }} ? 0 : {{ $loop->index + 1 }}" class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-sm">
                         {{ $q }}
                         <span x-show="open !== {{ $loop->index + 1 }}">+</span>
-                        <span x-show="open === {{ $loop->index + 1 }}">−</span>
+                        <span x-show="open === {{ $loop->index + 1 }}" x-cloak>−</span>
                     </button>
                     <div x-show="open === {{ $loop->index + 1 }}" x-cloak class="px-5 pb-4 text-sm text-gray-500">{{ $a }}</div>
                 </div>
@@ -275,7 +331,7 @@
             <a href="{{ route('register') }}" class="relative inline-block mt-8 bg-white text-indigo-700 px-8 py-3.5 rounded-xl font-bold hover:bg-indigo-50 shadow-xl">
                 Start your free 14-day trial
             </a>
-            <div class="relative mt-4 text-xs text-indigo-200">No credit card · 2-minute setup</div>
+            <div class="relative mt-4 text-xs text-indigo-200">No credit card · 15-minute setup</div>
         </div>
     </section>
 
@@ -290,7 +346,7 @@
                 <div class="text-xs font-semibold text-gray-400 uppercase mb-3">Product</div>
                 <div class="space-y-2 text-sm text-gray-600">
                     <a href="{{ route('site.features') }}" class="block hover:text-gray-900">Features</a>
-                    <a href="{{ route('site.use-cases') }}" class="block hover:text-gray-900">Use cases</a>
+                    <a href="{{ route('site.use-cases') }}" class="block hover:text-gray-900">Industries</a>
                     <a href="{{ route('site.integrations') }}" class="block hover:text-gray-900">Integrations</a>
                     <a href="{{ route('pricing') }}" class="block hover:text-gray-900">Pricing</a>
                 </div>
