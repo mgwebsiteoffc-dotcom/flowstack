@@ -23,8 +23,8 @@ return [
     'accent_secondary' => env('BRAND_COLOR_SECONDARY', ''),
 
     // Hero copy
-    'hero_headline_1' => env('BRAND_HERO_1', 'Agency Management'),
-    'hero_headline_2' => env('BRAND_HERO_2', 'for Modern Agencies'),
+    'hero_headline_1' => env('BRAND_HERO_1', 'Run Your Agency'),
+    'hero_headline_2' => env('BRAND_HERO_2', 'on Autopilot'),
     'hero_sub' => env('BRAND_HERO_SUB', 'Replace guesswork and scattered spreadsheets with real-time agency intelligence. One platform for Clients, Projects, Tasks, Leads, Invoices and Reporting. Built for agencies of any size.'),
 
     // Real screenshots (relative to public/). Leave null/empty to use CSS mockups.
