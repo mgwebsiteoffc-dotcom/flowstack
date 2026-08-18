@@ -14,6 +14,7 @@
         <div class="text-2xl font-black tracking-tight">Agency<span class="text-indigo-600">OS</span></div>
         <div class="flex items-center gap-6 text-sm">
             <a href="{{ route('pricing') }}" class="text-gray-600 hover:text-gray-900">Pricing</a>
+            <a href="{{ route('blog.index') }}" class="text-gray-600 hover:text-gray-900">Blog</a>
             <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900">Sign in</a>
             <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">Start free trial</a>
         </div>
@@ -72,7 +73,7 @@
     </section>
 
     <footer class="max-w-7xl mx-auto px-6 py-10 text-center text-sm text-gray-400">
-        © {{ date('Y') }} Agency OS · <a href="{{ route('pricing') }}" class="hover:text-gray-600">Pricing</a> · <a href="{{ route('login') }}" class="hover:text-gray-600">Sign in</a> · <a href="{{ route('super-admin.login') }}" class="hover:text-gray-600">Super Admin</a>
+        © {{ date('Y') }} Agency OS · <a href="{{ route('pricing') }}" class="hover:text-gray-600">Pricing</a> · <a href="{{ route('blog.index') }}" class="hover:text-gray-600">Blog</a> · <a href="{{ route('login') }}" class="hover:text-gray-600">Sign in</a> · <a href="{{ route('super-admin.login') }}" class="hover:text-gray-600">Super Admin</a>
     </footer>
 </body>
 </html>

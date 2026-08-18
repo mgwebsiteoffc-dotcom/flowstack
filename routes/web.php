@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AutomationController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
@@ -42,6 +43,7 @@ use App\Http\Controllers\Portal\PortalProjectController;
 use App\Http\Controllers\Portal\PortalReportController;
 use App\Http\Controllers\Portal\PortalRequestController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAuthController;
+use App\Http\Controllers\SuperAdmin\SuperAdminBlogController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
 use App\Http\Controllers\SuperAdmin\SuperAdminPlanController;
 use App\Http\Controllers\SuperAdmin\SuperAdminRoleController;
@@ -55,6 +57,36 @@ use Illuminate\Support\Facades\Route;
 */
 // --- DEVELOPMENT DIAGNOSTIC (available when APP_DEBUG=true) -------------
 if (config('app.debug')) {
+    Route::get('/dev/clear', function () {
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+
+        return response('<pre style="font:12px monospace;padding:20px">Caches cleared:\n'.\Illuminate\Support\Facades\Artisan::output().'</pre>');
+    })->name('dev.clear');
+
+    Route::get('/dev/pages', function () {
+        // Smoke test: hit the key pages and report status codes.
+        $paths = ['/', '/pricing', '/register', '/login', '/blog', '/sitemap.xml', '/robots.txt'];
+        $out = [];
+        foreach ($paths as $path) {
+            try {
+                $start = microtime(true);
+                $resp = \Illuminate\Support\Facades\Http::withoutVerifying()->get(url($path));
+                $ms = round((microtime(true) - $start) * 1000);
+                $out[] = [$path, $resp->status(), $ms.'ms'];
+            } catch (\Throwable $e) {
+                $out[] = [$path, 'ERR', $e->getMessage()];
+            }
+        }
+        $html = '<pre style="font:12px monospace;padding:20px">'."\n";
+        foreach ($out as [$path, $status, $extra]) {
+            $color = $status === 200 ? '#16a34a' : '#dc2626';
+            $html .= '<span style="color:'.$color.'">'.$status.'</span>  '.str_pad($path, 20).' '.$extra."\n";
+        }
+        $html .= "</pre>";
+
+        return response($html);
+    })->name('dev.pages');
+
  Route::get('/dev/session', function () {
  $probe = (int) session('_probe', 0);
  session(['_probe' => $probe + 1]);
@@ -101,6 +133,22 @@ if (config('app.debug')) {
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
 Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
+
+// Public blog + SEO files
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/sitemap.xml', function () {
+    $posts = \App\Models\BlogPost::published()->get(['slug', 'updated_at']);
+    $categories = \App\Models\BlogCategory::get(['slug']);
+
+    return response()->view('seo.sitemap', compact('posts', 'categories'))->header('Content-Type', 'application/xml');
+})->name('sitemap');
+Route::get('/robots.txt', function () {
+    $disallow = config('app.env') === 'production' ? '' : "Disallow: /\n";
+    $content = "User-agent: *\n{$disallow}Allow: /\nSitemap: ".url('/sitemap.xml');
+    return response($content)->header('Content-Type', 'text/plain');
+})->name('robots');
 
 /*
 |--------------------------------------------------------------------------
@@ -192,6 +240,14 @@ Route::prefix('super-admin')->name('super-admin.')->group(function () {
  Route::get('/payments', [SuperAdminDashboardController::class, 'payments'])->name('payments');
  Route::get('/roles', [SuperAdminRoleController::class, 'index'])->name('roles.index');
  Route::post('/roles', [SuperAdminRoleController::class, 'save'])->name('roles.save');
+ Route::get('/blog', [SuperAdminBlogController::class, 'index'])->name('blog.index');
+ Route::get('/blog/create', [SuperAdminBlogController::class, 'create'])->name('blog.create');
+ Route::post('/blog', [SuperAdminBlogController::class, 'store'])->name('blog.store');
+ Route::get('/blog/{post}/edit', [SuperAdminBlogController::class, 'edit'])->name('blog.edit');
+ Route::put('/blog/{post}', [SuperAdminBlogController::class, 'update'])->name('blog.update');
+ Route::delete('/blog/{post}', [SuperAdminBlogController::class, 'destroy'])->name('blog.destroy');
+ Route::post('/blog/categories', [SuperAdminBlogController::class, 'storeCategory'])->name('blog.categories.store');
+ Route::delete('/blog/categories/{category}', [SuperAdminBlogController::class, 'destroyCategory'])->name('blog.categories.destroy');
  });
 });
 

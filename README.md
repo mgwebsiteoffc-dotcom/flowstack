@@ -192,6 +192,18 @@ finance; AMs only see own clients). A GitHub Actions workflow
 own GitHub account (the bot token used during development lacks the
 `workflows` permission, so the file is in the working tree but was not pushed).
 
+## Public website & blog
+
+- **Website:** landing page (`/`), `/pricing`, and a **blog** at `/blog` with
+  category pages (`/blog/category/{slug}`) and article pages (`/blog/{slug}`).
+- **Blog management (admin end):** Super Admin → Blog - create/edit/delete posts,
+  categories, featured flag, cover images, publish scheduling.
+- **SEO-ready:** per-page meta title/description, canonical URLs, Open Graph +
+  Twitter cards, `robots.txt` and a dynamic **`/sitemap.xml`**.
+- **JSON-LD structured data:** Organization + WebSite/SearchAction on the landing
+  page, CollectionPage on blog listings, Article (headline, dates, author,
+  publisher, image) on every post.
+
 ## Super Admin panel
 
 - **URL:** `/super-admin/login` (route `super-admin.login`) - linked from the landing page footer.
