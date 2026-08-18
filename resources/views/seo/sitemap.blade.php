@@ -4,6 +4,19 @@
     <url><loc>{{ url('/pricing') }}</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
     <url><loc>{{ url('/register') }}</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
     <url><loc>{{ url('/blog') }}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+    <url><loc>{{ url('/company') }}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+    <url><loc>{{ url('/features') }}</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+    @foreach (['client-management','project-tasks','leads-crm','finance-invoicing','reporting','automation'] as $fslug)
+        <url><loc>{{ url('/features/'.$fslug) }}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+    @endforeach
+    <url><loc>{{ url('/use-cases') }}</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+    @foreach (['digital-agency','creative-agency','web-dev','consulting','saas-agency','freelancers'] as $uslug)
+        <url><loc>{{ url('/use-cases/'.$uslug) }}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    @endforeach
+    <url><loc>{{ url('/integrations') }}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+    <url><loc>{{ url('/resources') }}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+    <url><loc>{{ url('/faq') }}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+    <url><loc>{{ url('/contact') }}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
     @foreach ($categories as $category)
         <url><loc>{{ url('/blog/category/'.$category->slug) }}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
     @endforeach

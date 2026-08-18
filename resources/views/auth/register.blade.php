@@ -59,14 +59,16 @@
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Billing</label>
         <div class="grid grid-cols-2 gap-3">
-            <label class="flex items-start gap-3 border rounded-xl px-4 py-3 cursor-pointer transition {{ $mode === 'trial' ? 'border-indigo-500 ring-1 ring-indigo-500' : 'border-gray-200 hover:border-gray-300' }}">
+            <label class="flex items-start gap-3 border rounded-xl px-4 py-3 cursor-pointer transition hover:border-gray-300"
+                   :class="mode === 'trial' ? 'border-indigo-500 ring-1 ring-indigo-500' : 'border-gray-200'">
                 <input type="radio" name="billing_mode" value="trial" x-model="mode" class="mt-1">
                 <span>
                     <span class="text-sm font-semibold text-gray-800 block">Free trial</span>
                     <span class="text-xs text-gray-400">14 days · no card</span>
                 </span>
             </label>
-            <label class="flex items-start gap-3 border rounded-xl px-4 py-3 cursor-pointer transition {{ $mode === 'plan' ? 'border-indigo-500 ring-1 ring-indigo-500' : 'border-gray-200 hover:border-gray-300' }}">
+            <label class="flex items-start gap-3 border rounded-xl px-4 py-3 cursor-pointer transition hover:border-gray-300"
+                   :class="mode === 'plan' ? 'border-indigo-500 ring-1 ring-indigo-500' : 'border-gray-200'">
                 <input type="radio" name="billing_mode" value="plan" x-model="mode" class="mt-1">
                 <span>
                     <span class="text-sm font-semibold text-gray-800 block">Paid plan</span>

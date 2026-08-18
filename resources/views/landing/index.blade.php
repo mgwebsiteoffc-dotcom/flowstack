@@ -24,11 +24,12 @@
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="{{ route('home') }}" class="text-2xl font-black tracking-tight">Agency<span class="text-indigo-600">OS</span></a>
             <div class="hidden md:flex items-center gap-7 text-sm text-gray-600">
-                <a href="#features" class="hover:text-gray-900">Features</a>
-                <a href="#how" class="hover:text-gray-900">How it works</a>
+                <a href="{{ route('site.features') }}" class="hover:text-gray-900">Features</a>
+                <a href="{{ route('site.use-cases') }}" class="hover:text-gray-900">Use cases</a>
+                <a href="{{ route('site.integrations') }}" class="hover:text-gray-900">Integrations</a>
                 <a href="#pricing" class="hover:text-gray-900">Pricing</a>
+                <a href="{{ route('site.resources') }}" class="hover:text-gray-900">Resources</a>
                 <a href="{{ route('blog.index') }}" class="hover:text-gray-900">Blog</a>
-                <a href="{{ route('contact') }}" class="hover:text-gray-900">Contact</a>
             </div>
             <div class="flex items-center gap-3 text-sm">
                 <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 font-medium">Sign in</a>
@@ -288,18 +289,20 @@
             <div>
                 <div class="text-xs font-semibold text-gray-400 uppercase mb-3">Product</div>
                 <div class="space-y-2 text-sm text-gray-600">
-                    <a href="#features" class="block hover:text-gray-900">Features</a>
-                    <a href="#pricing" class="block hover:text-gray-900">Pricing</a>
-                    <a href="{{ route('blog.index') }}" class="block hover:text-gray-900">Blog</a>
-                    <a href="{{ route('contact') }}" class="block hover:text-gray-900">Contact</a>
+                    <a href="{{ route('site.features') }}" class="block hover:text-gray-900">Features</a>
+                    <a href="{{ route('site.use-cases') }}" class="block hover:text-gray-900">Use cases</a>
+                    <a href="{{ route('site.integrations') }}" class="block hover:text-gray-900">Integrations</a>
+                    <a href="{{ route('pricing') }}" class="block hover:text-gray-900">Pricing</a>
                 </div>
             </div>
             <div>
                 <div class="text-xs font-semibold text-gray-400 uppercase mb-3">Company</div>
                 <div class="space-y-2 text-sm text-gray-600">
-                    <a href="{{ route('login') }}" class="block hover:text-gray-900">Sign in</a>
-                    <a href="{{ route('register') }}" class="block hover:text-gray-900">Start free trial</a>
-                    <a href="{{ route('super-admin.login') }}" class="block hover:text-gray-900">Super Admin</a>
+                    <a href="{{ route('site.company') }}" class="block hover:text-gray-900">About us</a>
+                    <a href="{{ route('site.resources') }}" class="block hover:text-gray-900">Resources</a>
+                    <a href="{{ route('blog.index') }}" class="block hover:text-gray-900">Blog</a>
+                    <a href="{{ route('site.faq') }}" class="block hover:text-gray-900">FAQ</a>
+                    <a href="{{ route('contact') }}" class="block hover:text-gray-900">Contact</a>
                 </div>
             </div>
         </div>
