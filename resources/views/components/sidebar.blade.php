@@ -30,8 +30,8 @@
         ],
     ];
 @endphp
-<aside x-show="sidebarOpen" x-transition
-       class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-gray-300 flex flex-col z-40">
+<aside class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-gray-300 flex flex-col z-40 transition-transform duration-200 -translate-x-full"
+       :class="sidebarOpen ? 'translate-x-0' : (isDesktop ? '-translate-x-64' : '-translate-x-full')">
     <div class="flex items-center gap-2 px-4 h-14 border-b border-gray-800">
         <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-black">A</div>
         <div>
@@ -65,6 +65,7 @@
             <div class="text-white text-sm truncate">{{ $user->name }}</div>
             <div class="text-xs text-gray-500 capitalize">{{ str_replace('_', ' ', $user->role) }}</div>
         </div>
+        <x-pwa-install icon-only label="Install app" />
         <form method="POST" action="{{ route('logout') }}">@csrf
             <button title="Logout" class="text-gray-500 hover:text-white"><x-icon name="logout" class="w-5 h-5" /></button>
         </form>

@@ -95,6 +95,28 @@ digest + weekly summary) · Client portal · Settings (agency, users, resend
 invites, integrations, notification prefs, audit log, subscription) · SaaS
 registration + onboarding wizard · Super admin panel.
 
+## Mobile app menu & installable PWA
+
+- **App-style mobile navigation:** on phones the desktop sidebar becomes a
+  drawer (hamburger in the top bar) and a fixed **bottom tab bar** with icons
+  takes over — Home · Clients · Projects · Tasks · **More**. "More" opens a
+  native-feeling bottom sheet (drag-handle, slide-up animation) with the
+  remaining modules (Leads, Proposals, Reports, Finance, Knowledge Base, Files,
+  Time, Automation, Team, Settings, Notifications, Profile) plus **Install the
+  app** and **Log out**. Both tab bar and sheet respect the per-role menu map
+  and the finance access rule, and include iOS safe-area insets.
+- **Installable PWA:** the product is installable as a real app. A
+  tenant-branded `/manifest.webmanifest`, a conservative `public/sw.js`
+  (network-first pages, only neutral assets cached — authenticated page bodies
+  are never stored), and app icons live under `public/icons/`.
+  - **Admin/employee login** (`/login`) shows an **"Install the app"** card.
+  - Inside the app: **Install the app** is available in the mobile "More" sheet
+    and as a download icon next to Log out in the desktop sidebar footer.
+  - The button triggers the browser's native install prompt where supported;
+    on iOS Safari (no native prompt) it walks the user through Share →
+    Add to Home Screen. It auto-hides once the app is installed
+    (`display-mode: standalone`).
+
 ## Integrations
 
 ### Lead365 (inbound webhooks)

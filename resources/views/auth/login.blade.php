@@ -57,4 +57,17 @@
     New to Task365?
     <a href="{{ route('register') }}" class="text-indigo-600 hover:underline font-semibold">Start your free trial</a>
 </div>
+
+<div class="mt-6 pt-5 border-t border-gray-100">
+    <div class="flex items-center gap-3">
+        <span class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+            <x-icon name="device-phone-mobile" class="w-5 h-5" />
+        </span>
+        <div>
+            <div class="text-sm font-semibold text-gray-900">Get the Task365 app</div>
+            <p class="text-xs text-gray-500 leading-snug">Install Task365 on your phone or desktop for one-tap access — just like a native app.</p>
+        </div>
+    </div>
+    <x-pwa-install label="Install the app" block class="mt-3" />
+</div>
 @endsection

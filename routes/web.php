@@ -177,6 +177,42 @@ Route::get('/robots.txt', function () {
     return response($content)->header('Content-Type', 'text/plain');
 })->name('robots');
 
+// PWA manifest — makes the product installable as an app ("Install Task365").
+// Tenant-branded when reached on a tenant subdomain (falls back to the
+// product name on the marketing host).
+Route::get('/manifest.webmanifest', function () {
+    $tenant = app('currentTenant');
+    $name = $tenant?->name ?: 'Task365';
+    // Root-relative URLs: always resolve against the requesting host, so the
+    // manifest works on every tenant subdomain without depending on APP_URL.
+    $icon = fn (string $file, string $size, string $purpose = 'any') => [
+        'src' => '/icons/'.$file,
+        'sizes' => $size,
+        'type' => 'image/png',
+        'purpose' => $purpose,
+    ];
+
+    return response()
+        ->json([
+            'id' => '/',
+            'name' => $name.' — Task365',
+            'short_name' => $tenant?->slug ?: 'Task365',
+            'description' => 'Run your agency from anywhere — clients, projects, tasks, leads, finance and reports on the go.',
+            'start_url' => '/',
+            'scope' => '/',
+            'display' => 'standalone',
+            'background_color' => '#f3f4f6',
+            'theme_color' => \App\Support\Brand::accent(),
+            'lang' => 'en',
+            'icons' => [
+                $icon('icon-192.png', '192x192'),
+                $icon('icon-512.png', '512x512'),
+                $icon('icon-maskable-192.png', '192x192', 'maskable'),
+                $icon('icon-maskable-512.png', '512x512', 'maskable'),
+            ],
+        ], 200, ['Content-Type' => 'application/manifest+json']);
+})->middleware('tenant')->name('pwa.manifest');
+
 /*
 |--------------------------------------------------------------------------
 | Guest auth (registration creates the tenant)
