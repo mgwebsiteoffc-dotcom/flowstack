@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Task365') · {{ app('currentTenant')?->name ?? 'Task365' }}</title>
+
+    {{-- PWA / install-as-app --}}
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Task365">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -36,7 +45,7 @@
                 <a href="{{ route('upgrade') }}" class="font-bold underline hover:no-underline">Upgrade →</a>
             </div>
         @endif
-        <main class="p-6 flex-1">
+        <main class="p-6 pb-24 md:pb-6 flex-1">
             @include('components.alert')
             @yield('content')
         </main>
@@ -44,7 +53,40 @@
             &copy; {{ date('Y') }} {{ app('currentTenant')?->name ?? 'Task365' }} · A product by Akestech Infotech Pvt Ltd · <a href="{{ route('upgrade') }}" class="hover:text-gray-600">Subscription</a>
         </footer>
     </div>
+    @include('components.mobile-nav')
     @include('components.toast')
     @stack('scripts')
+
+    <script>
+    (function () {
+        // PWA: register service worker for installability + offline shell.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').catch(function () {});
+            });
+        }
+
+        // Capture the install prompt so we can surface an "Install app" button.
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', function (e) {
+            e.preventDefault();
+            deferredPrompt = e;
+            window.dispatchEvent(new CustomEvent('app:installable'));
+        });
+        window.addEventListener('appinstalled', function () {
+            deferredPrompt = null;
+        });
+
+        // Let the mobile "More" sheet trigger the prompt via the stored event.
+        window.installApp = function () {
+            if (!deferredPrompt) {
+                window.dispatchEvent(new CustomEvent('toast', { detail: { message: 'Open your browser menu and choose \u201CAdd to Home Screen\u201D to install.', type: 'info' } }));
+                return Promise.resolve();
+            }
+            deferredPrompt.prompt();
+            return deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
+        };
+    })();
+    </script>
 </body>
 </html>
