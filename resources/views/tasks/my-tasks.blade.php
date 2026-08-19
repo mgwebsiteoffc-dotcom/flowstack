@@ -5,6 +5,7 @@
 <div class="flex gap-2 text-sm mb-6">
     <a href="{{ route('tasks.index') }}" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-600">List</a>
     <a href="{{ route('tasks.board') }}" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-600">Board</a>
+    <a href="{{ route('tasks.today') }}" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-600">Today</a>
     <a href="{{ route('tasks.my-tasks') }}" class="px-3 py-1.5 rounded-lg bg-gray-900 text-white">My tasks</a>
     <a href="{{ route('tasks.calendar') }}" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-600">Calendar</a>
 </div>

@@ -96,6 +96,29 @@ class AiTaskGeneratorService
         return $tasks;
     }
 
+    /**
+     * Generate a personal daily to-do list: the returned tasks are all dated
+     * today (overriding whatever dates the model guessed) so they land on the
+     * user's "Today" checklist.
+     *
+     * @return array<int, array{title:string, description:?string, start_date:?string, due_date:?string, client:?string, priority:string, estimated_hours:?float}>
+     */
+    public function generateDailyTasks(string $paragraph): array
+    {
+        $today = now()->toDateString();
+
+        $tasks = $this->generateTasks($paragraph);
+
+        foreach ($tasks as $i => $task) {
+            $tasks[$i]['start_date'] = $today;
+            $tasks[$i]['due_date'] = $today;
+            // Daily to-dos are personal; drop any client the model guessed.
+            $tasks[$i]['client'] = null;
+        }
+
+        return $tasks;
+    }
+
     protected function systemPrompt(): string
     {
         $today = now()->toDateString();

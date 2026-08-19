@@ -143,6 +143,139 @@ class TaskController extends Controller
  }
 
     /**
+     * Personal daily to-do list: pending (due today or overdue) vs completed.
+     */
+    public function today(Request $request)
+    {
+        $user = auth()->user();
+
+        $date = now()->toDateString();
+        if ($input = $request->input('date')) {
+            try {
+                $date = \Illuminate\Support\Carbon::parse($input)->toDateString();
+            } catch (\Throwable) {
+                $date = now()->toDateString();
+            }
+        }
+
+        $base = fn ($q) => $q->where(function ($w) use ($user) {
+            $w->where('assigned_to', $user->id)->orWhere('created_by', $user->id);
+        })
+            ->whereNull('parent_task_id')
+            ->with('client', 'project');
+
+        $pending = $base->__invoke(Task::query())
+            ->whereDate('due_date', '<=', $date)
+            ->whereNotIn('status', ['done', 'cancelled'])
+            ->orderByRaw("CASE priority WHEN 'urgent' THEN 0 WHEN 'high' THEN 1 WHEN 'medium' THEN 2 ELSE 3 END")
+            ->orderBy('due_date')
+            ->get();
+
+        $completed = $base->__invoke(Task::query())
+            ->where('status', 'done')
+            ->whereDate('completed_at', $date)
+            ->orderByDesc('completed_at')
+            ->get();
+
+        $configured = app(AiTaskGeneratorService::class)->isConfigured();
+
+        return view('tasks.today', compact('pending', 'completed', 'date', 'configured'));
+    }
+
+    /**
+     * Quick-add a personal to-do (due today by default).
+     */
+    public function storeTodo(Request $request)
+    {
+        $this->authorize('create', Task::class);
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'date' => ['nullable', 'date'],
+        ]);
+
+        Task::create([
+            'tenant_id' => \App\Support\CurrentTenant::id(),
+            'title' => $validated['title'],
+            'status' => 'todo',
+            'task_type' => 'internal',
+            'priority' => 'medium',
+            'assigned_to' => auth()->id(),
+            'created_by' => auth()->id(),
+            'due_date' => $validated['date'] ?? now()->toDateString(),
+            'order_index' => Task::max('order_index') + 1,
+        ]);
+
+        return redirect()->route('tasks.today')->with('success', 'To-do added.');
+    }
+
+    /**
+     * Generate today's to-do list from a sentence/paragraph via AI.
+     */
+    public function aiGenerateDaily(Request $request)
+    {
+        $this->authorize('create', Task::class);
+
+        $validated = $request->validate([
+            'paragraph' => ['required', 'string', 'max:10000'],
+        ]);
+
+        try {
+            $tasks = app(AiTaskGeneratorService::class)->generateDailyTasks($validated['paragraph']);
+        } catch (\RuntimeException $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
+
+        $tenantId = \App\Support\CurrentTenant::id();
+        $createdBy = auth()->id();
+        $nextOrder = Task::max('order_index') ?? 0;
+        $created = 0;
+
+        foreach ($tasks as $task) {
+            Task::create([
+                'tenant_id' => $tenantId,
+                'title' => $task['title'],
+                'description' => $task['description'] ?? null,
+                'start_date' => $task['start_date'] ?? now()->toDateString(),
+                'due_date' => $task['due_date'] ?? now()->toDateString(),
+                'priority' => $task['priority'] ?? 'medium',
+                'status' => 'todo',
+                'task_type' => 'internal',
+                'assigned_to' => $createdBy,
+                'created_by' => $createdBy,
+                'order_index' => ++$nextOrder,
+            ]);
+            $created++;
+        }
+
+        return redirect()->route('tasks.today')->with('success', $created.' to-do(s) added to today.');
+    }
+
+    /**
+     * Toggle a task between pending and done (sets/clears completed_at).
+     */
+    public function toggleDone(Task $task)
+    {
+        $this->authorize('update', $task);
+
+        $done = $task->status !== 'done';
+
+        $task->update([
+            'status' => $done ? 'done' : 'todo',
+            'completed_at' => $done ? now() : null,
+        ]);
+
+        ActivityLog::record('task.status_changed', $task, ['status' => $done ? 'todo' : 'done'], ['status' => $task->status]);
+        app(AutomationService::class)->processEvent('task.status_changed', $task, \App\Support\CurrentTenant::get());
+
+        if (request()->expectsJson()) {
+            return response()->json(['ok' => true, 'done' => $done, 'status' => $task->status]);
+        }
+
+        return back();
+    }
+
+    /**
      * AI task generator: input box + (optional) generated draft preview.
      */
     public function ai(Request $request)
@@ -391,13 +524,20 @@ class TaskController extends Controller
         ]);
 
         $old = $task->only(['status', 'priority', 'assigned_to', 'start_date', 'due_date']);
-        $task->update(array_filter([
+        $updates = array_filter([
             'status' => $validated['status'] ?? null,
             'priority' => $validated['priority'] ?? null,
             'assigned_to' => $validated['assigned_to'] ?? null,
             'start_date' => $validated['start_date'] ?? null,
             'due_date' => $validated['due_date'] ?? null,
-        ], fn ($v) => $v !== null));
+        ], fn ($v) => $v !== null);
+
+        // Keep completion time in sync whenever the status is changed.
+        if (array_key_exists('status', $updates)) {
+            $updates['completed_at'] = $updates['status'] === 'done' ? now() : null;
+        }
+
+        $task->update($updates);
 
  // If the parent recurring task is done, schedule its next instance.
  if ($task->is_recurring && ($validated['status'] ?? null) === 'done' && $task->next_recurrence_date) {
@@ -426,6 +566,7 @@ class TaskController extends Controller
  Task::where('id', $taskId)->update([
  'status' => $validated['status'],
  'order_index' => $index,
+ 'completed_at' => $validated['status'] === 'done' ? now() : null,
  ]);
  }
 

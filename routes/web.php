@@ -331,6 +331,10 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
  Route::get('/tasks/ai', [TaskController::class, 'ai'])->name('tasks.ai');
  Route::post('/tasks/ai/generate', [TaskController::class, 'aiGenerate'])->name('tasks.ai.generate');
  Route::post('/tasks/ai/store', [TaskController::class, 'aiStore'])->name('tasks.ai.store');
+ Route::get('/tasks/today', [TaskController::class, 'today'])->name('tasks.today');
+ Route::post('/tasks/today', [TaskController::class, 'storeTodo'])->name('tasks.today.store');
+ Route::post('/tasks/today/generate', [TaskController::class, 'aiGenerateDaily'])->name('tasks.today.generate');
+ Route::post('/tasks/{task}/done', [TaskController::class, 'toggleDone'])->name('tasks.done');
  Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
  Route::patch('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
  Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
