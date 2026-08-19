@@ -26,7 +26,7 @@
     <style>[x-cloak] { display: none !important; }</style>
     @stack('styles')
 </head>
-<body x-data="{ sidebarOpen: window.innerWidth >= 768 }" class="bg-gray-100 min-h-screen">
+<body x-data="{ sidebarOpen: window.innerWidth >= 768 }" class="bg-gray-100 min-h-screen overflow-x-hidden">
     @include('components.sidebar')
     {{-- Mobile backdrop: dims the page while the sidebar drawer is open --}}
     <div x-show="sidebarOpen" x-cloak @click="sidebarOpen = false" class="md:hidden fixed inset-0 bg-black/40 z-30"></div>
@@ -51,7 +51,7 @@
             @include('components.alert')
             @yield('content')
         </main>
-        <footer class="px-6 pb-4 text-xs text-gray-400">
+        <footer class="px-6 pb-4 text-xs text-gray-400 leading-relaxed break-words">
             &copy; {{ date('Y') }} {{ app('currentTenant')?->name ?? 'Task365' }} · A product by Akestech Infotech Pvt Ltd · <a href="{{ route('upgrade') }}" class="hover:text-gray-600">Subscription</a>
         </footer>
     </div>

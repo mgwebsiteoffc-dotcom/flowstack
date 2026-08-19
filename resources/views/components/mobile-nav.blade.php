@@ -5,15 +5,14 @@
     $roleMenus = $menuMap[$user->role] ?? \App\Support\MenuPermissions::MENUS;
     $can = fn ($key) => in_array($key, $roleMenus, true);
 
-    // Primary tabs (4) shown on the bar; the rest live in the "More" sheet.
-    $primary = collect([
-        ['route' => 'dashboard',        'label' => 'Home',   'icon' => 'home',        'key' => 'dashboard'],
+    // One ordered list of all nav items; the first 4 always pin to the bar
+    // (guaranteeing at least 4 icons regardless of role), the rest live in
+    // the "More" sheet.
+    $all = collect([
+        ['route' => 'dashboard',        'label' => 'Home',   'icon' => 'home',         'key' => 'dashboard'],
         ['route' => 'tasks.index',      'label' => 'Tasks',  'icon' => 'check-circle', 'key' => 'tasks'],
-        ['route' => 'clients.index',    'label' => 'Clients','icon' => 'users',        'key' => 'clients'],
-        ['route' => 'leads.index',      'label' => 'Leads',  'icon' => 'target',       'key' => 'leads'],
-    ])->filter(fn ($i) => $can($i['key']));
-
-    $more = collect([
+        ['route' => 'clients.index',    'label' => 'Clients','icon' => 'users',         'key' => 'clients'],
+        ['route' => 'leads.index',      'label' => 'Leads',  'icon' => 'target',        'key' => 'leads'],
         ['route' => 'tasks.today',      'label' => 'Today',  'icon' => 'sun',           'key' => 'tasks'],
         ['route' => 'projects.index',   'label' => 'Projects','icon' => 'folder',        'key' => 'projects'],
         ['route' => 'proposals.index',  'label' => 'Proposals','icon' => 'document-text', 'key' => 'proposals'],
@@ -31,7 +30,10 @@
         }
 
         return $can($i['key']);
-    });
+    })->values();
+
+    $primary = $all->take(4);
+    $more = $all->slice(4);
 
     $isActive = fn ($route) => request()->routeIs($route.'*')
         || ($route === 'dashboard' && request()->routeIs('dashboard'));
