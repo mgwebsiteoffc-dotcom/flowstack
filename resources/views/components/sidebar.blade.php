@@ -30,7 +30,13 @@
         ],
     ];
 @endphp
-<aside x-show="sidebarOpen" x-transition
+<aside x-show="sidebarOpen"
+       x-transition:enter="transition ease-out duration-200"
+       x-transition:enter-start="-translate-x-full"
+       x-transition:enter-end="translate-x-0"
+       x-transition:leave="transition ease-in duration-150"
+       x-transition:leave-start="translate-x-0"
+       x-transition:leave-end="-translate-x-full"
        class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-gray-300 flex flex-col z-40">
     <div class="flex items-center gap-2 px-4 h-14 border-b border-gray-800">
         <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-black">A</div>
@@ -40,7 +46,8 @@
         </div>
     </div>
 
-    <nav class="flex-1 overflow-y-auto py-2 px-2.5 space-y-0.5 text-[13px]">
+    <nav class="flex-1 overflow-y-auto py-2 px-2.5 space-y-0.5 text-[13px]"
+         @click="if (window.innerWidth < 768) sidebarOpen = false">
         @php
             $menuMap = \App\Http\Controllers\AdminUserController::resolveMap();
             $roleMenus = $menuMap[$user->role] ?? \App\Support\MenuPermissions::MENUS;

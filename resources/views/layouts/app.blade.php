@@ -26,9 +26,11 @@
     <style>[x-cloak] { display: none !important; }</style>
     @stack('styles')
 </head>
-<body x-data="{ sidebarOpen: true }" class="bg-gray-100 min-h-screen">
+<body x-data="{ sidebarOpen: window.innerWidth >= 768 }" class="bg-gray-100 min-h-screen">
     @include('components.sidebar')
-    <div :class="sidebarOpen ? 'ml-64' : 'ml-0'" class="transition-all duration-200 min-h-screen flex flex-col">
+    {{-- Mobile backdrop: dims the page while the sidebar drawer is open --}}
+    <div x-show="sidebarOpen" x-cloak @click="sidebarOpen = false" class="md:hidden fixed inset-0 bg-black/40 z-30"></div>
+    <div :class="sidebarOpen ? 'md:ml-64' : 'md:ml-0'" class="transition-all duration-200 min-h-screen flex flex-col">
         @include('components.topbar')
         @if (session('impersonator_admin'))
             <div class="bg-purple-600 text-white text-xs px-6 py-2 flex items-center justify-center gap-3">
