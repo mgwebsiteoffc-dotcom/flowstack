@@ -48,6 +48,14 @@
         </template>
     </div>
 
+    <!-- Install app (desktop) -->
+    <div x-data="{ installable: false }" x-init="window.addEventListener('app:installable', () => installable = true)">
+        <button x-show="installable" x-cloak @click="window.installApp()"
+                class="hidden md:inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-indigo-100">
+            <x-icon name="arrow-down-tray" class="w-4 h-4" /> Install app
+        </button>
+    </div>
+
     <!-- Notifications -->
     <div x-data="{ open: false }" class="relative">
         <button @click="open = !open" class="relative text-gray-500 hover:text-gray-800 text-xl p-1">

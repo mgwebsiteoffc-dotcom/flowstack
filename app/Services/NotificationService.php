@@ -23,10 +23,24 @@ class NotificationService
  *
  * @param array<string, mixed> $data
  */
- public function notifyUser(User $user, string $title, string $body, string $routeName, array $data = [], string $priority = 'normal'): void
- {
- $user->notify(new InAppNotification($title, $body, $routeName, $data, $priority));
- }
+    public function notifyUser(User $user, string $title, string $body, string $routeName, array $data = [], string $priority = 'normal'): void
+    {
+        $user->notify(new InAppNotification($title, $body, $routeName, $data, $priority));
+
+        // Mirror to the user's subscribed devices (best-effort, never throws).
+        try {
+            $url = '/dashboard';
+            try {
+                $url = route($routeName, $data);
+            } catch (\Throwable) {
+                // fall back to the dashboard if the route/params don't resolve.
+            }
+
+            app(PushNotificationService::class)->sendToUser($user, $title, $body, $url);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Push mirror failed', ['error' => $e->getMessage()]);
+        }
+    }
 
  /**
  * Send an in-app notification to every user with one of the given roles.

@@ -27,6 +27,7 @@
     @stack('styles')
 </head>
 <body x-data="{ sidebarOpen: window.innerWidth >= 768 }" class="bg-gray-100 min-h-screen overflow-x-hidden">
+    @include('components.app-intro')
     @include('components.sidebar')
     {{-- Mobile backdrop: dims the page while the sidebar drawer is open --}}
     <div x-show="sidebarOpen" x-cloak @click="sidebarOpen = false" class="md:hidden fixed inset-0 bg-black/40 z-30"></div>
@@ -79,7 +80,7 @@
             deferredPrompt = null;
         });
 
-        // Let the mobile "More" sheet trigger the prompt via the stored event.
+        // Let the install buttons trigger the prompt via the stored event.
         window.installApp = function () {
             if (!deferredPrompt) {
                 window.dispatchEvent(new CustomEvent('toast', { detail: { message: 'Open your browser menu and choose \u201CAdd to Home Screen\u201D to install.', type: 'info' } }));
@@ -88,6 +89,65 @@
             deferredPrompt.prompt();
             return deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
         };
+
+        // ---- Push notifications ----
+        window.task365Push = {
+            vapidPublicKey: @json(config('services.push.vapid.public_key')),
+            supported: ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window),
+            async isSubscribed() {
+                if (!this.supported) return false;
+                const reg = await navigator.serviceWorker.getRegistration();
+                if (!reg) return false;
+                const sub = await reg.pushManager.getSubscription();
+                return !!sub;
+            },
+            async enable() {
+                if (!this.supported) throw new Error('Push notifications are not supported on this browser.');
+                if (!this.vapidPublicKey) throw new Error('Push notifications are not configured on this server yet.');
+
+                const permission = await Notification.requestPermission();
+                if (permission !== 'granted') throw new Error('Notification permission was denied.');
+
+                const reg = await navigator.serviceWorker.register('/sw.js');
+                let sub = await reg.pushManager.getSubscription();
+                if (!sub) {
+                    sub = await reg.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(this.vapidPublicKey),
+                    });
+                }
+
+                await fetch('/push/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+                    body: JSON.stringify(sub.toJSON ? sub.toJSON() : sub),
+                });
+
+                return true;
+            },
+            async disable() {
+                const reg = await navigator.serviceWorker.getRegistration();
+                if (!reg) return;
+                const sub = await reg.pushManager.getSubscription();
+                if (sub) {
+                    await fetch('/push/unsubscribe', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+                        body: JSON.stringify({ endpoint: sub.endpoint }),
+                    });
+                    await sub.unsubscribe();
+                }
+            },
+        };
+
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+            const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+            const rawData = window.atob(base64);
+            const output = new Uint8Array(rawData.length);
+            for (let i = 0; i < rawData.length; ++i) output[i] = rawData.charCodeAt(i);
+            return output;
+        }
     })();
     </script>
 </body>

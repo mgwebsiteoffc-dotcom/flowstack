@@ -1,4 +1,4 @@
-/* Task365 service worker — enables PWA installability and a basic app-shell cache. */
+/* Task365 service worker — PWA installability, offline shell + push notifications. */
 const CACHE = 'task365-v1';
 const SHELL = [
   '/',
@@ -43,5 +43,46 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(() => caches.match(event.request))
+  );
+});
+
+/* ---- Push notifications ---- */
+self.addEventListener('push', (event) => {
+  let data = { title: 'Task365', body: '', url: '/dashboard' };
+  try {
+    const parsed = event.data ? event.data.json() : null;
+    if (parsed) data = Object.assign(data, parsed);
+  } catch (e) {
+    try {
+      if (event.data) data.body = event.data.text();
+    } catch (e2) {}
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      data: { url: data.url || '/dashboard' },
+      vibrate: [100, 50, 100],
+      tag: data.tag || null,
+    })
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || '/dashboard';
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (const client of windowClients) {
+        if ('focus' in client) {
+          client.navigate(url);
+          return client.focus();
+        }
+      }
+      return clients.openWindow(url);
+    })
   );
 });

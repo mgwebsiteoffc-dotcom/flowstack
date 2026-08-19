@@ -35,6 +35,14 @@ return [
         'model' => env('OPENROUTER_MODEL', 'nvidia/nemotron-3.5-lightning:free'),
     ],
 
+    'push' => [
+        'vapid' => [
+            'subject' => env('VAPID_SUBJECT', 'mailto:hello@task365.test'),
+            'public_key' => env('VAPID_PUBLIC_KEY'),
+            'private_key' => env('VAPID_PRIVATE_KEY'),
+        ],
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

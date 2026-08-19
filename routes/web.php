@@ -467,6 +467,11 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
  Route::post('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
  Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
 
+ // Browser push notifications
+ Route::get('/push/config', [\App\Http\Controllers\PushSubscriptionController::class, 'config'])->name('push.config');
+ Route::post('/push/subscribe', [\App\Http\Controllers\PushSubscriptionController::class, 'store'])->name('push.subscribe');
+ Route::post('/push/unsubscribe', [\App\Http\Controllers\PushSubscriptionController::class, 'destroy'])->name('push.unsubscribe');
+
  // Settings
  Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
  Route::get('/settings/master', [MasterDataController::class, 'index'])->name('settings.master.index');
