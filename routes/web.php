@@ -477,6 +477,7 @@ Route::middleware(['tenant', 'auth', 'subscription'])->group(function () {
  Route::post('/settings/master/services', [MasterDataController::class, 'storeService'])->name('settings.master.service.store');
  Route::delete('/settings/master/services/{item}', [MasterDataController::class, 'destroyService'])->name('settings.master.service.destroy');
  Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+ Route::post('/settings/financial-visibility', [SettingController::class, 'saveFinancialVisibility'])->name('settings.financial-visibility');
  Route::get('/settings/users', [SettingController::class, 'users'])->name('settings.users');
  Route::get('/settings/admin-users', [AdminUserController::class, 'index'])->name('settings.admin-users.index');
  Route::post('/settings/admin-users/{user}/password', [AdminUserController::class, 'changePassword'])->name('settings.admin-users.password');

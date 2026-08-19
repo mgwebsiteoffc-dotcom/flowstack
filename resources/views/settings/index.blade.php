@@ -70,6 +70,36 @@
                 <button class="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm font-medium">Save settings</button>
             </div>
         </form>
+
+        @if (auth()->user()->isAdmin())
+            @php
+                $financialRoles = json_decode((string) \App\Models\Setting::get('financial_roles'), true);
+                $financialRoles = is_array($financialRoles) ? $financialRoles : ['ops_manager'];
+            @endphp
+            <form method="POST" action="{{ route('settings.financial-visibility') }}" class="space-y-6 mt-6">
+                @csrf
+                <x-card title="Billing visibility" icon="lock-closed">
+                    <p class="text-sm text-gray-500 mb-4">
+                        Choose which roles can see payment &amp; billing terms (amounts, rates, costs, billable flags, retainer values).
+                        By default these are <strong>masked</strong> for everyone except admins and the finance manager.
+                    </p>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2 text-sm text-gray-700">
+                            <input type="checkbox" checked disabled class="rounded accent-indigo-600"> Admin <span class="text-xs text-gray-400">(always)</span>
+                        </label>
+                        @foreach (['ops_manager' => 'Ops / Finance manager', 'account_manager' => 'Account manager', 'specialist' => 'Specialist / employee'] as $role => $label)
+                            <label class="flex items-center gap-2 text-sm text-gray-700">
+                                <input type="checkbox" name="roles[]" value="{{ $role }}" {{ in_array($role, $financialRoles, true) ? 'checked' : '' }} class="rounded accent-indigo-600">
+                                {{ $label }}
+                            </label>
+                        @endforeach
+                    </div>
+                </x-card>
+                <div class="flex justify-end">
+                    <button class="bg-gray-900 text-white px-6 py-2 rounded-lg text-sm font-medium">Save billing visibility</button>
+                </div>
+            </form>
+        @endif
     </div>
 </div>
 @endsection

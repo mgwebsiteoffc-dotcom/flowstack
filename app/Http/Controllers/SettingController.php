@@ -34,10 +34,32 @@ class SettingController extends Controller
  return view('settings.index', compact('tenant', 'settings'));
  }
 
- public function update(Request $request)
- {
- $tenant = \App\Support\CurrentTenant::get();
- $settings = $tenant->settings ?? [];
+    /**
+     * Manage which roles may view payment/billing terms. Admins only; the
+     * default is masked for everyone except admin + ops/finance manager.
+     */
+    public function saveFinancialVisibility(Request $request)
+    {
+        if (! auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'roles' => ['nullable', 'array'],
+            'roles.*' => ['in:ops_manager,account_manager,specialist'],
+        ]);
+
+        Setting::set('financial_roles', array_values($validated['roles'] ?? []));
+
+        ActivityLog::record('settings.financial_visibility.updated');
+
+        return back()->with('success', 'Financial visibility updated. Billing terms are masked for everyone except the roles you selected (and admins).');
+    }
+
+    public function update(Request $request)
+    {
+        $tenant = \App\Support\CurrentTenant::get();
+        $settings = $tenant->settings ?? [];
 
  $validated = $request->validate([
  'name' => ['required', 'string', 'max:255'],

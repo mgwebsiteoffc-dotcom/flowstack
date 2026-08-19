@@ -57,10 +57,12 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Company name *</label>
             <input type="text" name="company_name" value="{{ $lead->company_name ?? $lead->contact_name }}" required class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
         </div>
+        @if (auth()->user()->canViewFinancials())
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Monthly retainer (₹)</label>
             <input type="number" step="0.01" name="monthly_retainer" value="{{ $lead->won_value ?? $lead->estimated_value }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
         </div>
+        @endif
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Account manager</label>
             <select name="account_manager_id" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
@@ -99,9 +101,11 @@
                     <div><dt class="text-gray-400 text-xs">Assignee</dt><dd class="text-gray-800">{{ $lead->assignee?->name ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Stage</dt><dd class="text-gray-800">{{ $lead->current_stage ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Probability</dt><dd class="text-gray-800">{{ $lead->probability ?? '—' }}%</dd></div>
-                    <div><dt class="text-gray-400 text-xs">Estimated value</dt><dd class="text-gray-800 font-medium">₹{{ number_format($lead->estimated_value ?? 0) }}</dd></div>
+                    @if (auth()->user()->canViewFinancials())
+                        <div><dt class="text-gray-400 text-xs">Estimated value</dt><dd class="text-gray-800 font-medium">₹{{ number_format($lead->estimated_value ?? 0) }}</dd></div>
+                    @endif
                     <div><dt class="text-gray-400 text-xs">Expected close</dt><dd class="text-gray-800">{{ $lead->expected_close_date?->format('d M Y') ?? '—' }}</dd></div>
-                    @if ($lead->won_at)
+                    @if ($lead->won_at && auth()->user()->canViewFinancials())
                         <div><dt class="text-gray-400 text-xs">Won value</dt><dd class="text-green-600 font-medium">₹{{ number_format($lead->won_value ?? 0) }}</dd></div>
                         <div><dt class="text-gray-400 text-xs">Won at</dt><dd class="text-gray-800">{{ $lead->won_at->format('d M Y') }}</dd></div>
                     @endif

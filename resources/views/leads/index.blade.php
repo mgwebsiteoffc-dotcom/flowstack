@@ -40,7 +40,7 @@
 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
     <table class="w-full text-sm">
         <thead class="bg-gray-50 text-left text-xs text-gray-500 uppercase">
-            <tr><th class="px-4 py-3">Lead</th><th class="px-4 py-3">Source</th><th class="px-4 py-3">Stage</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Value</th><th class="px-4 py-3">Assignee</th><th class="px-4 py-3">Created</th></tr>
+            <tr><th class="px-4 py-3">Lead</th><th class="px-4 py-3">Source</th><th class="px-4 py-3">Stage</th><th class="px-4 py-3">Status</th>@if (auth()->user()->canViewFinancials())<th class="px-4 py-3">Value</th>@endif<th class="px-4 py-3">Assignee</th><th class="px-4 py-3">Created</th></tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
             @forelse ($leads as $lead)
@@ -52,7 +52,7 @@
                     <td class="px-4 py-3"><x-source-badge :source="$lead->source_type" /></td>
                     <td class="px-4 py-3 text-gray-600">{{ $lead->current_stage ?? '—' }}</td>
                     <td class="px-4 py-3"><x-status-badge :status="$lead->status" type="lead" /></td>
-                    <td class="px-4 py-3 font-medium">₹{{ number_format($lead->estimated_value ?? 0) }}</td>
+                    @if (auth()->user()->canViewFinancials())<td class="px-4 py-3 font-medium">₹{{ number_format($lead->estimated_value ?? 0) }}</td>@endif
                     <td class="px-4 py-3 text-gray-600">{{ $lead->assignee?->name ?? '—' }}</td>
                     <td class="px-4 py-3 text-gray-400 text-xs">{{ $lead->created_at?->format('d M') }}</td>
                 </tr>

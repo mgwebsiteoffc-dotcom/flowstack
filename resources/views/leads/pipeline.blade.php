@@ -27,7 +27,7 @@
                         <div class="text-xs text-gray-400">{{ $lead->company_name }}</div>
                         <div class="flex items-center justify-between mt-2">
                             <x-source-badge :source="$lead->source_type" />
-                            <span class="text-xs font-semibold text-gray-700">₹{{ number_format($lead->estimated_value ?? 0) }}</span>
+                            <span class="text-xs font-semibold text-gray-700"><x-financial>₹{{ number_format($lead->estimated_value ?? 0) }}</x-financial></span>
                         </div>
                         <div class="flex items-center justify-between mt-2">
                             @if ($lead->assignee)<span class="text-[10px] text-gray-400"><x-icon name="user" class="w-4 h-4 inline-block" /> {{ $lead->assignee->name }}</span>@endif

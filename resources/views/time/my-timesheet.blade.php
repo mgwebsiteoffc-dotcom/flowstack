@@ -69,6 +69,7 @@
             </div>
         @endforeach
     </x-card>
+    @if (auth()->user()->canViewFinancials())
     <x-card title="Billable vs non-billable" icon="banknotes">
         <div class="flex justify-between py-1.5 text-sm">
             <span class="text-gray-700">Billable</span>
@@ -82,5 +83,6 @@
             <span>Total</span><span>{{ round($totals['minutes'] / 60, 1) }}h</span>
         </div>
     </x-card>
+    @endif
 </div>
 @endsection

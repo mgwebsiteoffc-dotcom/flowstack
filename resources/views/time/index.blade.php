@@ -42,7 +42,9 @@
                 @endforeach
             </select>
             <input type="text" name="description" placeholder="What did you work on?" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
-            <label class="flex items-center gap-2 text-sm text-gray-600"><input type="checkbox" name="is_billable" value="1" checked class="rounded"> Billable</label>
+            @if (auth()->user()->canViewFinancials())
+                <label class="flex items-center gap-2 text-sm text-gray-600"><input type="checkbox" name="is_billable" value="1" checked class="rounded"> Billable</label>
+            @endif
             <button class="w-full bg-indigo-600 text-white rounded-lg py-2 text-sm">Log time</button>
         </form>
     </x-card>
@@ -56,7 +58,9 @@
                         <div class="text-sm text-gray-700 truncate">{{ $entry->task?->title ?? $entry->description ?? 'Manual entry' }}</div>
                         <div class="text-xs text-gray-400">{{ $entry->client?->company_name }} · {{ $entry->started_at?->format('d M H:i') }}</div>
                     </div>
-                    <span class="text-xs {{ $entry->is_billable ? 'text-green-600' : 'text-gray-400' }}">{{ $entry->is_billable ? 'Billable' : 'Non-bill' }}</span>
+                    @if (auth()->user()->canViewFinancials())
+                        <span class="text-xs {{ $entry->is_billable ? 'text-green-600' : 'text-gray-400' }}">{{ $entry->is_billable ? 'Billable' : 'Non-bill' }}</span>
+                    @endif
                     <form method="POST" action="{{ route('time.destroy', $entry) }}" onsubmit="return confirm('Delete this entry?')">@csrf @method('DELETE')
                         <button class="text-red-400 text-xs"><x-icon name="x-mark" class="w-3 h-3" /></button>
                     </form>

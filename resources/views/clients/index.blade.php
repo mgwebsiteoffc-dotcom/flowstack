@@ -44,7 +44,7 @@
                 <th class="px-4 py-3">Health</th>
                 <th class="px-4 py-3">Services</th>
                 <th class="px-4 py-3">Account Manager</th>
-                <th class="px-4 py-3 text-right">Retainer</th>
+                @if (auth()->user()->canViewFinancials())<th class="px-4 py-3 text-right">Retainer</th>@endif
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
@@ -64,7 +64,7 @@
                         </div>
                     </td>
                     <td class="px-4 py-3 text-gray-600">{{ $client->accountManager?->name ?? '—' }}</td>
-                    <td class="px-4 py-3 text-right font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</td>
+                    @if (auth()->user()->canViewFinancials())<td class="px-4 py-3 text-right font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</td>@endif
                 </tr>
             @empty
                 <tr><td colspan="6">

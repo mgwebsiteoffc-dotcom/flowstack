@@ -14,7 +14,7 @@
         <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-left text-xs text-gray-500 uppercase">
-                    <tr><th class="px-4 py-3">User</th><th class="px-4 py-3">Role</th><th class="px-4 py-3">Hourly cost</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Last login</th></tr>
+                    <tr><th class="px-4 py-3">User</th><th class="px-4 py-3">Role</th>@if (auth()->user()->canViewFinancials())<th class="px-4 py-3">Hourly cost</th>@endif<th class="px-4 py-3">Status</th><th class="px-4 py-3">Last login</th></tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                     @foreach ($users as $user)
@@ -41,7 +41,9 @@
                                     <span class="text-xs bg-gray-100 rounded-full px-2 py-0.5 capitalize">{{ str_replace('_', ' ', $user->role) }}</span>
                                 @endcan
                             </td>
-                            <td class="px-4 py-3">₹{{ number_format($user->hourly_cost ?? 0) }}</td>
+                            @if (auth()->user()->canViewFinancials())
+                                <td class="px-4 py-3">₹{{ number_format($user->hourly_cost ?? 0) }}</td>
+                            @endif
                             <td class="px-4 py-3">
                                 <span class="text-xs {{ $user->is_active ? 'text-green-600' : 'text-red-500' }}">{{ $user->is_active ? 'Active' : 'Inactive' }}</span>
                             </td>

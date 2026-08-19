@@ -24,7 +24,7 @@
 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
     <table class="w-full text-sm">
         <thead class="bg-gray-50 text-left text-xs text-gray-500 uppercase">
-            <tr><th class="px-4 py-3">Proposal</th><th class="px-4 py-3">Client</th><th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Amount</th><th class="px-4 py-3">Valid until</th><th class="px-4 py-3">Created</th></tr>
+            <tr><th class="px-4 py-3">Proposal</th><th class="px-4 py-3">Client</th><th class="px-4 py-3">Status</th>@if (auth()->user()->canViewFinancials())<th class="px-4 py-3 text-right">Amount</th>@endif<th class="px-4 py-3">Valid until</th><th class="px-4 py-3">Created</th></tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
             @forelse ($proposals as $proposal)
@@ -40,7 +40,7 @@
                             {{ ucfirst($proposal->status) }}
                         </span>
                     </td>
-                    <td class="px-4 py-3 text-right font-medium">₹{{ number_format($proposal->total_amount) }}</td>
+                    @if (auth()->user()->canViewFinancials())<td class="px-4 py-3 text-right font-medium">₹{{ number_format($proposal->total_amount) }}</td>@endif
                     <td class="px-4 py-3 text-gray-500">{{ $proposal->valid_until?->format('d M Y') ?? '—' }}</td>
                     <td class="px-4 py-3 text-gray-400 text-xs">{{ $proposal->created_at->format('d M Y') }}</td>
                 </tr>

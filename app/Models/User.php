@@ -97,10 +97,41 @@ class User extends Authenticatable
  return $this->role === 'specialist';
  }
 
- public function canAccessFinance(): bool
- {
- return in_array($this->role, ['admin', 'ops_manager', 'account_manager'], true);
- }
+    public function canAccessFinance(): bool
+    {
+        return in_array($this->role, ['admin', 'ops_manager', 'account_manager'], true);
+    }
+
+    /**
+     * Whether this user may see payment/billing terms (amounts, rates, costs,
+     * billable flags, retainer values, etc.) across shared screens.
+     *
+     * Admins always see financials. Everyone else is masked by default; the
+     * tenant admin can grant visibility to other roles in Settings
+     * (stored as a JSON array under the "financial_roles" setting). There is
+     * deliberately no "unmask" toggle — the default is always masked.
+     */
+    public function canViewFinancials(): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        $raw = Setting::get('financial_roles');
+
+        if ($raw === null || $raw === '') {
+            // Default: only the ops/finance manager (besides admin) sees financials.
+            return $this->isOpsManager();
+        }
+
+        $allowed = json_decode((string) $raw, true);
+
+        if (! is_array($allowed)) {
+            return $this->isOpsManager();
+        }
+
+        return in_array($this->role, $allowed, true);
+    }
 
  public function getInitialsAttribute(): string
  {

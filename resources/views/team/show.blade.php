@@ -16,7 +16,9 @@
                 <div class="flex justify-between"><dt class="text-gray-400">Email</dt><dd>{{ $user->email }}</dd></div>
                 <div class="flex justify-between"><dt class="text-gray-400">Phone</dt><dd>{{ $user->phone ?? '—' }}</dd></div>
                 <div class="flex justify-between"><dt class="text-gray-400">Timezone</dt><dd>{{ $user->timezone }}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-400">Hourly cost</dt><dd>₹{{ number_format($user->hourly_cost ?? 0) }}</dd></div>
+                @if (auth()->user()->canViewFinancials())
+                    <div class="flex justify-between"><dt class="text-gray-400">Hourly cost</dt><dd>₹{{ number_format($user->hourly_cost ?? 0) }}</dd></div>
+                @endif
                 <div class="flex justify-between"><dt class="text-gray-400">Status</dt><dd>{{ $user->is_active ? 'Active' : 'Inactive' }}</dd></div>
             </dl>
             @can('update', $user)

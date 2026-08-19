@@ -42,19 +42,22 @@
         <x-card title="Line items" icon="clipboard">
             <table class="w-full text-sm">
                 <thead class="text-left text-xs text-gray-500 uppercase border-b">
-                    <tr><th class="py-2">Description</th><th class="py-2 text-right">Qty</th><th class="py-2 text-right">Rate</th><th class="py-2 text-right">Total</th></tr>
+                    <tr><th class="py-2">Description</th><th class="py-2 text-right">Qty</th>@if (auth()->user()->canViewFinancials())<th class="py-2 text-right">Rate</th><th class="py-2 text-right">Total</th>@endif</tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                     @foreach ($proposal->items as $item)
                         <tr>
                             <td class="py-2.5">{{ $item->description }}</td>
                             <td class="py-2.5 text-right">{{ $item->quantity }}</td>
+                            @if (auth()->user()->canViewFinancials())
                             <td class="py-2.5 text-right">₹{{ number_format($item->unit_price, 2) }}</td>
                             <td class="py-2.5 text-right font-medium">₹{{ number_format($item->total, 2) }}</td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            @if (auth()->user()->canViewFinancials())
             <div class="mt-4 space-y-1.5 text-sm max-w-xs ml-auto">
                 <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span>₹{{ number_format($proposal->subtotal, 2) }}</span></div>
                 @if ($proposal->discount_amount > 0)
@@ -63,6 +66,7 @@
                 <div class="flex justify-between"><span class="text-gray-500">Tax ({{ $proposal->tax_rate }}%)</span><span>₹{{ number_format($proposal->tax_amount, 2) }}</span></div>
                 <div class="flex justify-between font-bold text-base"><span>Total</span><span>₹{{ number_format($proposal->total_amount, 2) }}</span></div>
             </div>
+            @endif
         </x-card>
     </div>
 

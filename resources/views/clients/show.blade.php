@@ -8,12 +8,15 @@
         ['id' => 'projects', 'label' => 'Projects', 'url' => route('clients.show', [$client, 'tab' => 'projects'])],
         ['id' => 'tasks', 'label' => 'Tasks', 'url' => route('clients.show', [$client, 'tab' => 'tasks'])],
         ['id' => 'reports', 'label' => 'Reports', 'url' => route('clients.show', [$client, 'tab' => 'reports'])],
-        ['id' => 'finance', 'label' => 'Finance', 'url' => route('clients.show', [$client, 'tab' => 'finance'])],
+        ['id' => 'finance', 'label' => 'Finance', 'url' => route('clients.show', [$client, 'tab' => 'finance']), 'finance' => true],
         ['id' => 'files', 'label' => 'Files', 'url' => route('clients.show', [$client, 'tab' => 'files'])],
         ['id' => 'contacts', 'label' => 'Contacts', 'url' => route('clients.show', [$client, 'tab' => 'contacts'])],
         ['id' => 'activity', 'label' => 'Activity', 'url' => route('clients.show', [$client, 'tab' => 'activity'])],
         ['id' => 'notes', 'label' => 'Notes', 'url' => route('clients.show', [$client, 'tab' => 'notes'])],
     ];
+
+    // Hide the Finance tab from users who can't view billing terms.
+    $tabs = array_values(array_filter($tabs, fn ($t) => ! isset($t['finance']) || auth()->user()->canViewFinancials()));
 @endphp
 
 <div class="flex items-start justify-between gap-4 mb-4 flex-wrap">
@@ -67,7 +70,9 @@
                     <div><dt class="text-gray-400 text-xs">Address</dt><dd class="text-gray-800">{{ $client->address ?: '—' }}@if ($client->city || $client->pincode)<div class="text-xs">{{ $client->city }}{{ $client->state ? ', '.$client->state : '' }}{{ $client->pincode ? ' - '.$client->pincode : '' }}</div>@endif</dd></div>
                     <div><dt class="text-gray-400 text-xs">Account manager</dt><dd class="text-gray-800">{{ $client->accountManager?->name ?? '—' }}</dd></div>
                     <div><dt class="text-gray-400 text-xs">Contract</dt><dd class="text-gray-800">{{ $client->contract_start_date?->format('d M Y') }} → {{ $client->contract_end_date?->format('d M Y') ?? 'open' }}</dd></div>
-                    <div><dt class="text-gray-400 text-xs">Monthly retainer</dt><dd class="text-gray-800 font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</dd></div>
+                    @if (auth()->user()->canViewFinancials())
+                        <div><dt class="text-gray-400 text-xs">Monthly retainer</dt><dd class="text-gray-800 font-medium">₹{{ number_format($client->monthly_retainer ?? 0) }}</dd></div>
+                    @endif
                 </dl>
                 @if ($client->notes)<div class="mt-4 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">{{ $client->notes }}</div>@endif
             </x-card>
@@ -77,7 +82,7 @@
                     @forelse ($client->services as $service)
                         <span class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 rounded-full px-3 py-1 text-sm">
                             {{ $service->type_label }}
-                            @if ($service->monthly_price)<span class="text-xs">₹{{ number_format($service->monthly_price) }}/mo</span>@endif
+                            @if ($service->monthly_price && auth()->user()->canViewFinancials())<span class="text-xs">₹{{ number_format($service->monthly_price) }}/mo</span>@endif
                         </span>
                     @empty
                         <span class="text-sm text-gray-400">No services selected</span>
@@ -130,7 +135,7 @@
                 <div class="grid grid-cols-3 gap-4 text-center">
                     <div><div class="text-xl font-bold text-gray-900">{{ $client->projects()->count() }}</div><div class="text-xs text-gray-400">Projects</div></div>
                     <div><div class="text-xl font-bold text-gray-900">{{ $client->tasks()->whereNotIn('status', ['done', 'cancelled'])->count() }}</div><div class="text-xs text-gray-400">Open tasks</div></div>
-                    <div><div class="text-xl font-bold text-gray-900">₹{{ number_format($client->outstandingBalance()) }}</div><div class="text-xs text-gray-400">Outstanding</div></div>
+                    <div><div class="text-xl font-bold text-gray-900"><x-financial>₹{{ number_format($client->outstandingBalance()) }}</x-financial></div><div class="text-xs text-gray-400">Outstanding</div></div>
                 </div>
             </x-card>
             <x-card title="Contacts" icon="identification">
@@ -242,7 +247,7 @@
         @endforelse
     </div>
 
-@elseif ($tab === 'finance')
+@elseif ($tab === 'finance' && auth()->user()->canViewFinancials())
     <div class="flex justify-end mb-4">
         <a href="{{ route('finance.invoices.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm">+ New invoice</a>
     </div>
