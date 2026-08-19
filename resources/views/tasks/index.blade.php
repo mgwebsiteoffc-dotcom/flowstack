@@ -8,8 +8,12 @@
         <a href="{{ route('tasks.board') }}" class="px-3 py-1.5 rounded-lg {{ request()->routeIs('tasks.board') ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-600' }}">Board</a>
         <a href="{{ route('tasks.my-tasks') }}" class="px-3 py-1.5 rounded-lg {{ request()->routeIs('tasks.my-tasks') ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-600' }}">My tasks</a>
         <a href="{{ route('tasks.calendar') }}" class="px-3 py-1.5 rounded-lg {{ request()->routeIs('tasks.calendar') ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-600' }}">Calendar</a>
+        <a href="{{ route('tasks.ai') }}" class="px-3 py-1.5 rounded-lg {{ request()->routeIs('tasks.ai') ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-600' }}"><x-icon name="sparkles" class="w-4 h-4 inline-block" /> AI generate</a>
     </div>
-    <a href="{{ route('tasks.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ New task</a>
+    <div class="flex gap-2">
+        <a href="{{ route('tasks.ai') }}" class="bg-white border border-indigo-200 text-indigo-700 px-4 py-2 rounded-lg text-sm font-medium inline-flex items-center gap-1.5"><x-icon name="sparkles" class="w-4 h-4" /> AI</a>
+        <a href="{{ route('tasks.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ New task</a>
+    </div>
 </div>
 
 <form method="GET" class="flex flex-wrap gap-2 text-sm mb-5">

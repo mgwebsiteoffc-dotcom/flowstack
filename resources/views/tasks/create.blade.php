@@ -49,6 +49,8 @@
                         <option value="{{ $user->id }}" {{ old('assigned_to') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                     @endforeach
                 </select></div>
+            <div><label class="block text-sm font-medium text-gray-700 mb-1">Start date</label>
+                <input type="date" name="start_date" value="{{ old('start_date') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Due date</label>
                 <input type="date" name="due_date" value="{{ old('due_date') }}" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></div>
             <div><label class="block text-sm font-medium text-gray-700 mb-1">Service type</label>

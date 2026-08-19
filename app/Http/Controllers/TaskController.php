@@ -14,11 +14,13 @@ use App\Models\TaskComment;
 use App\Models\TaskWatcher;
 use App\Models\TimeEntry;
 use App\Models\User;
+use App\Services\AiTaskGeneratorService;
 use App\Services\AutomationService;
 use App\Services\ChannelNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
 {
@@ -140,8 +142,138 @@ class TaskController extends Controller
  return view('tasks.create', compact('clients', 'users', 'projects'));
  }
 
- public function store(TaskRequest $request)
- {
+    /**
+     * AI task generator: input box + (optional) generated draft preview.
+     */
+    public function ai(Request $request)
+    {
+        $this->authorize('create', Task::class);
+
+        if ($request->boolean('reset')) {
+            session()->forget(['ai_paragraph', 'ai_draft_tasks']);
+
+            return redirect()->route('tasks.ai');
+        }
+
+        $clients = $this->visibleClients(auth()->user());
+
+        return view('tasks.ai', [
+            'clients' => $clients,
+            'paragraph' => session('ai_paragraph', ''),
+            'draft' => session('ai_draft_tasks', []),
+            'configured' => app(AiTaskGeneratorService::class)->isConfigured(),
+        ]);
+    }
+
+    /**
+     * Send the paragraph to the AI and stash the parsed task drafts for review.
+     */
+    public function aiGenerate(Request $request)
+    {
+        $this->authorize('create', Task::class);
+
+        $validated = $request->validate([
+            'paragraph' => ['required', 'string', 'max:10000'],
+        ]);
+
+        try {
+            $tasks = app(AiTaskGeneratorService::class)->generateTasks($validated['paragraph']);
+        } catch (\RuntimeException $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
+
+        // Resolve any client names the model guessed into real client ids.
+        foreach ($tasks as $i => $task) {
+            $tasks[$i]['client_id'] = $this->resolveClientId($task['client'] ?? null);
+        }
+
+        session()->put('ai_paragraph', $validated['paragraph']);
+        session()->put('ai_draft_tasks', $tasks);
+
+        return redirect()->route('tasks.ai')->with('success', count($tasks).' task(s) generated. Review and confirm below.');
+    }
+
+    /**
+     * Create the confirmed tasks from the (editable) draft preview.
+     */
+    public function aiStore(Request $request)
+    {
+        $this->authorize('create', Task::class);
+
+        $validated = $request->validate([
+            'tasks' => ['required', 'array', 'min:1', 'max:50'],
+            'tasks.*.title' => ['required', 'string', 'max:255'],
+            'tasks.*.description' => ['nullable', 'string', 'max:5000'],
+            'tasks.*.start_date' => ['nullable', 'date'],
+            'tasks.*.due_date' => ['nullable', 'date'],
+            'tasks.*.client_id' => ['nullable', 'exists:clients,id'],
+            'tasks.*.priority' => ['nullable', Rule::in(Task::PRIORITIES)],
+            'tasks.*.estimated_hours' => ['nullable', 'numeric', 'min:0', 'max:10000'],
+        ]);
+
+        $tenantId = \App\Support\CurrentTenant::id();
+        $createdBy = auth()->id();
+        $nextOrder = Task::max('order_index') ?? 0;
+        $created = 0;
+
+        foreach ($validated['tasks'] as $task) {
+            $model = Task::create([
+                'tenant_id' => $tenantId,
+                'client_id' => $task['client_id'] ?? null,
+                'title' => $task['title'],
+                'description' => $task['description'] ?? null,
+                'start_date' => $task['start_date'] ?? null,
+                'due_date' => $task['due_date'] ?? null,
+                'priority' => $task['priority'] ?? 'medium',
+                'estimated_hours' => $task['estimated_hours'] ?? null,
+                'status' => 'todo',
+                'task_type' => 'one_time',
+                'assigned_to' => null,
+                'created_by' => $createdBy,
+                'order_index' => ++$nextOrder,
+            ]);
+
+            $watcherIds = collect([$createdBy])->filter()->unique();
+            foreach ($watcherIds as $userId) {
+                TaskWatcher::firstOrCreate(['task_id' => $model->id, 'user_id' => $userId]);
+            }
+
+            ActivityLog::record('task.created', $model, null, ['title' => $model->title]);
+            $created++;
+        }
+
+        session()->forget(['ai_paragraph', 'ai_draft_tasks']);
+
+        return redirect()->route('tasks.index')->with('success', $created.' task(s) created from your paragraph.');
+    }
+
+    /**
+     * Best-effort match of a client name (from the AI) to a visible client id.
+     */
+    protected function resolveClientId(?string $name): ?int
+    {
+        if (! $name) {
+            return null;
+        }
+
+        $name = trim($name);
+        $clients = $this->visibleClients(auth()->user());
+
+        $exact = $clients->first(fn ($c) => strtolower((string) $c->company_name) === strtolower($name));
+        if ($exact) {
+            return $exact->id;
+        }
+
+        $contains = $clients->first(
+            fn ($c) => stripos((string) $c->company_name, $name) !== false
+                || stripos($name, (string) $c->company_name) !== false
+        );
+
+        return $contains?->id;
+    }
+
+    public function store(TaskRequest $request)
+    {
  $data = $request->validated();
  $data['tenant_id'] = \App\Support\CurrentTenant::id();
  $data['created_by'] = auth()->id();
@@ -250,20 +382,22 @@ class TaskController extends Controller
 
  public function updateStatus(Request $request, Task $task)
  {
- $validated = $request->validate([
- 'status' => ['nullable', 'in:'.implode(',', Task::STATUSES)],
- 'priority' => ['nullable', 'in:'.implode(',', Task::PRIORITIES)],
- 'assigned_to' => ['nullable', 'exists:users,id'],
- 'due_date' => ['nullable', 'date'],
- ]);
+        $validated = $request->validate([
+            'status' => ['nullable', 'in:'.implode(',', Task::STATUSES)],
+            'priority' => ['nullable', 'in:'.implode(',', Task::PRIORITIES)],
+            'assigned_to' => ['nullable', 'exists:users,id'],
+            'start_date' => ['nullable', 'date'],
+            'due_date' => ['nullable', 'date'],
+        ]);
 
- $old = $task->only(['status', 'priority', 'assigned_to', 'due_date']);
- $task->update(array_filter([
- 'status' => $validated['status'] ?? null,
- 'priority' => $validated['priority'] ?? null,
- 'assigned_to' => $validated['assigned_to'] ?? null,
- 'due_date' => $validated['due_date'] ?? null,
- ], fn ($v) => $v !== null));
+        $old = $task->only(['status', 'priority', 'assigned_to', 'start_date', 'due_date']);
+        $task->update(array_filter([
+            'status' => $validated['status'] ?? null,
+            'priority' => $validated['priority'] ?? null,
+            'assigned_to' => $validated['assigned_to'] ?? null,
+            'start_date' => $validated['start_date'] ?? null,
+            'due_date' => $validated['due_date'] ?? null,
+        ], fn ($v) => $v !== null));
 
  // If the parent recurring task is done, schedule its next instance.
  if ($task->is_recurring && ($validated['status'] ?? null) === 'done' && $task->next_recurrence_date) {

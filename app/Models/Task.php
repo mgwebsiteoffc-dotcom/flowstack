@@ -13,7 +13,7 @@ class Task extends Model
  protected $fillable = [
  'tenant_id', 'client_id', 'project_id', 'parent_task_id', 'title',
  'description', 'status', 'priority', 'service_type', 'task_type',
- 'assigned_to', 'created_by', 'due_date', 'estimated_hours', 'actual_hours',
+        'assigned_to', 'created_by', 'start_date', 'due_date', 'estimated_hours', 'actual_hours',
  'approval_status', 'approved_by', 'approved_at', 'is_recurring',
  'recurrence_type', 'recurrence_interval', 'recurrence_days',
  'next_recurrence_date', 'recurrence_ends_at', 'parent_recurring_task_id',
@@ -22,8 +22,9 @@ class Task extends Model
 
  protected $casts = [
  'estimated_hours' => 'decimal:2',
- 'actual_hours' => 'decimal:2',
- 'due_date' => 'date',
+        'actual_hours' => 'decimal:2',
+        'start_date' => 'date',
+        'due_date' => 'date',
  'approved_at' => 'datetime',
  'is_recurring' => 'boolean',
  'recurrence_days' => 'array',

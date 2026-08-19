@@ -29,6 +29,12 @@ return [
         'base_url' => env('BIKRIBOOK_BASE_URL', 'https://api.bikribook.com/v1'),
     ],
 
+    'openrouter' => [
+        'api_key' => env('OPENROUTER_API_KEY'),
+        'base_url' => env('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1'),
+        'model' => env('OPENROUTER_MODEL', 'nvidia/nemotron-3.5-lightning:free'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

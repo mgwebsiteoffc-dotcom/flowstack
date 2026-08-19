@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('tasks.status', $task) }}" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+            <form method="POST" action="{{ route('tasks.status', $task) }}" class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-4">
                 @csrf
                 <select name="status" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm" onchange="this.form.submit()">
                     @foreach (\App\Models\Task::STATUSES as $s)
@@ -50,7 +50,8 @@
                         <option value="{{ $user->id }}" {{ $task->assigned_to === $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
                     @endforeach
                 </select>
-                <input type="date" name="due_date" value="{{ $task->due_date?->toDateString() }}" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm" onchange="this.form.submit()">
+                <input type="date" name="start_date" title="Start date" value="{{ $task->start_date?->toDateString() }}" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm" onchange="this.form.submit()">
+                <input type="date" name="due_date" title="Due date" value="{{ $task->due_date?->toDateString() }}" class="rounded-lg border border-gray-300 px-2 py-1.5 text-sm" onchange="this.form.submit()">
             </form>
 
             <div class="flex flex-wrap gap-2 mt-4 text-xs text-gray-500">
