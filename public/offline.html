@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4f46e5">
+    <title>You're offline · Task365</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-10 max-w-sm text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-xl">T</div>
+        <h1 class="mt-5 text-xl font-bold text-gray-900">You're offline</h1>
+        <p class="mt-2 text-sm text-gray-500">Task365 needs an internet connection to load your workspace. Check your connection and try again.</p>
+        <button onclick="location.reload()"
+                class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-2.5 text-sm font-semibold transition">
+            Try again
+        </button>
+    </div>
+</body>
+</html>
